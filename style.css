@@ -33,7 +33,7 @@ body {
     height: 110vh; /* Thoda lamba rakha hai movement ke liye */
     background-image: url('hamari_photo.jpg');
     background-size: cover;
-    background-position: top center; /* Isse photo ka upar ka hissa (faces) nahi katega */
+    background-position: center 25%; /* Photo ko thoda niche shift kiya */
     opacity: 0.4; /* Thoda aur visible kar diya */
     z-index: -2;
     transition: transform 0.1s linear;
