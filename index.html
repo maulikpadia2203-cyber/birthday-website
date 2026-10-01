@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Yaar!</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+    
+    <!-- Floating Emojis Background -->
+    <div class="floating-emojis">
+        <span>🎉</span><span>🎂</span><span>✨</span><span>🎈</span><span>🎁</span>
+    </div>
+
+    <!-- Audio Toggle -->
+    <button id="audio-toggle" class="audio-btn">
+        <i class="fas fa-music"></i>
+    </button>
+    <audio id="bg-music" loop>
+        <!-- A placeholder cute background track -->
+        <source src="https://assets.mixkit.co/music/preview/mixkit-happy-birthday-to-you-550.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Hero Section: Mystery Envelope -->
+    <section id="hero" class="hero-section">
+        <div class="envelope-container" id="mystery-envelope">
+            <div class="envelope">
+                <div class="envelope-flap"></div>
+                <div class="envelope-body">
+                    <div class="envelope-message">
+                        <h1>Happy Birthday! 🎂</h1>
+                        <p>Click me to open aur magic dekho!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="hero-content" class="hidden">
+            <h1 class="main-title">Happy Birthday Mere Dost! 🎉</h1>
+            <p class="subtitle">Yeh khaas din tere liye hai. Scroll kar aur dekh humne kya banaya hai!</p>
+        </div>
+    </section>
+
+    <!-- Photo Gallery Section -->
+    <section id="gallery" class="gallery-section reveal">
+        <h2 class="section-title">Yaadon ka Pitara 📸</h2>
+        <div class="gallery-grid">
+            <!-- Polaroid 1 -->
+            <div class="polaroid-card">
+                <div class="polaroid-inner">
+                    <div class="polaroid-front">
+                        <img src="https://images.unsplash.com/photo-1517457373958-b7bdd4587205?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Memory">
+                    </div>
+                    <div class="polaroid-back">
+                        <p>Woh crazy party night! 😂</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Polaroid 2 -->
+            <div class="polaroid-card">
+                <div class="polaroid-inner">
+                    <div class="polaroid-front">
+                        <img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Memory">
+                    </div>
+                    <div class="polaroid-back">
+                        <p>Goa trip jo successful hua! 🏖️</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Polaroid 3 -->
+            <div class="polaroid-card">
+                <div class="polaroid-inner">
+                    <div class="polaroid-front">
+                        <img src="https://images.unsplash.com/photo-1511895426328-dc8714191300?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Memory">
+                    </div>
+                    <div class="polaroid-back">
+                        <p>College ke din aur masti 🎓</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Friendship Timeline Section -->
+    <section id="timeline" class="timeline-section reveal">
+        <h2 class="section-title">Hamari Journey ⏳</h2>
+        <div class="timeline">
+            <div class="timeline-item left">
+                <div class="timeline-content">
+                    <h3>Day 1</h3>
+                    <p>Jab hum pehli baar mile the aur tune ajeeb sa joke maara tha.</p>
+                </div>
+            </div>
+            <div class="timeline-item right">
+                <div class="timeline-content">
+                    <h3>Pehla Trip</h3>
+                    <p>Rasta bhatak gaye the par maza bohot aaya.</p>
+                </div>
+            </div>
+            <div class="timeline-item left">
+                <div class="timeline-content">
+                    <h3>Late Night Maggi</h3>
+                    <p>Exam se ek raat pehle padhai kam aur baatein zyada.</p>
+                </div>
+            </div>
+            <div class="timeline-item right">
+                <div class="timeline-content">
+                    <h3>Aaj</h3>
+                    <p>Aur ek saal purane ho gaye tum, par aakal utni hi hai! 😆</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Wish Wall Section -->
+    <section id="wishwall" class="wishwall-section reveal">
+        <h2 class="section-title">Dil Ki Baatein 💖</h2>
+        <div class="wish-form-container">
+            <form id="wish-form">
+                <input type="text" id="wish-name" placeholder="Tera Naam" required>
+                <textarea id="wish-message" placeholder="Kya kehna chahte ho?" rows="3" required></textarea>
+                <button type="submit" class="btn-submit">Wish Bhejo ✨</button>
+            </form>
+        </div>
+        <div id="wishes-container" class="wishes-container">
+            <!-- Wishes will be appended here dynamically -->
+            <div class="wish-card">
+                <h4>Rahul</h4>
+                <p>Bhai ko janamdin ki bohot bohot shubhkamnayein! Party hard! 🎉</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>Made with ❤️ by tumhara dost.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
