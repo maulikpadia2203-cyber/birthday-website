@@ -1,16 +1,16 @@
-/* CSS Variables for Romantic Baby Pink & Blue */
+/* CSS Variables for Romantic Midnight Blue & Pink */
 :root {
-    --bg-color: #FFF0F5;
-    --primary-color: #FFB7B2; /* Baby Pink */
-    --secondary-color: #B0E0E6; /* Soft Baby Blue */
-    --accent-color: #FFD1DC;
-    --text-color: #4a4a4a;
-    --card-bg: rgba(255, 255, 255, 0.65);
+    --bg-color: #0A192F;
+    --primary-color: #FF8BA7; /* Soft Neon Pink */
+    --secondary-color: #64FFDA; /* Glowing Aqua Blue */
+    --accent-color: #112240;
+    --text-color: #E6F1FF; /* Light text for dark background */
+    --card-bg: rgba(17, 34, 64, 0.65);
     --font-main: 'Nunito', sans-serif;
     --font-title: 'Pacifico', cursive;
     --font-cursive: 'Caveat', cursive;
     --glass-blur: blur(12px);
-    --glass-shadow: 0 8px 32px rgba(255, 128, 191, 0.2);
+    --glass-shadow: 0 8px 32px rgba(255, 139, 167, 0.15); /* Pinkish glow */
 }
 
 * {
@@ -21,7 +21,7 @@
 
 body {
     font-family: var(--font-main);
-    background: linear-gradient(135deg, #FFF0F5 0%, #E6F2FF 50%, #FFE6F0 100%);
+    background: linear-gradient(135deg, #020c1b 0%, #0a192f 50%, #112240 100%);
     color: var(--text-color);
     overflow-x: hidden;
     scroll-behavior: smooth;
@@ -38,7 +38,7 @@ body {
     background-image: url('hamari_photo.jpg');
     background-size: cover;
     background-position: center 25%;
-    opacity: 0.2; /* Lower opacity so gradient is visible */
+    opacity: 0.15; /* Lower opacity for dark mode */
     z-index: -2;
     transition: transform 0.1s linear;
 }
@@ -58,7 +58,7 @@ body {
     position: absolute;
     font-size: 2rem;
     animation: floatUp 10s linear infinite;
-    opacity: 0.7;
+    opacity: 0.4;
 }
 
 .floating-emojis span:nth-child(1) { left: 10%; animation-duration: 8s; animation-delay: 0s; }
@@ -70,8 +70,8 @@ body {
 
 @keyframes floatUp {
     0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-    10% { opacity: 0.7; }
-    90% { opacity: 0.7; }
+    10% { opacity: 0.4; }
+    90% { opacity: 0.4; }
     100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
 }
 
@@ -82,22 +82,22 @@ h1, h2, h3 {
 }
 .main-title {
     font-size: 4rem;
-    color: #ff6b6b;
+    color: var(--primary-color);
     margin-bottom: 1rem;
     text-align: center;
-    text-shadow: 2px 2px 5px rgba(255, 183, 178, 0.5);
+    text-shadow: 2px 2px 10px rgba(255, 139, 167, 0.4);
 }
 .subtitle {
     font-size: 1.5rem;
     text-align: center;
-    color: #666;
+    color: #8892b0;
 }
 .section-title {
     font-size: 3rem;
     text-align: center;
     margin-bottom: 3rem;
-    color: #ff6b6b;
-    text-shadow: 2px 2px 5px rgba(255, 183, 178, 0.5);
+    color: var(--primary-color);
+    text-shadow: 2px 2px 8px rgba(255, 139, 167, 0.3);
 }
 
 /* General Layout */
@@ -130,14 +130,14 @@ section {
     bottom: 2rem;
     right: 2rem;
     background-color: var(--primary-color);
-    color: white;
+    color: #0A192F;
     border: none;
     border-radius: 50%;
     width: 60px;
     height: 60px;
     font-size: 1.5rem;
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(255, 183, 178, 0.6);
+    box-shadow: 0 4px 15px rgba(255, 139, 167, 0.4);
     z-index: 100;
     transition: transform 0.3s;
 }
@@ -162,10 +162,10 @@ section {
 .envelope {
     width: 300px;
     height: 200px;
-    background-color: #FFD1DC; /* Baby Pink Envelope */
+    background-color: #112240; /* Dark Blue Envelope */
     position: relative;
     border-radius: 5px;
-    box-shadow: 0 10px 25px rgba(255, 128, 191, 0.3);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
 }
 .envelope-flap {
     position: absolute;
@@ -175,7 +175,7 @@ section {
     height: 0;
     border-left: 150px solid transparent;
     border-right: 150px solid transparent;
-    border-top: 100px solid #B0E0E6; /* Baby Blue Ribbon/Seal Accent */
+    border-top: 100px solid #233554; /* Lighter Blue Flap */
     transform-origin: top;
     transition: transform 0.6s ease, z-index 0.6s;
     z-index: 3;
@@ -189,12 +189,12 @@ section {
     position: absolute;
     width: 100%;
     height: 100%;
-    background-color: #FFD1DC;
+    background-color: #112240;
     z-index: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 2px solid #FFC0CB;
+    border: 2px solid #233554;
 }
 .envelope-message {
     text-align: center;
@@ -207,13 +207,14 @@ section {
     transform: translateY(20px);
     opacity: 0;
     transition: all 0.5s ease 0.3s;
-    border: 1px solid rgba(255, 255, 255, 0.4);
+    border: 1px solid rgba(100, 255, 218, 0.2); /* Aqua border */
 }
 .envelope.open .envelope-message {
     transform: translateY(-80px);
     opacity: 1;
     z-index: 5;
 }
+.envelope-message p { color: var(--text-color); }
 
 /* Gallery Section - Polaroid 3D Flips */
 .gallery-section {
@@ -257,24 +258,24 @@ section {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border: 1px solid rgba(255, 255, 255, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 .polaroid-front img {
     width: 100%;
     height: 220px;
     object-fit: cover;
     margin-bottom: 15px;
-    border: 1px solid #eee;
+    border: 1px solid rgba(255,255,255,0.2);
     border-radius: 5px;
 }
 .polaroid-back {
     transform: rotateY(180deg);
-    background-color: rgba(255, 183, 178, 0.8); /* Soft pink back */
-    font-size: 1.8rem; /* Larger font for cursive */
+    background-color: rgba(255, 139, 167, 0.85); /* Pinkish back */
+    font-size: 1.8rem;
     font-family: var(--font-cursive);
     color: #fff;
     padding: 2rem;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
 }
 
 /* Timeline Section */
@@ -306,7 +307,7 @@ section {
     width: 25px;
     height: 25px;
     right: -12px;
-    background-color: white;
+    background-color: #0A192F;
     border: 4px solid var(--primary-color);
     top: 15px;
     border-radius: 50%;
@@ -322,12 +323,13 @@ section {
     position: relative;
     border-radius: 15px;
     box-shadow: var(--glass-shadow);
-    border: 1px solid rgba(255, 255, 255, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 .timeline-content h3 {
     margin-bottom: 10px;
-    color: #ff6b6b;
+    color: var(--primary-color);
 }
+.timeline-content p { color: #a8b2d1; }
 
 @media screen and (max-width: 600px) {
     .timeline::after { left: 31px; }
@@ -350,7 +352,7 @@ section {
     width: 100%;
     max-width: 500px;
     margin-bottom: 3rem;
-    border: 1px solid rgba(255, 255, 255, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 #wish-form {
     display: flex;
@@ -359,25 +361,27 @@ section {
 }
 #wish-form input, #wish-form textarea {
     padding: 10px;
-    border: 1px solid rgba(255, 183, 178, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 5px;
     font-family: var(--font-main);
     font-size: 1rem;
-    background: rgba(255,255,255,0.8);
+    background: rgba(10, 25, 47, 0.8);
+    color: white;
 }
 .btn-submit {
     background-color: var(--secondary-color);
-    color: white;
+    color: #0A192F;
     border: none;
     padding: 12px;
     border-radius: 5px;
     cursor: pointer;
     font-size: 1.1rem;
     font-weight: bold;
-    transition: background-color 0.3s;
+    transition: all 0.3s;
 }
 .btn-submit:hover {
-    background-color: #9acbd0;
+    background-color: #4cd6b6;
+    box-shadow: 0 0 10px rgba(100,255,218,0.5);
 }
 .wishes-container {
     display: flex;
@@ -395,12 +399,13 @@ section {
     box-shadow: var(--glass-shadow);
     width: 250px;
     border-top: 5px solid var(--primary-color);
-    border: 1px solid rgba(255, 255, 255, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 .wish-card h4 {
-    color: #ff6b6b;
+    color: var(--primary-color);
     margin-bottom: 0.5rem;
 }
+.wish-card p { color: #a8b2d1; }
 
 footer {
     text-align: center;
@@ -408,4 +413,5 @@ footer {
     background: var(--card-bg);
     backdrop-filter: var(--glass-blur);
     font-weight: bold;
+    color: #8892b0;
 }

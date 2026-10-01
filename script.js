@@ -138,32 +138,36 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- Romantic Heart Cursor Effect ---
-    function createHeart(x, y) {
-        const heart = document.createElement('div');
-        // Random baby pink/blue style hearts
-        heart.innerHTML = Math.random() > 0.5 ? '💖' : '💕'; 
-        heart.style.position = 'fixed';
-        heart.style.left = `${x}px`;
-        heart.style.top = `${y}px`;
-        heart.style.fontSize = `${Math.random() * 15 + 10}px`;
-        heart.style.pointerEvents = 'none';
-        heart.style.zIndex = '1000';
-        heart.style.transition = 'all 1s ease-out';
-        heart.style.transform = 'translate(-50%, -50%)';
+    // --- Water Wave Cursor Effect ---
+    function createRipple(x, y) {
+        const ripple = document.createElement('div');
+        // Randomly pick neon pink or aqua blue for the wave
+        const color = Math.random() > 0.5 ? 'rgba(255, 139, 167, 0.6)' : 'rgba(100, 255, 218, 0.6)';
         
-        document.body.appendChild(heart);
+        ripple.style.position = 'fixed';
+        ripple.style.left = `${x}px`;
+        ripple.style.top = `${y}px`;
+        ripple.style.width = '10px';
+        ripple.style.height = '10px';
+        ripple.style.border = `2px solid ${color}`;
+        ripple.style.borderRadius = '50%';
+        ripple.style.pointerEvents = 'none';
+        ripple.style.zIndex = '1000';
+        ripple.style.transition = 'all 0.8s ease-out';
+        ripple.style.transform = 'translate(-50%, -50%) scale(1)';
+        
+        document.body.appendChild(ripple);
 
-        // Animate fading up
+        // Animate expanding wave
         setTimeout(() => {
-            heart.style.transform = `translate(-50%, -100px) scale(0)`;
-            heart.style.opacity = '0';
+            ripple.style.transform = `translate(-50%, -50%) scale(5)`;
+            ripple.style.opacity = '0';
         }, 10);
 
         // Remove element
         setTimeout(() => {
-            heart.remove();
-        }, 1000);
+            ripple.remove();
+        }, 800);
     }
 
     let throttleTimer;
@@ -178,14 +182,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.addEventListener('mousemove', (e) => {
         throttle(() => {
-            createHeart(e.clientX, e.clientY);
-        }, 50); // Create a heart every 50ms on move
+            createRipple(e.clientX, e.clientY);
+        }, 50); // Create a wave every 50ms on move
     });
 
     window.addEventListener('touchmove', (e) => {
         throttle(() => {
             const touch = e.touches[0];
-            createHeart(touch.clientX, touch.clientY);
+            createRipple(touch.clientX, touch.clientY);
         }, 50);
     });
 
