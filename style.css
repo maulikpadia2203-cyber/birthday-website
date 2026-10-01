@@ -27,16 +27,16 @@ body {
 /* Background Image Setup */
 .bg-parallax {
     position: fixed;
-    top: -10%; /* Extra space for movement */
-    left: -10%;
-    width: 120vw; /* Wider for movement */
-    height: 120vh; /* Taller for movement */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 110vh; /* Thoda lamba rakha hai movement ke liye */
     background-image: url('hamari_photo.jpg');
     background-size: cover;
-    background-position: center;
-    opacity: 0.3;
+    background-position: top center; /* Isse photo ka upar ka hissa (faces) nahi katega */
+    opacity: 0.4; /* Thoda aur visible kar diya */
     z-index: -2;
-    transition: transform 0.1s linear; /* Smooth movement */
+    transition: transform 0.1s linear;
 }
 
 /* Floating Emojis Background */
@@ -170,11 +170,12 @@ section {
     border-right: 150px solid transparent;
     border-top: 100px solid #fecfef;
     transform-origin: top;
-    transition: transform 0.6s ease;
+    transition: transform 0.6s ease, z-index 0.6s;
     z-index: 3;
 }
 .envelope.open .envelope-flap {
     transform: rotateX(180deg);
+    z-index: 0;
 }
 
 .envelope-body {
