@@ -25,19 +25,18 @@ body {
 }
 
 /* Background Image Setup */
-body::before {
-    content: "";
+.bg-parallax {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-image: url('hamari_photo.jpg'); /* Ye background photo ka naam hai */
+    top: -10%; /* Extra space for movement */
+    left: -10%;
+    width: 120vw; /* Wider for movement */
+    height: 120vh; /* Taller for movement */
+    background-image: url('hamari_photo.jpg');
     background-size: cover;
     background-position: center;
-    background-attachment: fixed;
-    opacity: 0.3; /* Photo thodi halki dikhegi taki text asani se padha ja sake */
+    opacity: 0.3;
     z-index: -2;
+    transition: transform 0.1s linear; /* Smooth movement */
 }
 
 /* Floating Emojis Background */

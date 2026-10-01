@@ -68,6 +68,15 @@ document.addEventListener('DOMContentLoaded', () => {
         isPlaying = !isPlaying;
     });
 
+    // --- Parallax Background Move ---
+    const bgParallax = document.getElementById('bg-parallax');
+    window.addEventListener('scroll', () => {
+        const scrollY = window.scrollY;
+        // Move photo slightly upwards as we scroll down (parallax effect)
+        // Adjust the 0.2 factor to make it faster or slower
+        bgParallax.style.transform = `translateY(-${scrollY * 0.15}px)`;
+    });
+
     // --- Scroll Reveal Animation ---
     const reveals = document.querySelectorAll('.reveal');
 
