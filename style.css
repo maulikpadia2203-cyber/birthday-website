@@ -1,13 +1,16 @@
-/* CSS Variables for Pastel Colors */
+/* CSS Variables for Romantic Baby Pink & Blue */
 :root {
-    --bg-color: #fdf6e3;
-    --primary-color: #ffb7b2;
-    --secondary-color: #e2f0cb;
-    --accent-color: #ffdac1;
+    --bg-color: #FFF0F5;
+    --primary-color: #FFB7B2; /* Baby Pink */
+    --secondary-color: #B0E0E6; /* Soft Baby Blue */
+    --accent-color: #FFD1DC;
     --text-color: #4a4a4a;
-    --card-bg: #ffffff;
+    --card-bg: rgba(255, 255, 255, 0.65);
     --font-main: 'Nunito', sans-serif;
     --font-title: 'Pacifico', cursive;
+    --font-cursive: 'Caveat', cursive;
+    --glass-blur: blur(12px);
+    --glass-shadow: 0 8px 32px rgba(255, 128, 191, 0.2);
 }
 
 * {
@@ -18,23 +21,24 @@
 
 body {
     font-family: var(--font-main);
-    background-color: var(--bg-color);
+    background: linear-gradient(135deg, #FFF0F5 0%, #E6F2FF 50%, #FFE6F0 100%);
     color: var(--text-color);
     overflow-x: hidden;
     scroll-behavior: smooth;
+    min-height: 100vh;
 }
 
-/* Background Image Setup */
+/* Background Image Setup (Parallax) */
 .bg-parallax {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
-    height: 110vh; /* Thoda lamba rakha hai movement ke liye */
+    height: 110vh; 
     background-image: url('hamari_photo.jpg');
     background-size: cover;
-    background-position: center 25%; /* Photo ko thoda niche shift kiya */
-    opacity: 0.4; /* Thoda aur visible kar diya */
+    background-position: center 25%;
+    opacity: 0.2; /* Lower opacity so gradient is visible */
     z-index: -2;
     transition: transform 0.1s linear;
 }
@@ -54,7 +58,7 @@ body {
     position: absolute;
     font-size: 2rem;
     animation: floatUp 10s linear infinite;
-    opacity: 0.5;
+    opacity: 0.7;
 }
 
 .floating-emojis span:nth-child(1) { left: 10%; animation-duration: 8s; animation-delay: 0s; }
@@ -62,11 +66,12 @@ body {
 .floating-emojis span:nth-child(3) { left: 50%; animation-duration: 9s; animation-delay: 4s; }
 .floating-emojis span:nth-child(4) { left: 70%; animation-duration: 11s; animation-delay: 1s; }
 .floating-emojis span:nth-child(5) { left: 90%; animation-duration: 10s; animation-delay: 3s; }
+.floating-emojis span:nth-child(6) { left: 20%; animation-duration: 14s; animation-delay: 5s; }
 
 @keyframes floatUp {
     0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-    10% { opacity: 0.5; }
-    90% { opacity: 0.5; }
+    10% { opacity: 0.7; }
+    90% { opacity: 0.7; }
     100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
 }
 
@@ -80,6 +85,7 @@ h1, h2, h3 {
     color: #ff6b6b;
     margin-bottom: 1rem;
     text-align: center;
+    text-shadow: 2px 2px 5px rgba(255, 183, 178, 0.5);
 }
 .subtitle {
     font-size: 1.5rem;
@@ -91,6 +97,7 @@ h1, h2, h3 {
     text-align: center;
     margin-bottom: 3rem;
     color: #ff6b6b;
+    text-shadow: 2px 2px 5px rgba(255, 183, 178, 0.5);
 }
 
 /* General Layout */
@@ -130,7 +137,7 @@ section {
     height: 60px;
     font-size: 1.5rem;
     cursor: pointer;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 15px rgba(255, 183, 178, 0.6);
     z-index: 100;
     transition: transform 0.3s;
 }
@@ -155,10 +162,10 @@ section {
 .envelope {
     width: 300px;
     height: 200px;
-    background-color: #ff9a9e;
+    background-color: #FFD1DC; /* Baby Pink Envelope */
     position: relative;
     border-radius: 5px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    box-shadow: 0 10px 25px rgba(255, 128, 191, 0.3);
 }
 .envelope-flap {
     position: absolute;
@@ -168,7 +175,7 @@ section {
     height: 0;
     border-left: 150px solid transparent;
     border-right: 150px solid transparent;
-    border-top: 100px solid #fecfef;
+    border-top: 100px solid #B0E0E6; /* Baby Blue Ribbon/Seal Accent */
     transform-origin: top;
     transition: transform 0.6s ease, z-index 0.6s;
     z-index: 3;
@@ -182,22 +189,25 @@ section {
     position: absolute;
     width: 100%;
     height: 100%;
-    background-color: #ff9a9e;
+    background-color: #FFD1DC;
     z-index: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 2px solid #fecfef;
+    border: 2px solid #FFC0CB;
 }
 .envelope-message {
     text-align: center;
     padding: 1rem;
-    background: white;
+    background: var(--card-bg);
+    backdrop-filter: var(--glass-blur);
     border-radius: 10px;
+    box-shadow: var(--glass-shadow);
     z-index: 2;
     transform: translateY(20px);
     opacity: 0;
     transition: all 0.5s ease 0.3s;
+    border: 1px solid rgba(255, 255, 255, 0.4);
 }
 .envelope.open .envelope-message {
     transform: translateY(-80px);
@@ -207,7 +217,7 @@ section {
 
 /* Gallery Section - Polaroid 3D Flips */
 .gallery-section {
-    background-color: #f7f9fc;
+    background-color: transparent;
 }
 .gallery-grid {
     display: flex;
@@ -239,13 +249,15 @@ section {
     height: 100%;
     backface-visibility: hidden;
     background: var(--card-bg);
+    backdrop-filter: var(--glass-blur);
     padding: 15px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    border-radius: 5px;
+    box-shadow: var(--glass-shadow);
+    border-radius: 10px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.4);
 }
 .polaroid-front img {
     width: 100%;
@@ -253,13 +265,16 @@ section {
     object-fit: cover;
     margin-bottom: 15px;
     border: 1px solid #eee;
+    border-radius: 5px;
 }
 .polaroid-back {
     transform: rotateY(180deg);
-    background-color: var(--accent-color);
-    font-size: 1.2rem;
-    font-weight: bold;
+    background-color: rgba(255, 183, 178, 0.8); /* Soft pink back */
+    font-size: 1.8rem; /* Larger font for cursive */
+    font-family: var(--font-cursive);
+    color: #fff;
     padding: 2rem;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
 }
 
 /* Timeline Section */
@@ -272,7 +287,7 @@ section {
     content: '';
     position: absolute;
     width: 6px;
-    background-color: var(--primary-color);
+    background-color: var(--secondary-color);
     top: 0;
     bottom: 0;
     left: 50%;
@@ -302,10 +317,12 @@ section {
 .right::after { left: -12px; }
 .timeline-content {
     padding: 20px 30px;
-    background-color: var(--card-bg);
+    background: var(--card-bg);
+    backdrop-filter: var(--glass-blur);
     position: relative;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border-radius: 15px;
+    box-shadow: var(--glass-shadow);
+    border: 1px solid rgba(255, 255, 255, 0.4);
 }
 .timeline-content h3 {
     margin-bottom: 10px;
@@ -322,16 +339,18 @@ section {
 
 /* Wish Wall Section */
 .wishwall-section {
-    background-color: var(--secondary-color);
+    background-color: transparent;
 }
 .wish-form-container {
-    background: white;
+    background: var(--card-bg);
+    backdrop-filter: var(--glass-blur);
     padding: 2rem;
     border-radius: 15px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    box-shadow: var(--glass-shadow);
     width: 100%;
     max-width: 500px;
     margin-bottom: 3rem;
+    border: 1px solid rgba(255, 255, 255, 0.4);
 }
 #wish-form {
     display: flex;
@@ -340,13 +359,14 @@ section {
 }
 #wish-form input, #wish-form textarea {
     padding: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid rgba(255, 183, 178, 0.5);
     border-radius: 5px;
     font-family: var(--font-main);
     font-size: 1rem;
+    background: rgba(255,255,255,0.8);
 }
 .btn-submit {
-    background-color: var(--primary-color);
+    background-color: var(--secondary-color);
     color: white;
     border: none;
     padding: 12px;
@@ -357,7 +377,7 @@ section {
     transition: background-color 0.3s;
 }
 .btn-submit:hover {
-    background-color: #ff9a9e;
+    background-color: #9acbd0;
 }
 .wishes-container {
     display: flex;
@@ -368,12 +388,14 @@ section {
     max-width: 1000px;
 }
 .wish-card {
-    background: white;
+    background: var(--card-bg);
+    backdrop-filter: var(--glass-blur);
     padding: 1.5rem;
     border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    box-shadow: var(--glass-shadow);
     width: 250px;
     border-top: 5px solid var(--primary-color);
+    border: 1px solid rgba(255, 255, 255, 0.4);
 }
 .wish-card h4 {
     color: #ff6b6b;
@@ -383,6 +405,7 @@ section {
 footer {
     text-align: center;
     padding: 2rem;
-    background-color: var(--accent-color);
+    background: var(--card-bg);
+    backdrop-filter: var(--glass-blur);
     font-weight: bold;
 }

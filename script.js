@@ -138,4 +138,55 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // --- Romantic Heart Cursor Effect ---
+    function createHeart(x, y) {
+        const heart = document.createElement('div');
+        // Random baby pink/blue style hearts
+        heart.innerHTML = Math.random() > 0.5 ? '💖' : '💕'; 
+        heart.style.position = 'fixed';
+        heart.style.left = `${x}px`;
+        heart.style.top = `${y}px`;
+        heart.style.fontSize = `${Math.random() * 15 + 10}px`;
+        heart.style.pointerEvents = 'none';
+        heart.style.zIndex = '1000';
+        heart.style.transition = 'all 1s ease-out';
+        heart.style.transform = 'translate(-50%, -50%)';
+        
+        document.body.appendChild(heart);
+
+        // Animate fading up
+        setTimeout(() => {
+            heart.style.transform = `translate(-50%, -100px) scale(0)`;
+            heart.style.opacity = '0';
+        }, 10);
+
+        // Remove element
+        setTimeout(() => {
+            heart.remove();
+        }, 1000);
+    }
+
+    let throttleTimer;
+    const throttle = (callback, time) => {
+        if (throttleTimer) return;
+        throttleTimer = true;
+        setTimeout(() => {
+            callback();
+            throttleTimer = false;
+        }, time);
+    };
+
+    window.addEventListener('mousemove', (e) => {
+        throttle(() => {
+            createHeart(e.clientX, e.clientY);
+        }, 50); // Create a heart every 50ms on move
+    });
+
+    window.addEventListener('touchmove', (e) => {
+        throttle(() => {
+            const touch = e.touches[0];
+            createHeart(touch.clientX, touch.clientY);
+        }, 50);
+    });
+
 });
