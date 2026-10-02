@@ -27,9 +27,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 { id: "img1", src: "q2_opt1.jpg" },
                 { id: "img2", src: "q2_opt2.jpg" },
                 { id: "img3", src: "q2_opt3.jpg" },
-                { id: "img4", src: "q2_opt4.jpg" }
+                { id: "img4", src: "q2_opt4.jpg" },
+                { id: "img5", src: "q2_opt5.jpg" }
             ],
-            checkAnswer: (selectedIds) => selectedIds.includes('img1'), // Assuming img1 is correct
+            checkAnswer: (selectedIds) => selectedIds.includes('img1'), // By default img1 is correct, can be changed later
             date: "Favorite Moment",
             photo: "q2_photo.jpg", // Correct photo shown in modal
             message: "Ye photo hamesha mere dil ke paas rahegi. ✨"
