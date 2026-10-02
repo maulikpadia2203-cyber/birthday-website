@@ -32,11 +32,11 @@ body {
     top: 0; left: 0;
     width: 100vw; height: 100vh;
     z-index: -2;
-    background: linear-gradient(to bottom, var(--ink), var(--indigo));
-    transition: background 2s ease;
+    background: transparent;
+    pointer-events: none;
 }
 .deep-sky {
-    background: #02040a !important; /* Deepen sky for question section */
+    background: rgba(0,0,0,0.8) !important; /* Deepen sky for question section */
 }
 
 /* Glassmorphism utility */
@@ -58,30 +58,29 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
 }
 .hero-bg {
-    position: absolute;
+    position: fixed;
     top: 0; left: 0;
-    width: 100%; height: 100%;
+    width: 100vw; height: 100vh;
     background-image: url('images/hero.jpg'); /* config will update this if needed */
     background-size: cover;
     background-position: center 25%; /* Bring photo down so face is visible */
     opacity: 0; /* Starts dark */
     filter: blur(10px);
-    z-index: -1;
+    z-index: -4;
     transition: opacity 3s ease 1s, filter 3s ease 1s;
 }
 .hero-bg.revealed {
-    opacity: 0.6; /* Keeps it slightly dark for text readability */
+    opacity: 1; /* Keep bright */
     filter: blur(0px);
 }
 .hero-overlay {
-    position: absolute;
+    position: fixed;
     top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(7, 11, 31, 0.5); /* Dark overlay */
-    z-index: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.65); /* Dark overlay */
+    z-index: -3;
 }
 .hero-content {
     position: relative;
@@ -331,5 +330,6 @@ body {
         scroll-behavior: auto !important;
     }
 }
+
 
 
