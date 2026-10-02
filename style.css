@@ -151,95 +151,64 @@ h1 {
     pointer-events: none;
 }
 
-/* Options Styles */
-.options-container {
+/* Story specific elements */
+.story-text {
+    font-size: 2.5rem;
+    line-height: 1.5;
+    color: var(--gold);
+    text-shadow: 0 0 10px rgba(227, 196, 138, 0.4);
+}
+.handwritten {
+    font-family: var(--font-cursive);
+}
+
+.polaroid-card {
+    background: #fdfbf7;
+    padding: 1rem 1rem 3rem 1rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    border-radius: 4px;
+    max-width: 400px;
+    transform: rotate(-2deg);
+    transition: transform 0.4s ease;
+}
+.polaroid-card:hover {
+    transform: scale(1.05) rotate(1deg);
+}
+.polaroid-card img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 2px;
+    border: 1px solid #ddd;
+}
+.polaroid-caption {
+    text-align: center;
+    color: #222;
+    font-size: 2rem;
+    margin-top: 1rem;
+}
+
+/* Animations */
+.fade-out {
+    opacity: 0;
+    visibility: hidden;
+    transition: all 1s ease;
+}
+.journey-section {
+    min-height: 100vh;
+    width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    width: 100%;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 1rem;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 1s ease;
 }
-.option-btn {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.2);
-    color: var(--text-light);
-    padding: 1rem;
-    border-radius: 10px;
-    font-family: var(--font-serif);
-    font-size: 1.3rem;
-    cursor: pointer;
-    transition: all 0.3s;
-    text-align: left;
-}
-.option-btn:hover { background: rgba(255,255,255,0.1); }
-.option-btn.selected {
-    background: rgba(227, 196, 138, 0.2);
-    border-color: var(--gold);
-    color: var(--gold);
-}
-
-/* Image Options (for Q2) */
-.image-options {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-}
-.img-option {
-    width: 100%;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 8px;
-    border: 2px solid transparent;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-.img-option.selected {
-    border-color: var(--gold);
-    box-shadow: 0 0 10px rgba(227, 196, 138, 0.5);
-}
-
-/* Text Input */
-.text-input {
-    width: 100%;
-    background: transparent;
-    border: none;
-    border-bottom: 2px solid var(--glass-border);
-    color: var(--gold);
-    font-family: var(--font-serif);
-    font-size: 1.5rem;
-    padding: 0.5rem;
-    text-align: center;
-    outline: none;
-}
-.text-input:focus { border-color: var(--gold); }
-
-.feedback-text {
-    color: var(--rose);
-    margin-top: 1rem;
-    font-style: italic;
-    font-size: 1.2rem;
-    text-align: center;
-}
-
-/* Photo Gallery Section */
-.gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1.5rem;
-    width: 100%;
-    max-width: 1000px;
-}
-.gallery-img {
-    width: 100%;
-    height: 250px;
-    object-fit: cover;
-    border-radius: 10px;
-    border: 2px solid var(--glass-border);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-    transition: transform 0.3s;
-}
-.gallery-img:hover {
-    transform: scale(1.05);
-    border-color: var(--gold);
+.journey-section.visible {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 /* Audio Toggle */
@@ -261,43 +230,3 @@ h1 {
 }
 .audio-btn:hover { transform: scale(1.1); }
 
-/* Progress Stars Fixed at Top */
-.fixed-progress {
-    position: fixed;
-    top: 1rem;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 15px;
-    background: var(--glass-bg);
-    backdrop-filter: blur(5px);
-    padding: 0.5rem 1.5rem;
-    border-radius: 30px;
-    border: 1px solid var(--glass-border);
-    z-index: 100;
-}
-.star-progress {
-    color: rgba(255,255,255,0.2);
-    font-size: 1.2rem;
-    transition: color 1s ease, text-shadow 1s ease;
-}
-.star-progress.lit {
-    color: var(--gold);
-    text-shadow: 0 0 15px var(--gold);
-}
-
-/* Final Screen */
-.typewriter-text {
-    font-size: 1.8rem;
-    line-height: 1.5;
-    color: var(--text-light);
-    min-height: 150px;
-    text-align: left;
-}
-
-@media (max-width: 600px) {
-    h1 { font-size: 2.5rem; }
-    .glass-card { padding: 1.5rem 1rem; }
-    .image-options { grid-template-columns: 1fr; }
-    .gallery-img { height: 200px; }
-}

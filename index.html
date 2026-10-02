@@ -5,13 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Betuu ka Aasmaan</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Google Fonts: Cormorant Garamond for luxury headings/body, Caveat for handwritten memories -->
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-    <!-- Starry Background Canvas -->
+    <!-- Starry Background -->
     <canvas id="star-canvas"></canvas>
 
     <!-- Audio Player -->
@@ -22,25 +21,23 @@
         <source src="song.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Fixed Progress Stars -->
-    <div id="fixed-progress" class="fixed-progress hidden">
-        <div class="star-progress" id="star-1"><i class="fas fa-star"></i></div>
-        <div class="star-progress" id="star-2"><i class="fas fa-star"></i></div>
-        <div class="star-progress" id="star-3"><i class="fas fa-star"></i></div>
-        <div class="star-progress" id="star-4"><i class="fas fa-star"></i></div>
-    </div>
-
     <!-- Main Journey Container -->
     <div id="journey-container">
-        <!-- Intro Screen -->
+        
+        <!-- Welcome Screen -->
         <div id="screen-intro" class="intro-screen">
             <div class="glass-card text-center fade-in-slow">
                 <h1 class="glow-text">Happy Birthday Betuu</h1>
-                <p class="subtitle">Yeh raat ka aasmaan tumhare naam...</p>
-                <button id="start-btn" class="btn-gold mt-2">Apna aasmaan jagao ✨</button>
+                <p class="subtitle mt-2">Aaj exam nahi, aaj sirf hamari kahani hai...</p>
+                <button id="start-btn" class="btn-gold mt-3">Apni Kahani Shuru Karein ✨</button>
             </div>
         </div>
-        <!-- JS will dynamically append Questions and Galleries here -->
+
+        <!-- The Journey Content (Hidden until start) -->
+        <div id="story-content" class="hidden">
+            <!-- JS will inject story blocks here as you tell me -->
+        </div>
+
     </div>
 
     <script src="script.js"></script>

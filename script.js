@@ -1,251 +1,80 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- GAME DATA ---
-    const questions = [
+    // --- STORY DATA ---
+    // Yahan hum step-by-step aapki kahani daalenge jaise aap batayenge.
+    const storyBlocks = [
         {
-            id: 1,
-            type: "multiselect",
-            text: "Q1. Aapde jyare first time photo padayo tyare su thayu tuu ??",
-            options: [
-                { id: "a", text: "Hun sutoto ne mane laii gaii" },
-                { id: "b", text: "Mari eacha noti ne mane laii gaii" },
-                { id: "c", text: "Hun same thi aato to" }
-            ],
-            checkAnswer: (selectedIds) => {
-                return selectedIds.includes('a') && selectedIds.includes('b');
-            },
-            message: "Hamari pehli memory... yaad hai na? ❤️",
-            gallery: ["gallery_1.jpg", "gallery_2.jpg", "gallery_3.jpg", "gallery_4.jpg", "gallery_5.jpg"] // 5 Photos after Q1
-        },
-        {
-            id: 2,
-            type: "image",
-            text: "Q2. Maro aapda jode no sauuthi favorite photo kato che ??",
-            options: [
-                { id: "img1", src: "q2_opt1.jpg" },
-                { id: "img2", src: "q2_opt2.jpg" },
-                { id: "img3", src: "q2_opt3.jpg" },
-                { id: "img4", src: "q2_opt4.jpg" }
-            ],
-            checkAnswer: (selectedIds) => selectedIds.includes('img1'), 
-            message: "Ye photo hamesha mere dil ke paas rahegi. ✨",
-            gallery: [] // No gallery after Q2
-        },
-        {
-            id: 3,
             type: "text",
-            text: "Q3. Aapdi sauthi fevorite movement thi password set karyo che yad kar ne aagad nu joo kaik serprise che tara mate",
-            checkAnswer: (val) => val === "1112161",
-            message: "Wo special moment aur ye password... hamesha yaad rahega! 🌟",
-            gallery: []
-        },
-        {
-            id: 4,
-            type: "text",
-            text: "Q4. Aapde first photo padayo ani date Kaii hati ??",
-            checkAnswer: (val) => val === "111225",
-            message: "Pehli photo ki date! Hamara aasmaan poora ho gaya Betuu. 💖",
-            gallery: []
+            content: "Mujhe aaj bhi yaad hai wo din jab humari kahani shuru hui thi..."
         }
+        // Agle steps (photos, text) hum yahan add karte jayenge!
     ];
 
-    const journeyContainer = document.getElementById('journey-container');
     const startBtn = document.getElementById('start-btn');
     const introScreen = document.getElementById('screen-intro');
-    const fixedProgress = document.getElementById('fixed-progress');
+    const storyContent = document.getElementById('story-content');
     
-    let currentQuestionIndex = 0; // We reset to 0 to force them to scroll through the journey
-
     startBtn.addEventListener('click', () => {
-        introScreen.classList.add('hidden');
-        fixedProgress.classList.remove('hidden');
-        renderQuestion(currentQuestionIndex);
+        introScreen.classList.add('fade-out');
+        setTimeout(() => {
+            introScreen.classList.add('hidden');
+            storyContent.classList.remove('hidden');
+            renderStory();
+        }, 1000);
+        
+        // Autoplay music if not playing
+        if (!isPlaying) {
+            bgMusic.play().catch(e => console.log(e));
+            isPlaying = true;
+            audioBtn.innerHTML = '<i class="fas fa-pause"></i>';
+        }
     });
 
-    function renderQuestion(index) {
-        if (index >= questions.length) {
-            renderFinalScreen();
-            return;
-        }
-
-        const q = questions[index];
-        const section = document.createElement('div');
-        section.className = 'journey-section';
-        section.id = `section-q${index}`;
-
-        const card = document.createElement('div');
-        card.className = 'glass-card text-center';
+    function renderStory() {
+        storyContent.innerHTML = '';
         
-        const title = document.createElement('h2');
-        title.className = 'question-title';
-        title.textContent = q.text;
-        card.appendChild(title);
-
-        const optionsContainer = document.createElement('div');
-        optionsContainer.className = 'options-container mt-2';
-        
-        let selectedOptions = [];
-
-        if (q.type === 'multiselect') {
-            q.options.forEach(opt => {
-                const btn = document.createElement('button');
-                btn.className = 'option-btn';
-                btn.textContent = opt.text;
-                btn.onclick = () => {
-                    btn.classList.toggle('selected');
-                    if (selectedOptions.includes(opt.id)) {
-                        selectedOptions = selectedOptions.filter(id => id !== opt.id);
-                    } else {
-                        selectedOptions.push(opt.id);
-                    }
-                };
-                optionsContainer.appendChild(btn);
-            });
-        } 
-        else if (q.type === 'image') {
-            optionsContainer.classList.add('image-options');
-            q.options.forEach(opt => {
-                const img = document.createElement('img');
-                img.src = opt.src;
-                img.className = 'img-option';
-                img.onclick = () => {
-                    document.querySelectorAll(`#section-q${index} .img-option`).forEach(i => i.classList.remove('selected'));
-                    img.classList.add('selected');
-                    selectedOptions = [opt.id];
-                };
-                optionsContainer.appendChild(img);
-            });
-        }
-        else if (q.type === 'text') {
-            const input = document.createElement('input');
-            input.type = 'text';
-            input.className = 'text-input';
-            input.placeholder = "Jawab likho...";
-            optionsContainer.appendChild(input);
-        }
-
-        card.appendChild(optionsContainer);
-
-        const feedback = document.createElement('div');
-        feedback.className = 'feedback-text hidden';
-        card.appendChild(feedback);
-
-        const submitBtn = document.createElement('button');
-        submitBtn.className = 'btn-gold mt-2';
-        submitBtn.textContent = 'Check Answer';
-        
-        submitBtn.onclick = () => {
-            let isCorrect = false;
-            if (q.type === 'text') {
-                const val = card.querySelector('.text-input').value.trim().toLowerCase().replace(/\s+/g, '');
-                isCorrect = q.checkAnswer(val);
-            } else {
-                isCorrect = q.checkAnswer(selectedOptions);
-            }
-
-            if (isCorrect) {
-                feedback.classList.add('hidden');
-                submitBtn.classList.add('hidden'); // hide submit button
-                
-                // Disable inputs
-                if (q.type === 'text') {
-                    card.querySelector('.text-input').disabled = true;
-                } else {
-                    card.querySelectorAll('.option-btn, .img-option').forEach(el => {
-                        el.style.pointerEvents = 'none';
-                    });
-                }
-
-                // Light up star
-                document.getElementById(`star-${index + 1}`).classList.add('lit');
-                createStarExplosion();
-
-                // Show success message
-                const successMsg = document.createElement('p');
-                successMsg.className = 'success-msg fade-in-slow';
-                successMsg.textContent = q.message;
-                card.appendChild(successMsg);
-
-                // Render gallery and next question
-                setTimeout(() => {
-                    renderGalleryAndNext(index);
-                }, 1000);
-
-            } else {
-                feedback.textContent = "Ek baar aur socho, tumhe pata hai ✨";
-                feedback.classList.remove('hidden');
-            }
-        };
-
-        card.appendChild(submitBtn);
-        section.appendChild(card);
-        journeyContainer.appendChild(section);
-
-        // Scroll to the new question
-        setTimeout(() => {
-            section.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 100);
-    }
-
-    function renderGalleryAndNext(index) {
-        const q = questions[index];
-        
-        // Render Gallery if exists
-        if (q.gallery && q.gallery.length > 0) {
-            const galSection = document.createElement('div');
-            galSection.className = 'journey-section';
-            const grid = document.createElement('div');
-            grid.className = 'gallery-grid';
+        storyBlocks.forEach((block, index) => {
+            const section = document.createElement('div');
+            section.className = 'journey-section';
             
-            q.gallery.forEach(imgSrc => {
-                const img = document.createElement('img');
-                img.src = imgSrc;
-                img.className = 'gallery-img';
-                grid.appendChild(img);
-            });
-            galSection.appendChild(grid);
-            journeyContainer.appendChild(galSection);
-        }
-
-        // Render Next Question
-        currentQuestionIndex++;
-        renderQuestion(currentQuestionIndex);
-    }
-
-    function renderFinalScreen() {
-        const section = document.createElement('div');
-        section.className = 'journey-section';
-        const card = document.createElement('div');
-        card.className = 'glass-card text-center';
-        
-        const twText = document.createElement('div');
-        twText.className = 'typewriter-text';
-        card.appendChild(twText);
-
-        const btn = document.createElement('button');
-        btn.className = 'btn-gold mt-2 hidden';
-        btn.textContent = 'Wish Karo 🌟';
-        card.appendChild(btn);
-
-        section.appendChild(card);
-        journeyContainer.appendChild(section);
-
-        setTimeout(() => {
-            section.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            // Typewriter effect
-            const msg = "Tumhare saare jawab sahi the! Tumhara aasmaan pura ho chuka hai. Ye saare tare hamari yaadon ki tarah hamesha chamakte rahenge. Happy Birthday Betuu! ❤️✨";
-            let i = 0;
-            function typeWriter() {
-                if (i < msg.length) {
-                    twText.innerHTML += msg.charAt(i);
-                    i++;
-                    setTimeout(typeWriter, 50);
-                } else {
-                    btn.classList.remove('hidden');
-                }
+            if (block.type === 'text') {
+                const card = document.createElement('div');
+                card.className = 'glass-card text-center';
+                const p = document.createElement('p');
+                p.className = 'story-text handwritten';
+                p.textContent = block.content;
+                card.appendChild(p);
+                section.appendChild(card);
             }
-            setTimeout(typeWriter, 500);
-        }, 500);
+            else if (block.type === 'photo') {
+                const polaroid = document.createElement('div');
+                polaroid.className = 'polaroid-card';
+                const img = document.createElement('img');
+                img.src = block.src;
+                const caption = document.createElement('div');
+                caption.className = 'polaroid-caption handwritten';
+                caption.textContent = block.caption;
+                
+                polaroid.appendChild(img);
+                polaroid.appendChild(caption);
+                section.appendChild(polaroid);
+            }
+            // Hum aur types add kar sakte hain (like gallery)
+            
+            storyContent.appendChild(section);
+        });
+
+        // Intersection Observer for fade-in on scroll
+        const sections = document.querySelectorAll('.journey-section');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.2 });
+
+        sections.forEach(sec => observer.observe(sec));
     }
 
     // --- AUDIO ---
@@ -263,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
         isPlaying = !isPlaying;
     });
 
-    // --- CANVAS BACKGROUND (STARS & CONSTELLATION) ---
+    // --- CANVAS BACKGROUND (STARS) ---
     const canvas = document.getElementById('star-canvas');
     const ctx = canvas.getContext('2d');
     let width, height;
@@ -291,7 +120,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function drawStars() {
         ctx.clearRect(0, 0, width, height);
-        
         ctx.fillStyle = '#f5efe6';
         stars.forEach(s => {
             s.alpha += s.blinkSpeed;
@@ -302,48 +130,12 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.fill();
         });
         
-        if (currentQuestionIndex >= questions.length) {
-            drawConstellation();
-        }
-
         ctx.globalAlpha = 1;
         requestAnimationFrame(drawStars);
     }
     drawStars();
 
-    function drawConstellation() {
-        const cx = width / 2;
-        const cy = height / 3;
-        const scale = Math.min(width, height) * 0.2;
-        
-        const pts = [
-            {x: cx, y: cy + scale*0.5},
-            {x: cx - scale, y: cy - scale*0.5},
-            {x: cx, y: cy - scale*0.2},
-            {x: cx + scale, y: cy - scale*0.5},
-            {x: cx, y: cy + scale*0.5}
-        ];
-
-        ctx.strokeStyle = "rgba(227, 196, 138, 0.5)"; 
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(pts[0].x, pts[0].y);
-        for(let i=1; i<pts.length; i++) {
-            ctx.lineTo(pts[i].x, pts[i].y);
-        }
-        ctx.stroke();
-
-        ctx.fillStyle = "#e3c48a";
-        pts.forEach(p => {
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, 4, 0, Math.PI*2);
-            ctx.fill();
-            ctx.shadowBlur = 10;
-            ctx.shadowColor = "#e3c48a";
-        });
-        ctx.shadowBlur = 0;
-    }
-
+    // Water Ripple effect on click/touch
     function createRipple(x, y) {
         const ripple = document.createElement('div');
         ripple.style.position = 'fixed';
@@ -367,29 +159,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     window.addEventListener('click', e => createRipple(e.clientX, e.clientY));
 
-    function createStarExplosion() {
-        for(let i=0; i<30; i++) {
-            const sparkle = document.createElement('div');
-            sparkle.innerHTML = '✨';
-            sparkle.style.position = 'fixed';
-            sparkle.style.left = '50%';
-            sparkle.style.top = '50%';
-            sparkle.style.fontSize = `${Math.random()*20+10}px`;
-            sparkle.style.pointerEvents = 'none';
-            sparkle.style.zIndex = '1000';
-            sparkle.style.transition = 'all 1s cubic-bezier(0.1, 0.8, 0.2, 1)';
-            document.body.appendChild(sparkle);
-
-            const angle = Math.random() * Math.PI * 2;
-            const distance = Math.random() * 200 + 50;
-            const tx = Math.cos(angle) * distance;
-            const ty = Math.sin(angle) * distance;
-
-            setTimeout(() => {
-                sparkle.style.transform = `translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px)) scale(0)`;
-                sparkle.style.opacity = '0';
-            }, 10);
-            setTimeout(() => sparkle.remove(), 1000);
-        }
-    }
 });
