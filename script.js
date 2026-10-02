@@ -148,18 +148,21 @@ document.addEventListener('DOMContentLoaded', () => {
         polaroids.forEach(p => {
             const rect = p.parentElement.getBoundingClientRect();
             
-            // As it comes up from bottom (vh) to center (vh * 0.4), scale goes from 2.5 to 1
-            if (rect.top > vh * 0.4 && rect.top < vh * 1.5) {
-                let progress = (rect.top - (vh * 0.4)) / (vh * 0.6); // 0 to 1
+            // As it comes up from bottom (vh) to center (vh * 0.4)
+            if (rect.top > vh * 0.3 && rect.top < vh * 1.5) {
+                let progress = (rect.top - (vh * 0.3)) / (vh * 0.7); // 0 to 1
                 progress = Math.max(0, Math.min(1, progress));
                 
-                const scale = 1 + (progress * 1.5); // scale between 1 and 2.5
+                // Scale from 1 up to 4 to cover the full screen
+                const scale = 1 + (progress * 3); 
                 const rotation = p.dataset.rotation || '0deg';
                 
                 p.style.transform = `rotate(${rotation}) scale(${scale})`;
-            } else if (rect.top <= vh * 0.4) {
+                p.style.zIndex = 100;
+            } else if (rect.top <= vh * 0.3) {
                 const rotation = p.dataset.rotation || '0deg';
                 p.style.transform = `rotate(${rotation}) scale(1)`;
+                p.style.zIndex = 1;
             }
         });
     });
