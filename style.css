@@ -181,7 +181,7 @@ body {
     border-radius: 2px;
     width: 100%;
     max-width: 350px;
-    transition: transform 0.5s ease;
+    /* transition removed for smooth scroll scaling */
 }
 .polaroid img {
     width: 100%;

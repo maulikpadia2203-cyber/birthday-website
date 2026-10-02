@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         div.innerHTML = `
             <div class="photo-wrapper">
-                <div class="polaroid" style="transform: rotate(${tilt}deg)">
+                <div class="polaroid" data-rotation="${tilt}deg" style="transform: rotate(${tilt}deg) scale(2.5);">
                     <img src="${item.src}" alt="Memory ${index+1}" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNjY2MiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzY2NiIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+UGhvdG8gTmFoaSBNaWxpPC90ZXh0Pjwvc3ZnPg=='">
                 </div>
             </div>
@@ -140,6 +140,29 @@ document.addEventListener('DOMContentLoaded', () => {
     
     questionObserver.observe(document.getElementById('question1'));
 
+    // --- POLAROID SCROLL SCALE EFFECT ---
+    window.addEventListener('scroll', () => {
+        const polaroids = document.querySelectorAll('.polaroid');
+        const vh = window.innerHeight;
+        
+        polaroids.forEach(p => {
+            const rect = p.parentElement.getBoundingClientRect();
+            
+            // As it comes up from bottom (vh) to center (vh * 0.4), scale goes from 2.5 to 1
+            if (rect.top > vh * 0.4 && rect.top < vh * 1.5) {
+                let progress = (rect.top - (vh * 0.4)) / (vh * 0.6); // 0 to 1
+                progress = Math.max(0, Math.min(1, progress));
+                
+                const scale = 1 + (progress * 1.5); // scale between 1 and 2.5
+                const rotation = p.dataset.rotation || '0deg';
+                
+                p.style.transform = `rotate(${rotation}) scale(${scale})`;
+            } else if (rect.top <= vh * 0.4) {
+                const rotation = p.dataset.rotation || '0deg';
+                p.style.transform = `rotate(${rotation}) scale(1)`;
+            }
+        });
+    });
 
     // --- BACKGROUND CANVAS (STARS) ---
     const canvas = document.getElementById('star-canvas');
