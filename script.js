@@ -140,6 +140,48 @@ document.addEventListener('DOMContentLoaded', () => {
     
     questionObserver.observe(document.getElementById('question1'));
 
+    // --- POLAROID SCROLL SCALE & SHIFT EFFECT ---
+    window.addEventListener('scroll', () => {
+        const items = document.querySelectorAll('.journey-item');
+        const vh = window.innerHeight;
+        
+        items.forEach(item => {
+            const p = item.querySelector('.polaroid');
+            if (!p) return;
+            const rect = item.getBoundingClientRect();
+            
+            // Start transitioning when item enters from bottom (vh * 1.5) 
+            // Finish transitioning when item reaches near center (vh * 0.4)
+            if (rect.top > vh * 0.4 && rect.top < vh * 1.5) {
+                // progress: 1 (at bottom) -> 0 (at center)
+                let progress = (rect.top - (vh * 0.4)) / (vh * 0.6); 
+                progress = Math.max(0, Math.min(1, progress));
+                
+                // Scale from 1 (at center) up to 3.5 (at bottom) to fill screen
+                const scale = 1 + (progress * 2.5); 
+                
+                // Translate X to center the photo when zoomed
+                const isMobile = window.innerWidth <= 768;
+                const isRight = item.classList.contains('reverse');
+                
+                // On mobile, items are stacked vertically so they are already centered (offset = 0)
+                // On desktop, they are side-by-side (offset = +/- 30vw)
+                const maxOffset = isMobile ? 0 : (isRight ? -30 : 30);
+                const translateX = progress * maxOffset;
+                
+                const rotation = p.dataset.rotation || '0deg';
+                
+                // Apply transform
+                p.style.transform = `translate(${translateX}vw, 0) scale(${scale}) rotate(${rotation})`;
+                p.style.zIndex = 100;
+            } else if (rect.top <= vh * 0.4) {
+                const rotation = p.dataset.rotation || '0deg';
+                p.style.transform = `translate(0, 0) scale(1) rotate(${rotation})`;
+                p.style.zIndex = 1;
+            }
+        });
+    });
+
     // --- BACKGROUND CANVAS (STARS) ---
     const canvas = document.getElementById('star-canvas');
     const ctx = canvas.getContext('2d');
