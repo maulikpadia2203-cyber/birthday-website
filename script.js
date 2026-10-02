@@ -4,7 +4,7 @@
  */
 const CONFIG = {
     naam: "Betuu",
-    heroImage: "hamari_photo.jpg",
+    heroImage: "hamari_photo.jpeg",
     photos: [
         { src: "images/p1.jpg", date: "12 Dec 2023", note: "Hamari pehli mulakat, wo hasi aur wo baatein..." },
         { src: "images/p2.jpg", date: "25 Jan 2024", note: "Jab tumne pehli baar mere liye wo gaana gaya tha." },
