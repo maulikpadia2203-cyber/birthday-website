@@ -68,6 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
         heroBg.classList.add('revealed');
         document.getElementById('hero-title').classList.add('visible');
+        document.getElementById('hero-subtitle').classList.add('visible');
     }, 500);
 
 
