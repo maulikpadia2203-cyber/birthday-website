@@ -3,144 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday Yaar!</title>
+    <title>Betuu ka Aasmaan</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Pacifico&family=Caveat:wght@400..700&display=swap" rel="stylesheet">
+    <!-- Google Fonts: Cormorant Garamond for luxury headings/body, Caveat for handwritten memories -->
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Confetti Library -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
 <body>
-    
-    <!-- Moving Background Image -->
-    <div id="bg-parallax" class="bg-parallax"></div>
-    
-    <!-- Floating Emojis Background -->
-    <div class="floating-emojis">
-        <span>✨</span><span>💖</span><span>🌸</span><span>🧸</span><span>💌</span><span>💕</span>
-    </div>
 
-    <!-- Audio Toggle -->
+    <!-- Starry Background Canvas -->
+    <canvas id="star-canvas"></canvas>
+
+    <!-- Audio Player -->
     <button id="audio-toggle" class="audio-btn">
         <i class="fas fa-music"></i>
     </button>
     <audio id="bg-music" loop>
-        <!-- A placeholder cute background track -->
-        <source src="https://assets.mixkit.co/music/preview/mixkit-happy-birthday-to-you-550.mp3" type="audio/mpeg">
+        <source src="song.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Hero Section: Mystery Envelope -->
-    <section id="hero" class="hero-section">
-        <div class="envelope-container" id="mystery-envelope">
-            <div class="envelope">
-                <div class="envelope-flap"></div>
-                <div class="envelope-body">
-                    <div class="envelope-message">
-                        <h1>Happy Birthday! 🎂</h1>
-                        <p>Click me to open aur magic dekho!</p>
-                    </div>
-                </div>
-            </div>
+    <!-- Intro Screen -->
+    <div id="screen-intro" class="screen active">
+        <div class="glass-card text-center fade-in-slow">
+            <h1 class="glow-text">Happy Birthday Betuu</h1>
+            <p class="subtitle">Yeh raat ka aasmaan tumhare naam...</p>
+            <button id="start-btn" class="btn-gold mt-2">Apna aasmaan jagao ✨</button>
         </div>
-        <div id="hero-content" class="hidden">
-            <h1 class="main-title">Happy Birthday Mere Dost! 🎉</h1>
-            <p class="subtitle">Yeh khaas din tere liye hai. Scroll kar aur dekh humne kya banaya hai!</p>
-        </div>
-    </section>
+    </div>
 
-    <!-- Photo Gallery Section -->
-    <section id="gallery" class="gallery-section reveal">
-        <h2 class="section-title">Yaadon ka Pitara 📸</h2>
-        <div class="gallery-grid">
-            <!-- Polaroid 1 -->
-            <div class="polaroid-card">
-                <div class="polaroid-inner">
-                    <div class="polaroid-front">
-                        <img src="https://images.unsplash.com/photo-1517457373958-b7bdd4587205?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Memory">
-                    </div>
-                    <div class="polaroid-back">
-                        <p>Woh crazy party night! 😂</p>
-                    </div>
-                </div>
-            </div>
-            <!-- Polaroid 2 -->
-            <div class="polaroid-card">
-                <div class="polaroid-inner">
-                    <div class="polaroid-front">
-                        <img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Memory">
-                    </div>
-                    <div class="polaroid-back">
-                        <p>Goa trip jo successful hua! 🏖️</p>
-                    </div>
-                </div>
-            </div>
-            <!-- Polaroid 3 -->
-            <div class="polaroid-card">
-                <div class="polaroid-inner">
-                    <div class="polaroid-front">
-                        <img src="https://images.unsplash.com/photo-1511895426328-dc8714191300?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Memory">
-                    </div>
-                    <div class="polaroid-back">
-                        <p>College ke din aur masti 🎓</p>
-                    </div>
-                </div>
-            </div>
+    <!-- Game Screen -->
+    <div id="screen-game" class="screen hidden">
+        <div class="progress-container">
+            <!-- 4 stars for 4 questions -->
+            <div class="star-progress" id="star-1"><i class="fas fa-star"></i></div>
+            <div class="star-progress" id="star-2"><i class="fas fa-star"></i></div>
+            <div class="star-progress" id="star-3"><i class="fas fa-star"></i></div>
+            <div class="star-progress" id="star-4"><i class="fas fa-star"></i></div>
         </div>
-    </section>
 
-    <!-- Friendship Timeline Section -->
-    <section id="timeline" class="timeline-section reveal">
-        <h2 class="section-title">Hamari Journey ⏳</h2>
-        <div class="timeline">
-            <div class="timeline-item left">
-                <div class="timeline-content">
-                    <h3>Day 1</h3>
-                    <p>Jab hum pehli baar mile the aur tune ajeeb sa joke maara tha.</p>
-                </div>
+        <div class="glass-card game-card">
+            <h2 id="question-text" class="question-title">Loading...</h2>
+            
+            <div id="options-container" class="options-container mt-2">
+                <!-- Options will be injected via JS -->
             </div>
-            <div class="timeline-item right">
-                <div class="timeline-content">
-                    <h3>Pehla Trip</h3>
-                    <p>Rasta bhatak gaye the par maza bohot aaya.</p>
-                </div>
-            </div>
-            <div class="timeline-item left">
-                <div class="timeline-content">
-                    <h3>Late Night Maggi</h3>
-                    <p>Exam se ek raat pehle padhai kam aur baatein zyada.</p>
-                </div>
-            </div>
-            <div class="timeline-item right">
-                <div class="timeline-content">
-                    <h3>Aaj</h3>
-                    <p>Aur ek saal purane ho gaye tum, par aakal utni hi hai! 😆</p>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Wish Wall Section -->
-    <section id="wishwall" class="wishwall-section reveal">
-        <h2 class="section-title">Dil Ki Baatein 💖</h2>
-        <div class="wish-form-container">
-            <form id="wish-form">
-                <input type="text" id="wish-name" placeholder="Tera Naam" required>
-                <textarea id="wish-message" placeholder="Kya kehna chahte ho?" rows="3" required></textarea>
-                <button type="submit" class="btn-submit">Wish Bhejo ✨</button>
-            </form>
+            <div id="feedback-text" class="feedback-text hidden">Ek baar aur socho, tumhe pata hai ✨</div>
+            
+            <button id="submit-ans-btn" class="btn-gold mt-2 hidden">Check Answer</button>
         </div>
-        <div id="wishes-container" class="wishes-container">
-            <!-- Wishes will be appended here dynamically -->
-            <div class="wish-card">
-                <h4>Rahul</h4>
-                <p>Bhai ko janamdin ki bohot bohot shubhkamnayein! Party hard! 🎉</p>
+    </div>
+
+    <!-- Memory Modal (Opens on correct answer) -->
+    <div id="memory-modal" class="modal hidden">
+        <div class="modal-content glass-card">
+            <button id="close-modal" class="close-btn"><i class="fas fa-times"></i></button>
+            <div class="polaroid">
+                <img id="memory-img" src="placeholder.jpg" alt="Memory">
+                <div class="polaroid-text">
+                    <div id="memory-date" class="memory-date">Date</div>
+                    <p id="memory-message" class="memory-message handwritten">Message...</p>
+                </div>
             </div>
         </div>
-    </section>
+    </div>
 
-    <footer>
-        <p>Made with ❤️ by tumhara dost.</p>
-    </footer>
+    <!-- Final Screen -->
+    <div id="screen-final" class="screen hidden">
+        <div class="glass-card text-center">
+            <div id="typewriter-text" class="typewriter-text"></div>
+            <button id="final-wish-btn" class="btn-gold mt-2 hidden">Wish Karo 🌟</button>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
