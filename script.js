@@ -10,15 +10,50 @@ const CONFIG = {
         { src: "images/p2.jpg", date: "25 Jan 2024", note: "Jab tumne pehli baar mere liye wo gaana gaya tha." },
         { src: "images/p3.jpg", date: "14 Feb 2024", note: "Ek khoobsurat din, jo hamesha yaad rahega." },
         { src: "images/p4.jpg", date: "10 Mar 2024", note: "Wo bina baat ka jhagda aur fir jaldi se maan jana." },
-        { src: "images/p5.jpg", date: "05 Apr 2024", note: "Dher saari yaadein aur tumhari wo pyari si smile." },
+        { src: "images/p5.jpg", date: "05 Apr 2024", note: "Dher saari yaadein aur tumhari pyari si smile." },
         { src: "images/p6.jpg", date: "Ajj ka din", note: "Aur aaj tumhara birthday hai! Happy Birthday!" }
     ],
-    question1: {
-        text: "Sawal 1: Humne pehli baar kaunsi movie dekhi thi?",
-        answers: ["pk", "p.k.", "p k"], // Ek se zyada sahi jawab (lowercase me likhein)
-        hint: "Are yaad karo, wo alien wali movie... ✨",
-        successMsg: "Bilkul sahi! Ek tara jag gaya tumhare liye 🌟"
-    }
+    quiz: [
+        {
+            type: "multiple-choice",
+            question: "Aapde jyare first time photo padayo tyare su thayu tuu ??",
+            options: [
+                { text: "Hun sutoto ne mane laii gaii", id: "a" },
+                { text: "Mari eacha noti ne mane laii gaii", id: "b" },
+                { text: "Hun same thi aato to", id: "c" }
+            ],
+            correctAnswers: ["a", "b"],
+            hint: "Dhyan se socho, dono baatein hui thi! ;-)",
+            successMsg: "Bilkul Sahi! ?"
+        },
+        {
+            type: "image-choice",
+            question: "Maro aapda jode no sauuthi favorite photo kato che ??",
+            images: [
+                { src: "images/q2_opt1.jpg", id: "1" },
+                { src: "images/q2_opt2.jpg", id: "2" },
+                { src: "images/q2_opt3.jpg", id: "3" },
+                { src: "images/q2_opt4.jpg", id: "4" }
+            ],
+            correctAnswers: ["1"],
+            hint: "Nahi, ye wala nahi! Phir se try karo.",
+            successMsg: "Sahi pehchana! Ye mera favorite hai <3"
+        },
+        {
+            type: "text",
+            question: "Aapdi sauthi fevorite movement thi password set karyo che yad kar ne aagad nu joo kaik serprise che tara mate",
+            correctAnswers: ["1112161"],
+            hint: "Try again! Yaad karo wo movement...",
+            successMsg: "Unlocked!"
+        },
+        {
+            type: "text",
+            question: "Aapde first photo padayo ani date Kaii hati ??",
+            correctAnswers: ["111225"],
+            hint: "Date theek nahi hai. Think harder!",
+            successMsg: "Correct!"
+        }
+    ]
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -316,3 +351,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     draw();
 });
+
