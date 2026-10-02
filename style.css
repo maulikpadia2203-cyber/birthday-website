@@ -1,6 +1,6 @@
 :root {
-    --ink: #070b1f;
-    --indigo: #121a3d;
+    --ink: #000000;
+    --indigo: #000000;
     --starlight: #f5e6b8;
     --blue: #8fa6ff;
     --rose: #ffb3c7;
@@ -331,4 +331,5 @@ body {
         scroll-behavior: auto !important;
     }
 }
+
 
