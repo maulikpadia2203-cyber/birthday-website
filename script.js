@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         div.innerHTML = `
             <div class="photo-wrapper">
-                <div class="polaroid" data-rotation="${tilt}deg" style="transform: rotate(${tilt}deg) scale(2.5);">
+                <div class="polaroid" data-rotation="${tilt}deg" style="transform: rotate(${tilt}deg);">
                     <img src="${item.src}" alt="Memory ${index+1}" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNjY2MiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzY2NiIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+UGhvdG8gTmFoaSBNaWxpPC90ZXh0Pjwvc3ZnPg=='">
                 </div>
             </div>
@@ -139,33 +139,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { threshold: 0.5 });
     
     questionObserver.observe(document.getElementById('question1'));
-
-    // --- POLAROID SCROLL SCALE EFFECT ---
-    window.addEventListener('scroll', () => {
-        const polaroids = document.querySelectorAll('.polaroid');
-        const vh = window.innerHeight;
-        
-        polaroids.forEach(p => {
-            const rect = p.parentElement.getBoundingClientRect();
-            
-            // As it comes up from bottom (vh) to center (vh * 0.4)
-            if (rect.top > vh * 0.3 && rect.top < vh * 1.5) {
-                let progress = (rect.top - (vh * 0.3)) / (vh * 0.7); // 0 to 1
-                progress = Math.max(0, Math.min(1, progress));
-                
-                // Scale from 1 up to 4 to cover the full screen
-                const scale = 1 + (progress * 3); 
-                const rotation = p.dataset.rotation || '0deg';
-                
-                p.style.transform = `rotate(${rotation}) scale(${scale})`;
-                p.style.zIndex = 100;
-            } else if (rect.top <= vh * 0.3) {
-                const rotation = p.dataset.rotation || '0deg';
-                p.style.transform = `rotate(${rotation}) scale(1)`;
-                p.style.zIndex = 1;
-            }
-        });
-    });
 
     // --- BACKGROUND CANVAS (STARS) ---
     const canvas = document.getElementById('star-canvas');
