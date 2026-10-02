@@ -140,74 +140,53 @@ document.addEventListener('DOMContentLoaded', () => {
     
     questionObserver.observe(document.getElementById('question1'));
 
-    // --- POLAROID SCROLL SCALE & SHIFT EFFECT ---
+    // --- POLAROID SCROLL EFFECT & FALLING STARS ---
+    let lastScroll = 0;
     window.addEventListener('scroll', () => {
-        const items = document.querySelectorAll('.journey-item');
         const vh = window.innerHeight;
-        const isMobile = window.innerWidth <= 768;
+        const currentScroll = window.scrollY;
         
+        // Make stars fall when scrolling down!
+        if (currentScroll > lastScroll && Math.random() > 0.8) {
+            createShootingStar(); // Generates a shooting star on scroll
+        }
+        lastScroll = currentScroll;
+
+        const items = document.querySelectorAll('.journey-item');
         items.forEach(item => {
             const p = item.querySelector('.polaroid');
             if (!p) return;
             const rect = item.getBoundingClientRect();
             
-            // Start animation when item top is at vh * 1.2
-            // End animation when item top is at vh * 0.2
-            const start = vh * 1.2;
-            const end = vh * 0.2;
+            // Start animation when item top is at vh * 1.1
+            // End animation when item top is at vh * 0.6
+            const start = vh * 1.1;
+            const end = vh * 0.6;
             
             if (rect.top > end && rect.top < start) {
                 // progress: 0 (at bottom) to 1 (at target)
                 let progress = (start - rect.top) / (start - end); 
                 progress = Math.max(0, Math.min(1, progress));
                 
-                const isRight = item.classList.contains('reverse');
-                let translateX = 0;
-                let scale = 1;
-                
-                if (isMobile) {
-                    // Mobile: Just zoom in and out slightly
-                    if (progress < 0.5) {
-                        scale = 0.8 + (progress * 0.8); // 0.8 to 1.2
-                    } else {
-                        scale = 1.2 - ((progress - 0.5) * 0.4); // 1.2 to 1
-                    }
-                } else {
-                    // Desktop: Enter Side -> Hold Center -> Settle Side
-                    const maxOffset = isRight ? -100 : 100; // Starts far side (off screen corner)
-                    const centerOffset = isRight ? -25 : 25; // Holds at center offset
-                    
-                    if (progress < 0.3) {
-                        // Phase 1: Enter from far side to center
-                        let phaseP = progress / 0.3;
-                        translateX = maxOffset - (phaseP * (maxOffset - centerOffset));
-                        scale = 0.5 + (phaseP * 0.7); // 0.5 to 1.2
-                    } else if (progress < 0.7) {
-                        // Phase 2: Hold in center, zoomed
-                        translateX = centerOffset;
-                        scale = 1.2;
-                    } else {
-                        // Phase 3: Move from center to final position (0)
-                        let phaseP = (progress - 0.7) / 0.3;
-                        translateX = centerOffset - (phaseP * centerOffset);
-                        scale = 1.2 - (phaseP * 0.2); // 1.2 to 1
-                    }
-                }
-                
+                // Elegant Float Up & Fade In
+                // translateY from 100px down to 0
+                const translateY = (1 - progress) * 150; 
+                const opacity = progress;
                 const rotation = p.dataset.rotation || '0deg';
-                p.style.transform = `translate(${translateX}vw, 0) scale(${scale}) rotate(${rotation})`;
-                p.style.zIndex = 100;
+                
+                p.style.transform = `translateY(${translateY}px) rotate(${rotation})`;
+                p.style.opacity = opacity;
+                p.style.zIndex = 10;
             } else if (rect.top <= end) {
                 // Settle
                 const rotation = p.dataset.rotation || '0deg';
-                p.style.transform = `translate(0, 0) scale(1) rotate(${rotation})`;
+                p.style.transform = `translateY(0) rotate(${rotation})`;
+                p.style.opacity = 1;
                 p.style.zIndex = 1;
             } else {
-                // Before enter (Hidden at far corner)
-                const isRight = item.classList.contains('reverse');
-                const isMobile = window.innerWidth <= 768;
-                const maxOffset = isMobile ? 0 : (isRight ? -100 : 100);
-                p.style.transform = `translate(${maxOffset}vw, 20vh) scale(0.5)`;
+                // Before enter
+                p.style.transform = `translateY(150px)`;
+                p.style.opacity = 0;
             }
         });
     });
