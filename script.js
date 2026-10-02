@@ -250,10 +250,22 @@ document.addEventListener('DOMContentLoaded', () => {
     
     questionObserver.observe(quizSection);
 
-    // --- FALLING STARS ON SCROLL ---
+    // --- FALLING STARS & PARALLAX SCROLL ---
     let lastScroll = 0;
+    const heroBgEl = document.getElementById('hero-bg');
+    
     window.addEventListener('scroll', () => {
         const currentScroll = window.scrollY;
+        
+        // Parallax for Background Image
+        if (heroBgEl) {
+            const maxScroll = document.body.scrollHeight - window.innerHeight;
+            // Prevent division by zero if body is small
+            const scrollProgress = maxScroll > 0 ? Math.max(0, Math.min(1, currentScroll / maxScroll)) : 0;
+            // Move up by max 20vh (since height is 120vh)
+            heroBgEl.style.transform = `translateY(-${scrollProgress * 20}vh)`;
+        }
+
         // Make stars fall when scrolling down
         if (currentScroll > lastScroll && Math.random() > 0.8) {
             createShootingStar(); 

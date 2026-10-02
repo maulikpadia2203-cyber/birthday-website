@@ -62,7 +62,7 @@ body {
 .hero-bg {
     position: fixed;
     top: 0; left: 0;
-    width: 100vw; height: 100vh;
+    width: 100vw; height: 120vh; /* Extra 20vh for parallax scrolling */
     background-image: url('images/hero.jpg'); /* config will update this if needed */
     background-size: cover;
     background-position: center 25%; /* Bring photo down so face is visible */
@@ -70,6 +70,7 @@ body {
     filter: blur(10px);
     z-index: -4;
     transition: opacity 3s ease 1s, filter 3s ease 1s;
+    will-change: transform;
 }
 .hero-bg.revealed {
     opacity: 1; /* Keep bright */
