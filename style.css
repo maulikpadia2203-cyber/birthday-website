@@ -156,13 +156,7 @@ body {
     align-items: center;
     justify-content: space-between;
     gap: 40px;
-    opacity: 0;
-    transform: translateY(40px);
-    transition: all 1s ease-out;
-}
-.journey-item.visible {
-    opacity: 1;
-    transform: translateY(0);
+    perspective: 1200px;
 }
 .journey-item.reverse {
     flex-direction: row-reverse;
@@ -173,11 +167,10 @@ body {
     flex: 1;
     display: flex;
     justify-content: center;
-    /* Start dark and slightly shifted */
     opacity: 0;
-    filter: brightness(0.2) blur(5px);
-    transform: translateY(30px);
-    transition: all 1.5s cubic-bezier(0.25, 1, 0.5, 1);
+    transform: rotateX(90deg);
+    transform-origin: bottom center;
+    transition: transform 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 1s ease-out;
 }
 
 .note-wrapper {
@@ -186,22 +179,18 @@ body {
     flex-direction: column;
     justify-content: center;
     opacity: 0;
-    transform: translateY(20px);
-    transition: all 1.5s cubic-bezier(0.25, 1, 0.5, 1) 0.5s; /* delayed after photo */
+    transform: rotateX(90deg);
+    transform-origin: bottom center;
+    transition: transform 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.4s, opacity 1s ease-out 0.4s;
 }
 
-/* When visible, reveal clearly */
-.journey-item.visible .photo-wrapper {
-    opacity: 1;
-    filter: brightness(1) blur(0px);
-    transform: translateY(0);
-}
+/* When visible, flip them up */
+.journey-item.visible .photo-wrapper,
 .journey-item.visible .note-wrapper {
     opacity: 1;
-    transform: translateY(0);
+    transform: rotateX(0deg);
 }
 
-/* Moonlight Sweep over Polaroid */
 .polaroid {
     position: relative;
     overflow: hidden;
@@ -211,25 +200,6 @@ body {
     border-radius: 2px;
     width: 100%;
     max-width: 350px;
-}
-.polaroid::after {
-    content: '';
-    position: absolute;
-    top: -50%; left: -50%;
-    width: 200%; height: 200%;
-    background: linear-gradient(
-        to right, 
-        rgba(255,255,255,0) 0%, 
-        rgba(255,255,255,0.6) 50%, 
-        rgba(255,255,255,0) 100%
-    );
-    transform: rotate(30deg) translateX(-100%);
-    transition: transform 1.5s ease-out 0.2s; /* Sweeps after slight delay */
-    pointer-events: none;
-    z-index: 5;
-}
-.journey-item.visible .polaroid::after {
-    transform: rotate(30deg) translateX(100%);
 }
 .polaroid img {
     width: 100%;
@@ -361,3 +331,4 @@ body {
         scroll-behavior: auto !important;
     }
 }
+
