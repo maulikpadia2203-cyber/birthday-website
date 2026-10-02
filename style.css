@@ -21,7 +21,8 @@
 
 body {
     font-family: var(--font-main);
-    background: linear-gradient(135deg, #020c1b 0%, #0a192f 50%, #112240 100%);
+    /* Dark Blue se Pink/Magenta ka mix gradient */
+    background: linear-gradient(135deg, #0A192F 0%, #461C4C 50%, #b23a70 100%);
     color: var(--text-color);
     overflow-x: hidden;
     scroll-behavior: smooth;
