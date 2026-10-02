@@ -190,15 +190,8 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 currentQ++;
                 renderQuestion();
-            }, 2000);
-        } else {
-            feedback.textContent = qData.hint;
-        }
-    }
 
-    renderQuestion();
-
-            // Typewriter effect function
+    // Typewriter effect function
     function typeWriter(element, text, speed = 50) {
         let i = 0;
         element.innerHTML = '';
@@ -212,7 +205,44 @@ document.addEventListener('DOMContentLoaded', () => {
         type();
     }
 
-        // --- FALLING STARS, PARALLAX, & PAGE FLIP OBSERVER ---
+    // --- INTERSECTION OBSERVERS ---
+    const observerOptions = {
+        threshold: 0.3
+    };
+    
+    const journeyObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                
+                const noteEl = entry.target.querySelector('.note-text');
+                if (noteEl && !noteEl.dataset.typed) {
+                    noteEl.dataset.typed = "true";
+                    setTimeout(() => {
+                        typeWriter(noteEl, noteEl.dataset.text);
+                    }, 800); // Wait for page flip
+                }
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.journey-item').forEach(el => journeyObserver.observe(el));
+
+    const questionObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                document.getElementById('star-canvas').classList.add('deep-sky');
+                entry.target.querySelector('.question-container').classList.add('visible');
+            } else {
+                document.getElementById('star-canvas').classList.remove('deep-sky');
+            }
+        });
+    }, { threshold: 0.5 });
+    
+    questionObserver.observe(document.getElementById('quiz-section'));
+
+    // --- FALLING STARS & PARALLAX SCROLL ---
     let lastScroll = 0;
     const heroBgEl = document.getElementById('hero-bg');
     
@@ -233,7 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
         lastScroll = currentScroll;
     });
 
-    // --- BACKGROUND CANVAS (STARS) ---
+    // --- BACKGROUND CANVAS (STARS) ---    // --- BACKGROUND CANVAS (STARS) ---
     const canvas = document.getElementById('star-canvas');
     const ctx = canvas.getContext('2d');
     let width, height;
@@ -323,6 +353,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     draw();
 });
+
 
 
 
