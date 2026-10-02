@@ -1,14 +1,12 @@
 :root {
-    --bg-dark: #0a0e27;
-    --bg-plum: #1a1033;
-    --gold: #e3c48a;
-    --rose: #e8a0bf;
-    --text-light: #f5efe6;
-    --glass-bg: rgba(26, 16, 51, 0.4);
-    --glass-border: rgba(227, 196, 138, 0.3);
+    --ink: #070b1f;
+    --indigo: #121a3d;
+    --starlight: #f5e6b8;
+    --blue: #8fa6ff;
+    --rose: #ffb3c7;
     
-    --font-serif: 'Cormorant Garamond', serif;
-    --font-cursive: 'Caveat', cursive;
+    --font-heading: 'Fraunces', serif;
+    --font-handwritten: 'Caveat', cursive;
 }
 
 * {
@@ -17,216 +15,307 @@
     box-sizing: border-box;
 }
 
-body {
-    font-family: var(--font-serif);
-    background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-plum) 100%);
-    color: var(--text-light);
-    min-height: 100vh;
-    overflow-x: hidden;
-    overflow-y: auto; /* ALLOW SCROLLING */
+html {
     scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--ink);
+    color: var(--starlight);
+    font-family: var(--font-heading);
+    overflow-x: hidden;
 }
 
 /* Background Canvas */
 #star-canvas {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: -1;
-    background: radial-gradient(circle at center, rgba(232, 160, 191, 0.05) 0%, transparent 70%);
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    z-index: -2;
+    background: linear-gradient(to bottom, var(--ink), var(--indigo));
+    transition: background 2s ease;
+}
+.deep-sky {
+    background: #02040a !important; /* Deepen sky for question section */
 }
 
-/* Utility Classes */
-.text-center { text-align: center; }
-.mt-2 { margin-top: 2rem; }
-.mb-2 { margin-bottom: 2rem; }
-.hidden { display: none !important; }
-
-/* Intro Screen */
-.intro-screen {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 1rem;
-}
-
-/* Journey Container */
-#journey-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    padding-bottom: 5rem; /* extra space at bottom */
-}
-
-/* Journey Section */
-.journey-section {
-    min-height: 80vh;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem 1rem;
-    opacity: 0;
-    transform: translateY(50px);
-    animation: slideUpFade 1s ease forwards;
-}
-
-@keyframes slideUpFade {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Glassmorphism Cards */
+/* Glassmorphism utility */
 .glass-card {
-    background: var(--glass-bg);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid var(--glass-border);
+    background: rgba(18, 26, 61, 0.6);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(245, 230, 184, 0.2);
     border-radius: 15px;
-    padding: 2.5rem 2rem;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-    max-width: 600px;
-    width: 100%;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
 }
 
-/* Typography */
-h1 {
-    font-size: 3.5rem;
+/* =========================================
+   SECTION 1: HERO
+   ========================================= */
+.hero-section {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+.hero-bg {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-image: url('images/hero.jpg'); /* config will update this if needed */
+    background-size: cover;
+    background-position: center;
+    opacity: 0; /* Starts dark */
+    filter: blur(10px);
+    z-index: -1;
+    transition: opacity 3s ease 1s, filter 3s ease 1s;
+}
+.hero-bg.revealed {
+    opacity: 0.6; /* Keeps it slightly dark for text readability */
+    filter: blur(0px);
+}
+.hero-overlay {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(7, 11, 31, 0.5); /* Dark overlay */
+    z-index: 0;
+}
+.hero-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+}
+.hero-content h1 {
+    font-size: 4rem;
     font-weight: 600;
-    color: var(--gold);
-    margin-bottom: 1rem;
+    color: var(--starlight);
+    text-shadow: 0 0 20px rgba(245, 230, 184, 0.6);
     letter-spacing: 2px;
 }
-.glow-text {
-    text-shadow: 0 0 15px rgba(227, 196, 138, 0.5);
-}
-.subtitle {
-    font-size: 1.8rem;
-    font-style: italic;
-    color: var(--rose);
-}
-.question-title {
-    font-size: 1.8rem;
-    color: var(--gold);
-    margin-bottom: 1.5rem;
-    line-height: 1.3;
-}
-.success-msg {
-    color: var(--gold);
-    font-family: var(--font-cursive);
-    font-size: 2rem;
-    margin-top: 1rem;
-    text-shadow: 0 0 10px rgba(227, 196, 138, 0.5);
-}
-
-/* Buttons */
-.btn-gold {
-    background: transparent;
-    color: var(--gold);
-    border: 1px solid var(--gold);
-    padding: 0.8rem 2rem;
-    font-family: var(--font-serif);
-    font-size: 1.4rem;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-.btn-gold:hover, .btn-gold.selected {
-    background: var(--gold);
-    color: var(--bg-dark);
-    box-shadow: 0 0 15px rgba(227, 196, 138, 0.4);
-}
-.btn-gold:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    pointer-events: none;
-}
-
-/* Story specific elements */
-.story-text {
-    font-size: 2.5rem;
-    line-height: 1.5;
-    color: var(--gold);
-    text-shadow: 0 0 10px rgba(227, 196, 138, 0.4);
-}
-.handwritten {
-    font-family: var(--font-cursive);
-}
-
-.polaroid-card {
-    background: #fdfbf7;
-    padding: 1rem 1rem 3rem 1rem;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-    border-radius: 4px;
-    max-width: 400px;
-    transform: rotate(-2deg);
-    transition: transform 0.4s ease;
-}
-.polaroid-card:hover {
-    transform: scale(1.05) rotate(1deg);
-}
-.polaroid-card img {
-    width: 100%;
-    height: 400px;
-    object-fit: cover;
-    border-radius: 2px;
-    border: 1px solid #ddd;
-}
-.polaroid-caption {
-    text-align: center;
-    color: #222;
-    font-size: 2rem;
-    margin-top: 1rem;
-}
-
-/* Animations */
-.fade-out {
+.hidden-text {
     opacity: 0;
-    visibility: hidden;
-    transition: all 1s ease;
+    transform: translateY(20px);
+    transition: opacity 1.5s ease, transform 1.5s ease;
 }
-.journey-section {
-    min-height: 100vh;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem 1rem;
-    opacity: 0;
-    transform: translateY(50px);
-    transition: all 1s ease;
-}
-.journey-section.visible {
+.hidden-text.visible {
     opacity: 1;
     transform: translateY(0);
 }
-
-/* Audio Toggle */
-.audio-btn {
-    position: fixed;
-    bottom: 1.5rem;
-    right: 1.5rem;
-    background: var(--glass-bg);
-    backdrop-filter: blur(5px);
-    border: 1px solid var(--glass-border);
-    color: var(--gold);
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    font-size: 1.2rem;
-    cursor: pointer;
-    z-index: 100;
-    transition: transform 0.3s;
+.scroll-indicator {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    color: var(--starlight);
+    font-family: var(--font-handwritten);
+    font-size: 1.5rem;
+    opacity: 0.8;
+    animation: bounce 2s infinite ease-in-out;
+    z-index: 1;
 }
-.audio-btn:hover { transform: scale(1.1); }
+@keyframes bounce {
+    0%, 100% { transform: translate(-50%, 0); }
+    50% { transform: translate(-50%, 10px); }
+}
 
+/* =========================================
+   SECTION 2: JOURNEY
+   ========================================= */
+.journey-section {
+    position: relative;
+    padding: 100px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.timeline-line {
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(to bottom, transparent, var(--starlight), transparent);
+    opacity: 0.3;
+    z-index: 0;
+}
+.journey-container {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 120px;
+}
+.journey-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 1s ease-out;
+}
+.journey-item.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+.journey-item.reverse {
+    flex-direction: row-reverse;
+}
+
+/* Polaroid Photo */
+.photo-wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+.polaroid {
+    background: #fff;
+    padding: 15px 15px 40px 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    border-radius: 2px;
+    width: 100%;
+    max-width: 350px;
+    transition: transform 0.5s ease;
+}
+.polaroid img {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+    background: #ccc; /* placeholder color */
+}
+
+/* Handwritten Note */
+.note-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.note-date {
+    font-size: 1.2rem;
+    color: var(--blue);
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+}
+.note-text {
+    font-family: var(--font-handwritten);
+    font-size: 2.2rem;
+    color: var(--rose);
+    line-height: 1.4;
+    min-height: 100px; /* space for typing */
+}
+
+/* =========================================
+   SECTION 3: QUESTION
+   ========================================= */
+.question-section {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+.question-container {
+    padding: 40px;
+    text-align: center;
+    max-width: 600px;
+    width: 100%;
+}
+.question-container h2 {
+    font-size: 2rem;
+    color: var(--starlight);
+    margin-bottom: 30px;
+    line-height: 1.3;
+}
+.input-group {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.input-group input {
+    flex: 1;
+    min-width: 200px;
+    padding: 12px 20px;
+    border: 2px solid rgba(245, 230, 184, 0.4);
+    background: transparent;
+    color: var(--starlight);
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    border-radius: 30px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+.input-group input:focus {
+    border-color: var(--blue);
+}
+.btn-primary {
+    padding: 12px 30px;
+    background: var(--starlight);
+    color: var(--ink);
+    border: none;
+    border-radius: 30px;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+.btn-primary:hover {
+    background: var(--rose);
+    color: var(--ink);
+    box-shadow: 0 0 15px rgba(255, 179, 199, 0.5);
+}
+.feedback-msg {
+    margin-top: 20px;
+    font-family: var(--font-handwritten);
+    font-size: 1.8rem;
+    min-height: 30px;
+    color: var(--rose);
+}
+.feedback-msg.success {
+    color: var(--blue);
+}
+
+/* SLIDE 2 Placeholder */
+#slide-2-placeholder {
+    min-height: 50vh;
+}
+
+/* =========================================
+   RESPONSIVE (Mobile First approach overrides)
+   ========================================= */
+@media (max-width: 768px) {
+    .hero-content h1 { font-size: 3rem; }
+    
+    .timeline-line { left: 20px; }
+    .journey-item, .journey-item.reverse {
+        flex-direction: column;
+        gap: 20px;
+        align-items: flex-start;
+        padding-left: 40px; /* make room for line */
+    }
+    
+    .photo-wrapper { width: 100%; }
+    .polaroid img { height: 250px; }
+    .note-wrapper { width: 100%; }
+    
+    .input-group { flex-direction: column; }
+    .btn-primary { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}

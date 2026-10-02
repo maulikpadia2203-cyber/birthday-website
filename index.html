@@ -3,42 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Betuu ka Aasmaan</title>
+    <title>Happy Birthday!</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <!-- Google Fonts: Fraunces & Caveat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-    <!-- Starry Background -->
+    <!-- Starry Background Canvas -->
     <canvas id="star-canvas"></canvas>
 
-    <!-- Audio Player -->
-    <button id="audio-toggle" class="audio-btn">
-        <i class="fas fa-music"></i>
-    </button>
-    <audio id="bg-music" loop>
-        <source src="song.mp3" type="audio/mpeg">
-    </audio>
-
-    <!-- Main Journey Container -->
-    <div id="journey-container">
-        
-        <!-- Welcome Screen -->
-        <div id="screen-intro" class="intro-screen">
-            <div class="glass-card text-center fade-in-slow">
-                <h1 class="glow-text">Happy Birthday Betuu</h1>
-                <p class="subtitle mt-2">Aaj exam nahi, aaj sirf hamari kahani hai...</p>
-                <button id="start-btn" class="btn-gold mt-3">Apni Kahani Shuru Karein ✨</button>
+    <!-- SECTION 1: OPENING -->
+    <header id="hero" class="hero-section">
+        <div class="hero-bg" id="hero-bg"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 id="hero-title" class="hidden-text">Happy Birthday, <span id="hero-name"></span></h1>
+            <div class="scroll-indicator">
+                <span>Scroll Karo</span>
+                <i class="fas fa-chevron-down"></i>
             </div>
         </div>
+    </header>
 
-        <!-- The Journey Content (Hidden until start) -->
-        <div id="story-content" class="hidden">
-            <!-- JS will inject story blocks here as you tell me -->
+    <!-- SECTION 2: JOURNEY -->
+    <section id="journey" class="journey-section">
+        <div class="timeline-line"></div>
+        <div id="journey-container" class="journey-container">
+            <!-- JS will dynamically inject the 6 photos here based on the Config Object -->
         </div>
+    </section>
 
-    </div>
+    <!-- SECTION 3: SAWAL 1 -->
+    <section id="question1" class="question-section">
+        <div class="question-container glass-card hidden-text">
+            <h2 id="q1-text">Loading Question...</h2>
+            <div class="input-group">
+                <input type="text" id="q1-input" placeholder="Yahan jawab likho..." autocomplete="off">
+                <button id="q1-submit" class="btn-primary">Submit</button>
+            </div>
+            <p id="q1-feedback" class="feedback-msg"></p>
+        </div>
+        
+        <!-- Placeholder for SLIDE 2 -->
+        <div id="slide-2-placeholder"></div>
+    </section>
 
     <script src="script.js"></script>
 </body>

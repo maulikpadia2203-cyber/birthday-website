@@ -1,102 +1,152 @@
+/**
+ * SLIDE 1 CONFIGURATION
+ * Yahan aap apni saari details, photos, aur sawal aaram se edit kar sakte hain.
+ */
+const CONFIG = {
+    naam: "Betuu",
+    heroImage: "images/hero.jpg",
+    photos: [
+        { src: "images/p1.jpg", date: "12 Dec 2023", note: "Hamari pehli mulakat, wo hasi aur wo baatein..." },
+        { src: "images/p2.jpg", date: "25 Jan 2024", note: "Jab tumne pehli baar mere liye wo gaana gaya tha." },
+        { src: "images/p3.jpg", date: "14 Feb 2024", note: "Ek khoobsurat din, jo hamesha yaad rahega." },
+        { src: "images/p4.jpg", date: "10 Mar 2024", note: "Wo bina baat ka jhagda aur fir jaldi se maan jana." },
+        { src: "images/p5.jpg", date: "05 Apr 2024", note: "Dher saari yaadein aur tumhari wo pyari si smile." },
+        { src: "images/p6.jpg", date: "Ajj ka din", note: "Aur aaj tumhara birthday hai! Happy Birthday!" }
+    ],
+    question1: {
+        text: "Sawal 1: Humne pehli baar kaunsi movie dekhi thi?",
+        answers: ["pk", "p.k.", "p k"], // Ek se zyada sahi jawab (lowercase me likhein)
+        hint: "Are yaad karo, wo alien wali movie... ✨",
+        successMsg: "Bilkul sahi! Ek tara jag gaya tumhare liye 🌟"
+    }
+};
+
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- STORY DATA ---
-    // Yahan hum step-by-step aapki kahani daalenge jaise aap batayenge.
-    const storyBlocks = [
-        {
-            type: "text",
-            content: "Mujhe aaj bhi yaad hai wo din jab humari kahani shuru hui thi..."
-        }
-        // Agle steps (photos, text) hum yahan add karte jayenge!
-    ];
-
-    const startBtn = document.getElementById('start-btn');
-    const introScreen = document.getElementById('screen-intro');
-    const storyContent = document.getElementById('story-content');
+    // --- SETUP HERO ---
+    document.getElementById('hero-name').textContent = CONFIG.naam;
+    const heroBg = document.getElementById('hero-bg');
+    // Using inline style to apply config image
+    heroBg.style.backgroundImage = `url('${CONFIG.heroImage}')`;
     
-    startBtn.addEventListener('click', () => {
-        introScreen.classList.add('fade-out');
-        setTimeout(() => {
-            introScreen.classList.add('hidden');
-            storyContent.classList.remove('hidden');
-            renderStory();
-        }, 1000);
+    // Animate Hero after load
+    setTimeout(() => {
+        heroBg.classList.add('revealed');
+        document.getElementById('hero-title').classList.add('visible');
+    }, 500);
+
+
+    // --- BUILD JOURNEY SECTION ---
+    const journeyContainer = document.getElementById('journey-container');
+    CONFIG.photos.forEach((item, index) => {
+        // Create Item Container
+        const div = document.createElement('div');
+        div.className = `journey-item ${index % 2 !== 0 ? 'reverse' : ''}`;
         
-        // Autoplay music if not playing
-        if (!isPlaying) {
-            bgMusic.play().catch(e => console.log(e));
-            isPlaying = true;
-            audioBtn.innerHTML = '<i class="fas fa-pause"></i>';
-        }
+        // Random tilt for polaroid between -4 and 4 degrees
+        const tilt = (Math.random() * 8) - 4;
+
+        div.innerHTML = `
+            <div class="photo-wrapper">
+                <div class="polaroid" style="transform: rotate(${tilt}deg)">
+                    <img src="${item.src}" alt="Memory ${index+1}" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNjY2MiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzY2NiIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+UGhvdG8gTmFoaSBNaWxpPC90ZXh0Pjwvc3ZnPg=='">
+                </div>
+            </div>
+            <div class="note-wrapper">
+                <div class="note-date">${item.date}</div>
+                <div class="note-text" data-text="${item.note}"></div>
+            </div>
+        `;
+        journeyContainer.appendChild(div);
     });
 
-    function renderStory() {
-        storyContent.innerHTML = '';
-        
-        storyBlocks.forEach((block, index) => {
-            const section = document.createElement('div');
-            section.className = 'journey-section';
-            
-            if (block.type === 'text') {
-                const card = document.createElement('div');
-                card.className = 'glass-card text-center';
-                const p = document.createElement('p');
-                p.className = 'story-text handwritten';
-                p.textContent = block.content;
-                card.appendChild(p);
-                section.appendChild(card);
-            }
-            else if (block.type === 'photo') {
-                const polaroid = document.createElement('div');
-                polaroid.className = 'polaroid-card';
-                const img = document.createElement('img');
-                img.src = block.src;
-                const caption = document.createElement('div');
-                caption.className = 'polaroid-caption handwritten';
-                caption.textContent = block.caption;
-                
-                polaroid.appendChild(img);
-                polaroid.appendChild(caption);
-                section.appendChild(polaroid);
-            }
-            // Hum aur types add kar sakte hain (like gallery)
-            
-            storyContent.appendChild(section);
-        });
+    // --- SETUP QUESTION 1 ---
+    document.getElementById('q1-text').textContent = CONFIG.question1.text;
+    const q1Input = document.getElementById('q1-input');
+    const q1Submit = document.getElementById('q1-submit');
+    const q1Feedback = document.getElementById('q1-feedback');
 
-        // Intersection Observer for fade-in on scroll
-        const sections = document.querySelectorAll('.journey-section');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: 0.2 });
+    q1Submit.addEventListener('click', checkAnswer);
+    q1Input.addEventListener('keypress', (e) => {
+        if(e.key === 'Enter') checkAnswer();
+    });
 
-        sections.forEach(sec => observer.observe(sec));
+    function checkAnswer() {
+        const val = q1Input.value.trim().toLowerCase().replace(/\s+/g, ' '); // normalize spaces
+        const isCorrect = CONFIG.question1.answers.some(ans => ans.toLowerCase() === val || ans.toLowerCase().replace(/\s+/g, '') === val.replace(/\s+/g, ''));
+
+        q1Feedback.classList.remove('success');
+        if (isCorrect) {
+            q1Feedback.textContent = CONFIG.question1.successMsg;
+            q1Feedback.classList.add('success');
+            q1Input.disabled = true;
+            q1Submit.disabled = true;
+            createShootingStar();
+        } else {
+            q1Feedback.textContent = CONFIG.question1.hint;
+        }
     }
 
-    // --- AUDIO ---
-    const audioBtn = document.getElementById('audio-toggle');
-    const bgMusic = document.getElementById('bg-music');
-    let isPlaying = false;
-    audioBtn.addEventListener('click', () => {
-        if (isPlaying) {
-            bgMusic.pause();
-            audioBtn.innerHTML = '<i class="fas fa-music"></i>';
-        } else {
-            bgMusic.play().catch(e => console.log(e));
-            audioBtn.innerHTML = '<i class="fas fa-pause"></i>';
-        }
-        isPlaying = !isPlaying;
-    });
 
-    // --- CANVAS BACKGROUND (STARS) ---
+    // --- INTERSECTION OBSERVER FOR ANIMATIONS ---
+    const observerOptions = {
+        threshold: 0.3
+    };
+    
+    // Typewriter effect function
+    function typeWriter(element, text, speed = 50) {
+        let i = 0;
+        element.innerHTML = '';
+        function type() {
+            if (i < text.length) {
+                element.innerHTML += text.charAt(i);
+                i++;
+                setTimeout(type, speed);
+            }
+        }
+        type();
+    }
+
+    const journeyObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                
+                // Find note text and animate it
+                const noteEl = entry.target.querySelector('.note-text');
+                if (noteEl && !noteEl.dataset.typed) {
+                    noteEl.dataset.typed = "true"; // ensure it only runs once
+                    typeWriter(noteEl, noteEl.dataset.text);
+                }
+                
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.journey-item').forEach(el => journeyObserver.observe(el));
+
+    // Observe Question Section to change sky color
+    const questionObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                document.body.classList.add('deep-sky');
+                entry.target.querySelector('.question-container').classList.add('visible');
+            } else {
+                document.body.classList.remove('deep-sky');
+            }
+        });
+    }, { threshold: 0.5 });
+    
+    questionObserver.observe(document.getElementById('question1'));
+
+
+    // --- BACKGROUND CANVAS (STARS) ---
     const canvas = document.getElementById('star-canvas');
     const ctx = canvas.getContext('2d');
     let width, height;
     let stars = [];
+    let shootingStars = [];
     
     function resize() {
         width = window.innerWidth;
@@ -107,20 +157,36 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', resize);
     resize();
 
-    // Init background stars
-    for(let i=0; i<150; i++) {
+    for(let i=0; i<200; i++) {
         stars.push({
             x: Math.random() * width,
             y: Math.random() * height,
-            r: Math.random() * 1.5,
+            r: Math.random() * 1.2,
             blinkSpeed: Math.random() * 0.02,
             alpha: Math.random()
         });
     }
 
-    function drawStars() {
+    function createShootingStar() {
+        shootingStars.push({
+            x: Math.random() * (width / 2),
+            y: 0,
+            len: Math.random() * 80 + 20,
+            speed: Math.random() * 10 + 10,
+            angle: Math.PI / 4 // 45 degrees
+        });
+    }
+
+    // Occasional random shooting star (rare)
+    setInterval(() => {
+        if(Math.random() > 0.7) createShootingStar();
+    }, 4000);
+
+    function draw() {
         ctx.clearRect(0, 0, width, height);
-        ctx.fillStyle = '#f5efe6';
+        
+        // Draw normal stars
+        ctx.fillStyle = '#f5e6b8';
         stars.forEach(s => {
             s.alpha += s.blinkSpeed;
             if (s.alpha > 1 || s.alpha < 0) s.blinkSpeed *= -1;
@@ -130,33 +196,26 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.fill();
         });
         
+        // Draw shooting stars
         ctx.globalAlpha = 1;
-        requestAnimationFrame(drawStars);
-    }
-    drawStars();
-
-    // Water Ripple effect on click/touch
-    function createRipple(x, y) {
-        const ripple = document.createElement('div');
-        ripple.style.position = 'fixed';
-        ripple.style.left = `${x}px`;
-        ripple.style.top = `${y}px`;
-        ripple.style.width = '10px';
-        ripple.style.height = '10px';
-        ripple.style.border = `2px solid rgba(227, 196, 138, 0.6)`;
-        ripple.style.borderRadius = '50%';
-        ripple.style.pointerEvents = 'none';
-        ripple.style.zIndex = '9999';
-        ripple.style.transition = 'all 0.8s ease-out';
-        ripple.style.transform = 'translate(-50%, -50%) scale(1)';
-        document.body.appendChild(ripple);
+        ctx.strokeStyle = '#ffb3c7';
+        ctx.lineWidth = 2;
+        for (let i = shootingStars.length - 1; i >= 0; i--) {
+            let ss = shootingStars[i];
+            ctx.beginPath();
+            ctx.moveTo(ss.x, ss.y);
+            ctx.lineTo(ss.x - Math.cos(ss.angle) * ss.len, ss.y - Math.sin(ss.angle) * ss.len);
+            ctx.stroke();
+            
+            ss.x += Math.cos(ss.angle) * ss.speed;
+            ss.y += Math.sin(ss.angle) * ss.speed;
+            
+            if (ss.x > width + ss.len || ss.y > height + ss.len) {
+                shootingStars.splice(i, 1);
+            }
+        }
         
-        setTimeout(() => {
-            ripple.style.transform = `translate(-50%, -50%) scale(6)`;
-            ripple.style.opacity = '0';
-        }, 10);
-        setTimeout(() => ripple.remove(), 800);
+        requestAnimationFrame(draw);
     }
-    window.addEventListener('click', e => createRipple(e.clientX, e.clientY));
-
+    draw();
 });
