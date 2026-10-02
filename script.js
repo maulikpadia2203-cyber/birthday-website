@@ -10,8 +10,7 @@ const CONFIG = {
         { src: "images/p2.jpg", date: "25 Jan 2024", note: "Jab tumne pehli baar mere liye wo gaana gaya tha." },
         { src: "images/p3.jpg", date: "14 Feb 2024", note: "Ek khoobsurat din, jo hamesha yaad rahega." },
         { src: "images/p4.jpg", date: "10 Mar 2024", note: "Wo bina baat ka jhagda aur fir jaldi se maan jana." },
-        { src: "images/p5.jpg", date: "05 Apr 2024", note: "Dher saari yaadein aur tumhari pyari si smile." },
-        { src: "images/p6.jpg", date: "Ajj ka din", note: "Aur aaj tumhara birthday hai! Happy Birthday!" }
+        { src: "images/p5.jpg", date: "05 Apr 2024", note: "Dher saari yaadein aur tumhari pyari si smile." }
     ],
     quiz: [
         {
