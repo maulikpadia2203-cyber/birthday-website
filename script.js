@@ -190,6 +190,13 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 currentQ++;
                 renderQuestion();
+            }, 2000);
+        } else {
+            feedback.textContent = qData.hint;
+        }
+    }
+
+    renderQuestion();
 
     // Typewriter effect function
     function typeWriter(element, text, speed = 50) {
@@ -353,6 +360,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     draw();
 });
+
 
 
 
