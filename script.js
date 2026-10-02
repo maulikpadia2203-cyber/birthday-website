@@ -174,14 +174,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 } else {
                     // Desktop: Enter Side -> Hold Center -> Settle Side
-                    const maxOffset = isRight ? -40 : 40; // Starts far side
-                    const centerOffset = isRight ? -20 : 20; // Holds at center offset
+                    const maxOffset = isRight ? -100 : 100; // Starts far side (off screen corner)
+                    const centerOffset = isRight ? -25 : 25; // Holds at center offset
                     
                     if (progress < 0.3) {
                         // Phase 1: Enter from far side to center
                         let phaseP = progress / 0.3;
                         translateX = maxOffset - (phaseP * (maxOffset - centerOffset));
-                        scale = 0.8 + (phaseP * 0.4); // 0.8 to 1.2
+                        scale = 0.5 + (phaseP * 0.7); // 0.5 to 1.2
                     } else if (progress < 0.7) {
                         // Phase 2: Hold in center, zoomed
                         translateX = centerOffset;
@@ -203,8 +203,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 p.style.transform = `translate(0, 0) scale(1) rotate(${rotation})`;
                 p.style.zIndex = 1;
             } else {
-                // Before enter
-                p.style.transform = `translate(0, 20vh) scale(0.5)`;
+                // Before enter (Hidden at far corner)
+                const isRight = item.classList.contains('reverse');
+                const isMobile = window.innerWidth <= 768;
+                const maxOffset = isMobile ? 0 : (isRight ? -100 : 100);
+                p.style.transform = `translate(${maxOffset}vw, 20vh) scale(0.5)`;
             }
         });
     });
