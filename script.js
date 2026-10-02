@@ -198,12 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     renderQuestion();
 
-    // --- INTERSECTION OBSERVER FOR ANIMATIONS ---
-    const observerOptions = {
-        threshold: 0.3
-    };
-    
-    // Typewriter effect function
+            // Typewriter effect function
     function typeWriter(element, text, speed = 50) {
         let i = 0;
         element.innerHTML = '';
@@ -217,42 +212,11 @@ document.addEventListener('DOMContentLoaded', () => {
         type();
     }
 
-    const journeyObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-                
-                // Find note text and animate it
-                const noteEl = entry.target.querySelector('.note-text');
-                if (noteEl && !noteEl.dataset.typed) {
-                    noteEl.dataset.typed = "true";
-                    typeWriter(noteEl, noteEl.dataset.text);
-                }
-                
-                observer.unobserve(entry.target);
-            }
-        });
-    }, observerOptions);
-
-    document.querySelectorAll('.journey-item').forEach(el => journeyObserver.observe(el));
-
-    // Observe Quiz Section to deepen sky
-    const questionObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                document.getElementById('star-canvas').classList.add('deep-sky');
-                entry.target.querySelector('.question-container').classList.add('visible');
-            } else {
-                document.getElementById('star-canvas').classList.remove('deep-sky');
-            }
-        });
-    }, { threshold: 0.5 });
-    
-    questionObserver.observe(quizSection);
-
-    // --- FALLING STARS & PARALLAX SCROLL ---
+    // --- FALLING STARS, PARALLAX, & HORIZONTAL SCROLL ---
     let lastScroll = 0;
     const heroBgEl = document.getElementById('hero-bg');
+    const jTrack = document.getElementById('journey-track');
+    const jItems = document.querySelectorAll('.journey-item');
     
     window.addEventListener('scroll', () => {
         const currentScroll = window.scrollY;
@@ -260,10 +224,33 @@ document.addEventListener('DOMContentLoaded', () => {
         // Parallax for Background Image
         if (heroBgEl) {
             const maxScroll = document.body.scrollHeight - window.innerHeight;
-            // Prevent division by zero if body is small
             const scrollProgress = maxScroll > 0 ? Math.max(0, Math.min(1, currentScroll / maxScroll)) : 0;
-            // Move up by max 20vh (since height is 120vh)
             heroBgEl.style.transform = `translateY(-${scrollProgress * 20}vh)`;
+        }
+
+        // Horizontal Scroll Math for Film Strip
+        if (jTrack) {
+            const rect = journeyContainer.getBoundingClientRect();
+            // sticky container is active when rect.top <= 0 and rect.bottom >= window.innerHeight
+            const scrollableHeight = rect.height - window.innerHeight;
+            let progress = -rect.top / scrollableHeight;
+            progress = Math.max(0, Math.min(1, progress));
+            
+            // Translate track left. Total movement = (number of items - 1) * 100vw
+            const maxTranslate = (CONFIG.photos.length - 1) * 100;
+            jTrack.style.transform = `translateX(-${progress * maxTranslate}vw)`;
+
+            // Trigger typewriter for active item
+            const activeIndex = Math.round(progress * (CONFIG.photos.length - 1));
+            jItems.forEach((item, index) => {
+                if (index === activeIndex) {
+                    const noteEl = item.querySelector('.note-text');
+                    if (noteEl && !noteEl.dataset.typed) {
+                        noteEl.dataset.typed = "true";
+                        typeWriter(noteEl, noteEl.dataset.text);
+                    }
+                }
+            });
         }
 
         // Make stars fall when scrolling down
@@ -363,4 +350,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     draw();
 });
+
+
+
 
