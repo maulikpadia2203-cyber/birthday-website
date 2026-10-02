@@ -60,33 +60,108 @@ document.addEventListener('DOMContentLoaded', () => {
         journeyContainer.appendChild(div);
     });
 
-    // --- SETUP QUESTION 1 ---
-    document.getElementById('q1-text').textContent = CONFIG.question1.text;
-    const q1Input = document.getElementById('q1-input');
-    const q1Submit = document.getElementById('q1-submit');
-    const q1Feedback = document.getElementById('q1-feedback');
+    // --- SETUP QUIZ ENGINE (SLIDE 2) ---
+    const quizSection = document.getElementById('quiz-section');
+    const quizContainer = document.getElementById('quiz-container');
+    let currentQ = 0;
 
-    q1Submit.addEventListener('click', checkAnswer);
-    q1Input.addEventListener('keypress', (e) => {
-        if(e.key === 'Enter') checkAnswer();
-    });
+    function renderQuestion() {
+        if (currentQ >= CONFIG.quiz.length) {
+            quizContainer.innerHTML = `
+                <h2 class="glow-text">Happy Birthday, ${CONFIG.naam}! 🎉</h2>
+                <p class="story-text mt-3" style="font-size: 1.5rem;">Sare tare jag gaye hain, aasmaan roshan hai.</p>
+                <p class="feedback-msg success">I love you! ❤️</p>
+            `;
+            // Trigger final starburst or fireworks here if needed
+            for(let i=0; i<30; i++) setTimeout(createShootingStar, i*100);
+            return;
+        }
 
-    function checkAnswer() {
-        const val = q1Input.value.trim().toLowerCase().replace(/\s+/g, ' '); // normalize spaces
-        const isCorrect = CONFIG.question1.answers.some(ans => ans.toLowerCase() === val || ans.toLowerCase().replace(/\s+/g, '') === val.replace(/\s+/g, ''));
+        const qData = CONFIG.quiz[currentQ];
+        let uiHtml = '';
 
-        q1Feedback.classList.remove('success');
-        if (isCorrect) {
-            q1Feedback.textContent = CONFIG.question1.successMsg;
-            q1Feedback.classList.add('success');
-            q1Input.disabled = true;
-            q1Submit.disabled = true;
-            createShootingStar();
+        if (qData.type === 'multiple-choice') {
+            uiHtml = `<div class="options-container">`;
+            qData.options.forEach(opt => {
+                uiHtml += `<label class="option-label"><input type="checkbox" value="${opt.id}"> ${opt.text}</label>`;
+            });
+            uiHtml += `</div>`;
+        } else if (qData.type === 'image-choice') {
+            uiHtml = `<div class="image-options">`;
+            qData.images.forEach(img => {
+                uiHtml += `<img src="${img.src}" class="img-option" data-id="${img.id}">`;
+            });
+            uiHtml += `</div>`;
         } else {
-            q1Feedback.textContent = CONFIG.question1.hint;
+            // Text input
+            uiHtml = `
+            <div class="input-group">
+                <input type="text" id="quiz-input" placeholder="Yahan jawab likho..." autocomplete="off">
+            </div>`;
+        }
+
+        quizContainer.innerHTML = `
+            <div class="quiz-progress">Sawalon Ka Safar: ${currentQ + 1} / ${CONFIG.quiz.length}</div>
+            <h2>${qData.question}</h2>
+            ${uiHtml}
+            <button id="quiz-submit" class="btn-primary mt-3">Submit</button>
+            <p id="quiz-feedback" class="feedback-msg"></p>
+        `;
+
+        // Add event listeners
+        const submitBtn = document.getElementById('quiz-submit');
+        submitBtn.addEventListener('click', checkQuizAnswer);
+
+        if (qData.type === 'image-choice') {
+            const imgs = document.querySelectorAll('.img-option');
+            imgs.forEach(img => img.addEventListener('click', (e) => {
+                // Single selection for images
+                imgs.forEach(i => i.classList.remove('selected'));
+                e.target.classList.add('selected');
+            }));
+        } else if (qData.type === 'text') {
+            document.getElementById('quiz-input').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') checkQuizAnswer();
+            });
         }
     }
 
+    function checkQuizAnswer() {
+        const qData = CONFIG.quiz[currentQ];
+        const feedback = document.getElementById('quiz-feedback');
+        let isCorrect = false;
+
+        if (qData.type === 'multiple-choice') {
+            const checked = Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value);
+            // Check if arrays contain same elements
+            isCorrect = checked.length === qData.correctAnswers.length && 
+                        qData.correctAnswers.every(val => checked.includes(val));
+        } else if (qData.type === 'image-choice') {
+            const selected = document.querySelector('.img-option.selected');
+            isCorrect = selected && qData.correctAnswers.includes(selected.dataset.id);
+        } else {
+            const inputVal = document.getElementById('quiz-input').value.trim().toLowerCase().replace(/\s+/g, ' ');
+            isCorrect = qData.correctAnswers.some(ans => ans.toLowerCase() === inputVal || ans.toLowerCase().replace(/\s+/g, '') === inputVal.replace(/\s+/g, ''));
+        }
+
+        feedback.classList.remove('success');
+        if (isCorrect) {
+            feedback.textContent = qData.successMsg;
+            feedback.classList.add('success');
+            document.getElementById('quiz-submit').disabled = true;
+            createShootingStar();
+            createShootingStar();
+            
+            setTimeout(() => {
+                currentQ++;
+                renderQuestion();
+            }, 2000);
+        } else {
+            feedback.textContent = qData.hint;
+        }
+    }
+
+    renderQuestion();
 
     // --- INTERSECTION OBSERVER FOR ANIMATIONS ---
     const observerOptions = {
@@ -115,7 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Find note text and animate it
                 const noteEl = entry.target.querySelector('.note-text');
                 if (noteEl && !noteEl.dataset.typed) {
-                    noteEl.dataset.typed = "true"; // ensure it only runs once
+                    noteEl.dataset.typed = "true";
                     typeWriter(noteEl, noteEl.dataset.text);
                 }
                 
@@ -126,19 +201,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelectorAll('.journey-item').forEach(el => journeyObserver.observe(el));
 
-    // Observe Question Section to change sky color
+    // Observe Quiz Section to deepen sky
     const questionObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                document.body.classList.add('deep-sky');
+                document.getElementById('star-canvas').classList.add('deep-sky');
                 entry.target.querySelector('.question-container').classList.add('visible');
             } else {
-                document.body.classList.remove('deep-sky');
+                document.getElementById('star-canvas').classList.remove('deep-sky');
             }
         });
     }, { threshold: 0.5 });
     
-    questionObserver.observe(document.getElementById('question1'));
+    questionObserver.observe(quizSection);
 
     // --- FALLING STARS ON SCROLL ---
     let lastScroll = 0;
