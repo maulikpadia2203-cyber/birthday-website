@@ -22,58 +22,25 @@
         <source src="song.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Intro Screen -->
-    <div id="screen-intro" class="screen active">
-        <div class="glass-card text-center fade-in-slow">
-            <h1 class="glow-text">Happy Birthday Betuu</h1>
-            <p class="subtitle">Yeh raat ka aasmaan tumhare naam...</p>
-            <button id="start-btn" class="btn-gold mt-2">Apna aasmaan jagao ✨</button>
-        </div>
+    <!-- Fixed Progress Stars -->
+    <div id="fixed-progress" class="fixed-progress hidden">
+        <div class="star-progress" id="star-1"><i class="fas fa-star"></i></div>
+        <div class="star-progress" id="star-2"><i class="fas fa-star"></i></div>
+        <div class="star-progress" id="star-3"><i class="fas fa-star"></i></div>
+        <div class="star-progress" id="star-4"><i class="fas fa-star"></i></div>
     </div>
 
-    <!-- Game Screen -->
-    <div id="screen-game" class="screen hidden">
-        <div class="progress-container">
-            <!-- 4 stars for 4 questions -->
-            <div class="star-progress" id="star-1"><i class="fas fa-star"></i></div>
-            <div class="star-progress" id="star-2"><i class="fas fa-star"></i></div>
-            <div class="star-progress" id="star-3"><i class="fas fa-star"></i></div>
-            <div class="star-progress" id="star-4"><i class="fas fa-star"></i></div>
-        </div>
-
-        <div class="glass-card game-card">
-            <h2 id="question-text" class="question-title">Loading...</h2>
-            
-            <div id="options-container" class="options-container mt-2">
-                <!-- Options will be injected via JS -->
-            </div>
-
-            <div id="feedback-text" class="feedback-text hidden">Ek baar aur socho, tumhe pata hai ✨</div>
-            
-            <button id="submit-ans-btn" class="btn-gold mt-2 hidden">Check Answer</button>
-        </div>
-    </div>
-
-    <!-- Memory Modal (Opens on correct answer) -->
-    <div id="memory-modal" class="modal hidden">
-        <div class="modal-content glass-card">
-            <button id="close-modal" class="close-btn"><i class="fas fa-times"></i></button>
-            <div class="polaroid">
-                <img id="memory-img" src="placeholder.jpg" alt="Memory">
-                <div class="polaroid-text">
-                    <div id="memory-date" class="memory-date">Date</div>
-                    <p id="memory-message" class="memory-message handwritten">Message...</p>
-                </div>
+    <!-- Main Journey Container -->
+    <div id="journey-container">
+        <!-- Intro Screen -->
+        <div id="screen-intro" class="intro-screen">
+            <div class="glass-card text-center fade-in-slow">
+                <h1 class="glow-text">Happy Birthday Betuu</h1>
+                <p class="subtitle">Yeh raat ka aasmaan tumhare naam...</p>
+                <button id="start-btn" class="btn-gold mt-2">Apna aasmaan jagao ✨</button>
             </div>
         </div>
-    </div>
-
-    <!-- Final Screen -->
-    <div id="screen-final" class="screen hidden">
-        <div class="glass-card text-center">
-            <div id="typewriter-text" class="typewriter-text"></div>
-            <button id="final-wish-btn" class="btn-gold mt-2 hidden">Wish Karo 🌟</button>
-        </div>
+        <!-- JS will dynamically append Questions and Galleries here -->
     </div>
 
     <script src="script.js"></script>

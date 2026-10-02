@@ -11,13 +11,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 { id: "b", text: "Mari eacha noti ne mane laii gaii" },
                 { id: "c", text: "Hun same thi aato to" }
             ],
-            // As requested: a or b both (we will check if they selected a and b)
             checkAnswer: (selectedIds) => {
                 return selectedIds.includes('a') && selectedIds.includes('b');
             },
-            date: "Pehli Mulakat",
-            photo: "q1_photo.jpg",
-            message: "Hamari pehli memory... yaad hai na? ❤️"
+            message: "Hamari pehli memory... yaad hai na? ❤️",
+            gallery: ["gallery_1.jpg", "gallery_2.jpg", "gallery_3.jpg", "gallery_4.jpg", "gallery_5.jpg"] // 5 Photos after Q1
         },
         {
             id: 2,
@@ -27,94 +25,66 @@ document.addEventListener('DOMContentLoaded', () => {
                 { id: "img1", src: "q2_opt1.jpg" },
                 { id: "img2", src: "q2_opt2.jpg" },
                 { id: "img3", src: "q2_opt3.jpg" },
-                { id: "img4", src: "q2_opt4.jpg" },
-                { id: "img5", src: "q2_opt5.jpg" }
+                { id: "img4", src: "q2_opt4.jpg" }
             ],
-            checkAnswer: (selectedIds) => selectedIds.includes('img1'), // By default img1 is correct, can be changed later
-            date: "Favorite Moment",
-            photo: "q2_photo.jpg", // Correct photo shown in modal
-            message: "Ye photo hamesha mere dil ke paas rahegi. ✨"
+            checkAnswer: (selectedIds) => selectedIds.includes('img1'), 
+            message: "Ye photo hamesha mere dil ke paas rahegi. ✨",
+            gallery: [] // No gallery after Q2
         },
         {
             id: 3,
             type: "text",
             text: "Q3. Aapdi sauthi fevorite movement thi password set karyo che yad kar ne aagad nu joo kaik serprise che tara mate",
             checkAnswer: (val) => val === "1112161",
-            date: "Secret Date",
-            photo: "q3_photo.jpg",
-            message: "Wo special moment aur ye password... hamesha yaad rahega! 🌟"
+            message: "Wo special moment aur ye password... hamesha yaad rahega! 🌟",
+            gallery: []
         },
         {
             id: 4,
             type: "text",
             text: "Q4. Aapde first photo padayo ani date Kaii hati ??",
             checkAnswer: (val) => val === "111225",
-            date: "11 Dec 2025", // Example formatting
-            photo: "q4_photo.jpg",
-            message: "Pehli photo ki date! Hamara aasmaan poora ho gaya Betuu. 💖"
+            message: "Pehli photo ki date! Hamara aasmaan poora ho gaya Betuu. 💖",
+            gallery: []
         }
     ];
 
-    // --- DOM ELEMENTS ---
-    const screenIntro = document.getElementById('screen-intro');
-    const screenGame = document.getElementById('screen-game');
-    const screenFinal = document.getElementById('screen-final');
+    const journeyContainer = document.getElementById('journey-container');
     const startBtn = document.getElementById('start-btn');
+    const introScreen = document.getElementById('screen-intro');
+    const fixedProgress = document.getElementById('fixed-progress');
     
-    const questionText = document.getElementById('question-text');
-    const optionsContainer = document.getElementById('options-container');
-    const submitBtn = document.getElementById('submit-ans-btn');
-    const feedbackText = document.getElementById('feedback-text');
-    
-    const memoryModal = document.getElementById('memory-modal');
-    const closeModal = document.getElementById('close-modal');
-    const memoryImg = document.getElementById('memory-img');
-    const memoryDate = document.getElementById('memory-date');
-    const memoryMessage = document.getElementById('memory-message');
+    let currentQuestionIndex = 0; // We reset to 0 to force them to scroll through the journey
 
-    // --- STATE ---
-    let currentQuestionIndex = parseInt(localStorage.getItem('betuu_progress')) || 0;
-    // For testing, you can force reset: currentQuestionIndex = 0;
-
-    // --- INIT ---
-    function init() {
-        if (currentQuestionIndex >= questions.length) {
-            showScreen(screenFinal);
-            runFinalSequence();
-        } else {
-            // Restore stars
-            for(let i=0; i<currentQuestionIndex; i++) {
-                document.getElementById(`star-${i+1}`).classList.add('lit');
-            }
-        }
-    }
-    
     startBtn.addEventListener('click', () => {
-        showScreen(screenGame);
-        loadQuestion();
+        introScreen.classList.add('hidden');
+        fixedProgress.classList.remove('hidden');
+        renderQuestion(currentQuestionIndex);
     });
 
-    function showScreen(screen) {
-        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        setTimeout(() => screen.classList.add('active'), 50); // slight delay for transition
-    }
-
-    // --- GAME LOGIC ---
-    let selectedOptions = [];
-
-    function loadQuestion() {
-        if (currentQuestionIndex >= questions.length) {
-            showScreen(screenFinal);
-            runFinalSequence();
+    function renderQuestion(index) {
+        if (index >= questions.length) {
+            renderFinalScreen();
             return;
         }
 
-        const q = questions[currentQuestionIndex];
-        questionText.textContent = q.text;
-        optionsContainer.innerHTML = '';
-        selectedOptions = [];
-        feedbackText.classList.add('hidden');
-        submitBtn.classList.remove('hidden');
+        const q = questions[index];
+        const section = document.createElement('div');
+        section.className = 'journey-section';
+        section.id = `section-q${index}`;
+
+        const card = document.createElement('div');
+        card.className = 'glass-card text-center';
+        
+        const title = document.createElement('h2');
+        title.className = 'question-title';
+        title.textContent = q.text;
+        card.appendChild(title);
+
+        const optionsContainer = document.createElement('div');
+        optionsContainer.className = 'options-container mt-2';
+        
+        let selectedOptions = [];
 
         if (q.type === 'multiselect') {
             q.options.forEach(opt => {
@@ -139,8 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 img.src = opt.src;
                 img.className = 'img-option';
                 img.onclick = () => {
-                    // Single select for images
-                    document.querySelectorAll('.img-option').forEach(i => i.classList.remove('selected'));
+                    document.querySelectorAll(`#section-q${index} .img-option`).forEach(i => i.classList.remove('selected'));
                     img.classList.add('selected');
                     selectedOptions = [opt.id];
                 };
@@ -154,68 +123,129 @@ document.addEventListener('DOMContentLoaded', () => {
             input.placeholder = "Jawab likho...";
             optionsContainer.appendChild(input);
         }
+
+        card.appendChild(optionsContainer);
+
+        const feedback = document.createElement('div');
+        feedback.className = 'feedback-text hidden';
+        card.appendChild(feedback);
+
+        const submitBtn = document.createElement('button');
+        submitBtn.className = 'btn-gold mt-2';
+        submitBtn.textContent = 'Check Answer';
+        
+        submitBtn.onclick = () => {
+            let isCorrect = false;
+            if (q.type === 'text') {
+                const val = card.querySelector('.text-input').value.trim().toLowerCase().replace(/\s+/g, '');
+                isCorrect = q.checkAnswer(val);
+            } else {
+                isCorrect = q.checkAnswer(selectedOptions);
+            }
+
+            if (isCorrect) {
+                feedback.classList.add('hidden');
+                submitBtn.classList.add('hidden'); // hide submit button
+                
+                // Disable inputs
+                if (q.type === 'text') {
+                    card.querySelector('.text-input').disabled = true;
+                } else {
+                    card.querySelectorAll('.option-btn, .img-option').forEach(el => {
+                        el.style.pointerEvents = 'none';
+                    });
+                }
+
+                // Light up star
+                document.getElementById(`star-${index + 1}`).classList.add('lit');
+                createStarExplosion();
+
+                // Show success message
+                const successMsg = document.createElement('p');
+                successMsg.className = 'success-msg fade-in-slow';
+                successMsg.textContent = q.message;
+                card.appendChild(successMsg);
+
+                // Render gallery and next question
+                setTimeout(() => {
+                    renderGalleryAndNext(index);
+                }, 1000);
+
+            } else {
+                feedback.textContent = "Ek baar aur socho, tumhe pata hai ✨";
+                feedback.classList.remove('hidden');
+            }
+        };
+
+        card.appendChild(submitBtn);
+        section.appendChild(card);
+        journeyContainer.appendChild(section);
+
+        // Scroll to the new question
+        setTimeout(() => {
+            section.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
     }
 
-    submitBtn.addEventListener('click', () => {
-        const q = questions[currentQuestionIndex];
-        let isCorrect = false;
-
-        if (q.type === 'text') {
-            const val = document.querySelector('.text-input').value.trim().toLowerCase().replace(/\s+/g, '');
-            isCorrect = q.checkAnswer(val);
-        } else {
-            isCorrect = q.checkAnswer(selectedOptions);
+    function renderGalleryAndNext(index) {
+        const q = questions[index];
+        
+        // Render Gallery if exists
+        if (q.gallery && q.gallery.length > 0) {
+            const galSection = document.createElement('div');
+            galSection.className = 'journey-section';
+            const grid = document.createElement('div');
+            grid.className = 'gallery-grid';
+            
+            q.gallery.forEach(imgSrc => {
+                const img = document.createElement('img');
+                img.src = imgSrc;
+                img.className = 'gallery-img';
+                grid.appendChild(img);
+            });
+            galSection.appendChild(grid);
+            journeyContainer.appendChild(galSection);
         }
 
-        if (isCorrect) {
-            feedbackText.classList.add('hidden');
-            // Light up star
-            const star = document.getElementById(`star-${currentQuestionIndex + 1}`);
-            star.classList.add('lit');
-            
-            // Show memory
-            memoryImg.src = q.photo;
-            memoryDate.textContent = q.date;
-            memoryMessage.textContent = q.message;
-            memoryModal.classList.remove('hidden');
-            
-            // Trigger star explosion effect
-            createStarExplosion();
-
-        } else {
-            feedbackText.textContent = "Ek baar aur socho, tumhe pata hai ✨";
-            feedbackText.classList.remove('hidden');
-        }
-    });
-
-    closeModal.addEventListener('click', () => {
-        memoryModal.classList.add('hidden');
+        // Render Next Question
         currentQuestionIndex++;
-        localStorage.setItem('betuu_progress', currentQuestionIndex);
-        
-        // Remove image grid class if leaving image question
-        optionsContainer.classList.remove('image-options');
-        
-        loadQuestion();
-    });
+        renderQuestion(currentQuestionIndex);
+    }
 
-    // --- FINAL SEQUENCE ---
-    function runFinalSequence() {
-        const twText = document.getElementById('typewriter-text');
-        const msg = "Tumhare saare jawab sahi the! Tumhara aasmaan pura ho chuka hai. Ye saare tare hamari yaadon ki tarah hamesha chamakte rahenge. Happy Birthday Betuu! ❤️✨";
-        twText.innerHTML = '';
-        let i = 0;
+    function renderFinalScreen() {
+        const section = document.createElement('div');
+        section.className = 'journey-section';
+        const card = document.createElement('div');
+        card.className = 'glass-card text-center';
         
-        function typeWriter() {
-            if (i < msg.length) {
-                twText.innerHTML += msg.charAt(i);
-                i++;
-                setTimeout(typeWriter, 50);
-            } else {
-                document.getElementById('final-wish-btn').classList.remove('hidden');
+        const twText = document.createElement('div');
+        twText.className = 'typewriter-text';
+        card.appendChild(twText);
+
+        const btn = document.createElement('button');
+        btn.className = 'btn-gold mt-2 hidden';
+        btn.textContent = 'Wish Karo 🌟';
+        card.appendChild(btn);
+
+        section.appendChild(card);
+        journeyContainer.appendChild(section);
+
+        setTimeout(() => {
+            section.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            // Typewriter effect
+            const msg = "Tumhare saare jawab sahi the! Tumhara aasmaan pura ho chuka hai. Ye saare tare hamari yaadon ki tarah hamesha chamakte rahenge. Happy Birthday Betuu! ❤️✨";
+            let i = 0;
+            function typeWriter() {
+                if (i < msg.length) {
+                    twText.innerHTML += msg.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 50);
+                } else {
+                    btn.classList.remove('hidden');
+                }
             }
-        }
-        setTimeout(typeWriter, 1000);
+            setTimeout(typeWriter, 500);
+        }, 500);
     }
 
     // --- AUDIO ---
@@ -262,7 +292,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function drawStars() {
         ctx.clearRect(0, 0, width, height);
         
-        // Background Stars
         ctx.fillStyle = '#f5efe6';
         stars.forEach(s => {
             s.alpha += s.blinkSpeed;
@@ -273,7 +302,6 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.fill();
         });
         
-        // Draw constellation line if game is over
         if (currentQuestionIndex >= questions.length) {
             drawConstellation();
         }
@@ -284,20 +312,19 @@ document.addEventListener('DOMContentLoaded', () => {
     drawStars();
 
     function drawConstellation() {
-        // Draw a heart shape constellation with 4 main points
         const cx = width / 2;
         const cy = height / 3;
         const scale = Math.min(width, height) * 0.2;
         
         const pts = [
-            {x: cx, y: cy + scale*0.5}, // bottom
-            {x: cx - scale, y: cy - scale*0.5}, // left
-            {x: cx, y: cy - scale*0.2}, // top mid
-            {x: cx + scale, y: cy - scale*0.5}, // right
-            {x: cx, y: cy + scale*0.5} // back to bottom
+            {x: cx, y: cy + scale*0.5},
+            {x: cx - scale, y: cy - scale*0.5},
+            {x: cx, y: cy - scale*0.2},
+            {x: cx + scale, y: cy - scale*0.5},
+            {x: cx, y: cy + scale*0.5}
         ];
 
-        ctx.strokeStyle = "rgba(227, 196, 138, 0.5)"; // Gold line
+        ctx.strokeStyle = "rgba(227, 196, 138, 0.5)"; 
         ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.moveTo(pts[0].x, pts[0].y);
@@ -306,7 +333,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         ctx.stroke();
 
-        // Draw big stars at points
         ctx.fillStyle = "#e3c48a";
         pts.forEach(p => {
             ctx.beginPath();
@@ -318,7 +344,6 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.shadowBlur = 0;
     }
 
-    // Ripple effect on click/touch
     function createRipple(x, y) {
         const ripple = document.createElement('div');
         ripple.style.position = 'fixed';
@@ -326,7 +351,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ripple.style.top = `${y}px`;
         ripple.style.width = '10px';
         ripple.style.height = '10px';
-        ripple.style.border = `2px solid rgba(227, 196, 138, 0.6)`; // Gold ripple
+        ripple.style.border = `2px solid rgba(227, 196, 138, 0.6)`;
         ripple.style.borderRadius = '50%';
         ripple.style.pointerEvents = 'none';
         ripple.style.zIndex = '9999';
@@ -342,7 +367,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     window.addEventListener('click', e => createRipple(e.clientX, e.clientY));
 
-    // Special star explosion on correct answer
     function createStarExplosion() {
         for(let i=0; i<30; i++) {
             const sparkle = document.createElement('div');
@@ -368,6 +392,4 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => sparkle.remove(), 1000);
         }
     }
-
-    init();
 });

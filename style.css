@@ -22,10 +22,9 @@ body {
     background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-plum) 100%);
     color: var(--text-light);
     min-height: 100vh;
-    overflow: hidden; /* Prevent scrolling during game */
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    overflow-x: hidden;
+    overflow-y: auto; /* ALLOW SCROLLING */
+    scroll-behavior: smooth;
 }
 
 /* Background Canvas */
@@ -36,31 +35,52 @@ body {
     width: 100vw;
     height: 100vh;
     z-index: -1;
-    background: radial-gradient(circle at center, rgba(232, 160, 191, 0.05) 0%, transparent 70%); /* Halka pink-purple nebula glow */
+    background: radial-gradient(circle at center, rgba(232, 160, 191, 0.05) 0%, transparent 70%);
 }
 
 /* Utility Classes */
 .text-center { text-align: center; }
 .mt-2 { margin-top: 2rem; }
+.mb-2 { margin-bottom: 2rem; }
 .hidden { display: none !important; }
-.screen {
-    width: 100%;
+
+/* Intro Screen */
+.intro-screen {
     height: 100vh;
-    position: absolute;
-    top: 0;
-    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+
+/* Journey Container */
+#journey-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding-bottom: 5rem; /* extra space at bottom */
+}
+
+/* Journey Section */
+.journey-section {
+    min-height: 80vh;
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 1.5rem;
+    padding: 2rem 1rem;
     opacity: 0;
-    visibility: hidden;
-    transition: opacity 1s ease, visibility 1s ease;
+    transform: translateY(50px);
+    animation: slideUpFade 1s ease forwards;
 }
-.screen.active {
-    opacity: 1;
-    visibility: visible;
+
+@keyframes slideUpFade {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Glassmorphism Cards */
@@ -72,13 +92,13 @@ body {
     border-radius: 15px;
     padding: 2.5rem 2rem;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-    max-width: 500px;
+    max-width: 600px;
     width: 100%;
 }
 
 /* Typography */
 h1 {
-    font-size: 3rem;
+    font-size: 3.5rem;
     font-weight: 600;
     color: var(--gold);
     margin-bottom: 1rem;
@@ -88,7 +108,7 @@ h1 {
     text-shadow: 0 0 15px rgba(227, 196, 138, 0.5);
 }
 .subtitle {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     font-style: italic;
     color: var(--rose);
 }
@@ -97,6 +117,13 @@ h1 {
     color: var(--gold);
     margin-bottom: 1.5rem;
     line-height: 1.3;
+}
+.success-msg {
+    color: var(--gold);
+    font-family: var(--font-cursive);
+    font-size: 2rem;
+    margin-top: 1rem;
+    text-shadow: 0 0 10px rgba(227, 196, 138, 0.5);
 }
 
 /* Buttons */
@@ -118,40 +145,10 @@ h1 {
     color: var(--bg-dark);
     box-shadow: 0 0 15px rgba(227, 196, 138, 0.4);
 }
-
-/* Audio Toggle */
-.audio-btn {
-    position: fixed;
-    bottom: 1.5rem;
-    right: 1.5rem;
-    background: var(--glass-bg);
-    backdrop-filter: blur(5px);
-    border: 1px solid var(--glass-border);
-    color: var(--gold);
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    font-size: 1.2rem;
-    cursor: pointer;
-    z-index: 100;
-    transition: transform 0.3s;
-}
-.audio-btn:hover { transform: scale(1.1); }
-
-/* Progress Stars */
-.progress-container {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 2rem;
-}
-.star-progress {
-    color: rgba(255,255,255,0.2);
-    font-size: 1.5rem;
-    transition: color 1s ease, text-shadow 1s ease;
-}
-.star-progress.lit {
-    color: var(--gold);
-    text-shadow: 0 0 15px var(--gold);
+.btn-gold:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
 }
 
 /* Options Styles */
@@ -180,7 +177,7 @@ h1 {
     color: var(--gold);
 }
 
-/* Image Options */
+/* Image Options (for Q2) */
 .image-options {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -188,7 +185,7 @@ h1 {
 }
 .img-option {
     width: 100%;
-    height: 120px;
+    height: 150px;
     object-fit: cover;
     border-radius: 8px;
     border: 2px solid transparent;
@@ -213,9 +210,7 @@ h1 {
     text-align: center;
     outline: none;
 }
-.text-input:focus {
-    border-color: var(--gold);
-}
+.text-input:focus { border-color: var(--gold); }
 
 .feedback-text {
     color: var(--rose);
@@ -225,74 +220,84 @@ h1 {
     text-align: center;
 }
 
-/* Memory Modal */
-.modal {
-    position: fixed;
-    top: 0; left: 0; width: 100vw; height: 100vh;
-    background: rgba(10, 14, 39, 0.9);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 50;
-    padding: 1rem;
-}
-.modal-content {
-    position: relative;
-    max-width: 400px;
-    padding: 1rem;
-    background: #fdfbf7; /* Polaroid white */
-    border: none;
-    border-radius: 5px;
-}
-.close-btn {
-    position: absolute;
-    top: -40px; right: 0;
-    background: transparent; border: none;
-    color: var(--gold); font-size: 2rem; cursor: pointer;
-}
-.polaroid img {
+/* Photo Gallery Section */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
     width: 100%;
-    height: 300px;
+    max-width: 1000px;
+}
+.gallery-img {
+    width: 100%;
+    height: 250px;
     object-fit: cover;
-    border-radius: 3px;
+    border-radius: 10px;
+    border: 2px solid var(--glass-border);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    transition: transform 0.3s;
 }
-.polaroid-text {
-    padding: 1.5rem 1rem 0.5rem 1rem;
-    color: #333;
+.gallery-img:hover {
+    transform: scale(1.05);
+    border-color: var(--gold);
 }
-.memory-date {
-    font-family: var(--font-serif);
-    font-weight: bold;
-    font-size: 1.1rem;
-    margin-bottom: 0.5rem;
-    color: #666;
+
+/* Audio Toggle */
+.audio-btn {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    background: var(--glass-bg);
+    backdrop-filter: blur(5px);
+    border: 1px solid var(--glass-border);
+    color: var(--gold);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
+    z-index: 100;
+    transition: transform 0.3s;
 }
-.memory-message {
-    font-family: var(--font-cursive);
-    font-size: 2rem;
-    line-height: 1.2;
-    color: #222;
+.audio-btn:hover { transform: scale(1.1); }
+
+/* Progress Stars Fixed at Top */
+.fixed-progress {
+    position: fixed;
+    top: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 15px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(5px);
+    padding: 0.5rem 1.5rem;
+    border-radius: 30px;
+    border: 1px solid var(--glass-border);
+    z-index: 100;
+}
+.star-progress {
+    color: rgba(255,255,255,0.2);
+    font-size: 1.2rem;
+    transition: color 1s ease, text-shadow 1s ease;
+}
+.star-progress.lit {
+    color: var(--gold);
+    text-shadow: 0 0 15px var(--gold);
 }
 
 /* Final Screen */
 .typewriter-text {
-    font-size: 1.6rem;
+    font-size: 1.8rem;
     line-height: 1.5;
     color: var(--text-light);
     min-height: 150px;
     text-align: left;
 }
 
-/* Animations */
-.fade-in-slow {
-    animation: fadeIn 3s ease forwards;
-}
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-@media (max-width: 400px) {
-    h1 { font-size: 2.2rem; }
+@media (max-width: 600px) {
+    h1 { font-size: 2.5rem; }
     .glass-card { padding: 1.5rem 1rem; }
+    .image-options { grid-template-columns: 1fr; }
+    .gallery-img { height: 200px; }
 }
