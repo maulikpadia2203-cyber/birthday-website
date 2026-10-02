@@ -187,6 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
         stars.push({
             x: Math.random() * width,
             y: Math.random() * height,
+            z: Math.random() * 3 + 1, // Depth for 3D parallax effect
             r: Math.random() * 1.2,
             blinkSpeed: Math.random() * 0.02,
             alpha: Math.random()
@@ -211,14 +212,25 @@ document.addEventListener('DOMContentLoaded', () => {
     function draw() {
         ctx.clearRect(0, 0, width, height);
         
-        // Draw normal stars
+        // Get current scroll for parallax
+        const scrollY = window.scrollY || document.documentElement.scrollTop;
+        
+        // Draw normal stars with parallax
         ctx.fillStyle = '#f5e6b8';
         stars.forEach(s => {
             s.alpha += s.blinkSpeed;
             if (s.alpha > 1 || s.alpha < 0) s.blinkSpeed *= -1;
+            
+            // Calculate parallax Y position based on depth 'z'
+            let yOffset = scrollY / s.z;
+            let drawY = s.y - yOffset;
+            
+            // Wrap stars around the screen so we never run out
+            drawY = ((drawY % height) + height) % height;
+            
             ctx.globalAlpha = Math.abs(s.alpha);
             ctx.beginPath();
-            ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+            ctx.arc(s.x, drawY, s.r, 0, Math.PI * 2);
             ctx.fill();
         });
         
