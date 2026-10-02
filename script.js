@@ -212,11 +212,9 @@ document.addEventListener('DOMContentLoaded', () => {
         type();
     }
 
-    // --- FALLING STARS, PARALLAX, & HORIZONTAL SCROLL ---
+        // --- FALLING STARS, PARALLAX, & PAGE FLIP OBSERVER ---
     let lastScroll = 0;
     const heroBgEl = document.getElementById('hero-bg');
-    const jTrack = document.getElementById('journey-track');
-    const jItems = document.querySelectorAll('.journey-item');
     
     window.addEventListener('scroll', () => {
         const currentScroll = window.scrollY;
@@ -226,31 +224,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const maxScroll = document.body.scrollHeight - window.innerHeight;
             const scrollProgress = maxScroll > 0 ? Math.max(0, Math.min(1, currentScroll / maxScroll)) : 0;
             heroBgEl.style.transform = `translateY(-${scrollProgress * 20}vh)`;
-        }
-
-        // Horizontal Scroll Math for Film Strip
-        if (jTrack) {
-            const rect = journeyContainer.getBoundingClientRect();
-            // sticky container is active when rect.top <= 0 and rect.bottom >= window.innerHeight
-            const scrollableHeight = rect.height - window.innerHeight;
-            let progress = -rect.top / scrollableHeight;
-            progress = Math.max(0, Math.min(1, progress));
-            
-            // Translate track left. Total movement = (number of items - 1) * 100vw
-            const maxTranslate = (CONFIG.photos.length - 1) * 100;
-            jTrack.style.transform = `translateX(-${progress * maxTranslate}vw)`;
-
-            // Trigger typewriter for active item
-            const activeIndex = Math.round(progress * (CONFIG.photos.length - 1));
-            jItems.forEach((item, index) => {
-                if (index === activeIndex) {
-                    const noteEl = item.querySelector('.note-text');
-                    if (noteEl && !noteEl.dataset.typed) {
-                        noteEl.dataset.typed = "true";
-                        typeWriter(noteEl, noteEl.dataset.text);
-                    }
-                }
-            });
         }
 
         // Make stars fall when scrolling down
@@ -350,6 +323,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     draw();
 });
+
+
+
 
 
 
