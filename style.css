@@ -570,25 +570,9 @@ body {
 }
 
 /* Orbit Gallery (Solar System style) */
-.orbit-gallery {
-    position: relative;
-    width: 350px;
-    height: 350px;
-    margin: 30px auto;
-    border-radius: 50%;
-}
+.orbit-gallery { position: relative; margin: 0 auto; border-radius: 50%; }
 
-.orbit-center {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 180px; height: 180px;
-    border-radius: 50%;
-    overflow: hidden;
-    border: 4px solid var(--starlight);
-    box-shadow: 0 0 25px rgba(245, 230, 184, 0.4);
-    z-index: 10;
-}
+.orbit-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border-radius: 50%; overflow: hidden; border: 4px solid var(--starlight); box-shadow: 0 0 25px rgba(245, 230, 184, 0.4); z-index: 10; }
 
 .orbit-center img {
     width: 100%; height: 100%;
@@ -604,20 +588,11 @@ body {
     transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.orbit-item {
-    position: absolute;
-    width: 50px; height: 50px;
-    top: 50%; left: 50%;
-    margin: -25px 0 0 -25px; /* Center perfectly */
-    border-radius: 50%;
-    border: 2px solid #fff;
-    overflow: hidden;
-    transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.3s;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-}
+.orbit-item { position: absolute; top: 50%; left: 50%; border-radius: 50%; border: 2px solid #fff; overflow: hidden; transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
 
 .orbit-item img {
     width: 100%; height: 100%;
     object-fit: cover;
 }
+
 
