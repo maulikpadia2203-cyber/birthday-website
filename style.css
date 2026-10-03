@@ -478,3 +478,59 @@ body {
         grid-template-columns: repeat(2, 1fr);
     }
 }
+
+/* 3D Carousel Gallery */
+.carousel-scene {
+    perspective: 1200px;
+    width: 100%;
+    height: 350px;
+    position: relative;
+    margin: 40px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.carousel-spin {
+    width: 220px;
+    height: 300px;
+    position: absolute;
+    transform-style: preserve-3d;
+    transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.carousel-item {
+    position: absolute;
+    width: 220px;
+    height: 300px;
+    left: 0; top: 0;
+    border-radius: 12px;
+    object-fit: cover;
+    border: 3px solid #fff;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.6);
+    /* -webkit-box-reflect: below 10px linear-gradient(transparent, transparent, rgba(0,0,0,0.3)); */
+}
+
+.carousel-controls {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 10px;
+}
+
+.carousel-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid var(--rose);
+    color: var(--starlight);
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    backdrop-filter: blur(5px);
+    transition: all 0.3s;
+}
+
+.carousel-btn:hover {
+    background: var(--rose);
+    color: #fff;
+}
