@@ -68,6 +68,11 @@ document.addEventListener('DOMContentLoaded', () => {
         heroBg.classList.add('revealed');
         document.getElementById('hero-title').classList.add('visible');
         document.getElementById('hero-subtitle').classList.add('visible');
+        
+        setTimeout(() => {
+            const msgEl = document.getElementById('hero-message');
+            if(msgEl) typeWriter(msgEl, msgEl.dataset.text, 50);
+        }, 1500);
     }, 500);
 
 

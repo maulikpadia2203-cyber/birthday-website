@@ -118,6 +118,17 @@ body {
     transition-delay: 0.8s; /* Comes slightly after the title */
 }
 
+.hero-long-message {
+    font-family: var(--font-handwritten);
+    font-size: 1.6rem;
+    color: var(--rose);
+    max-width: 800px;
+    margin: 20px auto 0;
+    line-height: 1.5;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+    min-height: 200px;
+}
+
 @keyframes starryGlow {
     0% { text-shadow: 0 2px 4px rgba(0,0,0,0.8), 0 0 10px rgba(255, 179, 199, 0.1); }
     100% { text-shadow: 0 2px 4px rgba(0,0,0,0.8), 0 0 25px rgba(255, 179, 199, 0.8), 0 0 35px rgba(245, 230, 184, 0.5); }
@@ -426,6 +437,7 @@ body {
         scroll-behavior: auto !important;
     }
 }
+
 
 
 
