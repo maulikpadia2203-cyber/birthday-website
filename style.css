@@ -16,7 +16,7 @@
 }
 
 html {
-    
+    scroll-behavior: smooth;
 }
 
 body {
@@ -97,13 +97,32 @@ body {
 }
 .hidden-text {
     opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 1.5s ease, transform 1.5s ease;
+    filter: blur(12px);
+    transform: scale(1.05);
+    transition: opacity 2s cubic-bezier(0.2, 0.8, 0.2, 1), filter 2s cubic-bezier(0.2, 0.8, 0.2, 1), transform 2s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
+
 .hidden-text.visible {
     opacity: 1;
-    transform: translateY(0);
+    filter: blur(0);
+    transform: scale(1);
 }
+
+
+
+#hero-title.visible {
+    animation: starryGlow 3s infinite alternate ease-in-out 2s;
+}
+
+#hero-subtitle {
+    transition-delay: 0.8s; /* Comes slightly after the title */
+}
+
+@keyframes starryGlow {
+    0% { text-shadow: 0 2px 4px rgba(0,0,0,0.8), 0 0 10px rgba(255, 179, 199, 0.1); }
+    100% { text-shadow: 0 2px 4px rgba(0,0,0,0.8), 0 0 25px rgba(255, 179, 199, 0.8), 0 0 35px rgba(245, 230, 184, 0.5); }
+}
+
 .scroll-indicator {
     position: absolute;
     bottom: 40px;
@@ -163,7 +182,7 @@ body {
     opacity: 0;
     transform-origin: right center;
     transform: perspective(1500px) rotateY(-90deg) translateX(100px);
-    transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.6s ease-out;
+    transition: transform 2s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 1.5s ease-out;
 }
 
 .journey-item.visible {
@@ -193,7 +212,7 @@ body {
     flex-direction: column;
     justify-content: center;
     opacity: 0;
-    transition: opacity 0.6s ease 0.8s; /* Fade in AFTER the page flips */
+    transition: opacity 1.5s ease 1s; /* Fade in AFTER the page flips */
 }
 .journey-item.visible .note-wrapper {
     opacity: 1;
@@ -407,6 +426,8 @@ body {
         scroll-behavior: auto !important;
     }
 }
+
+
 
 
 
