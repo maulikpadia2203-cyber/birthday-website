@@ -23,27 +23,19 @@ const CONFIG = {
             ],
             correctAnswers: ["a", "b"],
             hint: "Dhyan se socho, dono baatein hui thi! ;-)",
-            successMsg: "Bilkul Sahi! ?",
+            successMsg: "Bilkul Sahi! 💖",
             successImages: ['images/q1_photos/1.jpg','images/q1_photos/2.jpg','images/q1_photos/3.jpg','images/q1_photos/4.jpg','images/q1_photos/5.jpg','images/q1_photos/6.jpg','images/q1_photos/7.jpg','images/q1_photos/8.jpg','images/q1_photos/9.jpg','images/q1_photos/10.jpg','images/q1_photos/11.jpg','images/q1_photos/12.jpg']
-        },
-        {
-            type: "text",
-            question: "Aapdi sauthi fevorite movement thi password set karyo che yad kar ne aagad nu joo kaik serprise che tara mate",
-            correctAnswers: ["1112161"],
-            hint: "Try again! Yaad karo wo movement...",
-            successMsg: "Unlocked!"
-        },
-        {
-            type: "text",
-            question: "Aapde first photo padayo ani date Kaii hati ??",
-            correctAnswers: ["111225"],
-            hint: "Date theek nahi hai. Think harder!",
-            successMsg: "Correct!"
         }
     ]
 };
 
 document.addEventListener('DOMContentLoaded', () => {
+
+    // --- SETUP SECTION 2 (HERO) ---
+    const heroNameEl = document.getElementById('hero-name');
+    if (heroNameEl) heroNameEl.textContent = CONFIG.naam;
+    const heroBg = document.getElementById('hero-bg');
+    if (heroBg) heroBg.style.backgroundImage = `url('${CONFIG.heroImage}')`;
 
     // Gift Overlay
     const giftScreen = document.getElementById('gift-screen');
@@ -286,11 +278,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         updateOrbit();
                     });
 
-                    // Automatically load next question after a short delay
-                    setTimeout(() => {
-                        currentQ++;
-                        renderQuestion();
-                    }, 500);
+                    // Section 1 complete, 12 photos orbit ready!
+                    // User can explore photos and scroll to Section 2 (Happy Birthday)
                     
                 } else {
                     // Fallback if no images
@@ -333,6 +322,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- CANVAS BACKGROUND & QUESTION VISIBILITY ---
     document.getElementById('star-canvas').classList.add('deep-sky');
+
+    // --- OBSERVER FOR SECTION 2 (HAPPY BIRTHDAY SLIDE) ---
+    const heroObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const bg = document.getElementById('hero-bg');
+                const overlay = document.getElementById('hero-overlay');
+                const title = document.getElementById('hero-title');
+                const sub = document.getElementById('hero-subtitle');
+                const msgEl = document.getElementById('hero-message');
+
+                if (bg) bg.classList.add('revealed');
+                if (overlay) overlay.classList.add('visible');
+                if (title) title.classList.add('visible');
+                if (sub) sub.classList.add('visible');
+
+                if (msgEl && !msgEl.dataset.typed) {
+                    msgEl.dataset.typed = "true";
+                    setTimeout(() => {
+                        typeWriter(msgEl, msgEl.dataset.text, 50);
+                    }, 600);
+                }
+
+                for (let i = 0; i < 5; i++) {
+                    setTimeout(createShootingStar, i * 200);
+                }
+            }
+        });
+    }, { threshold: 0.2 });
+
+    const heroEl = document.getElementById('hero');
+    if (heroEl) heroObserver.observe(heroEl);
 
     // --- FALLING STARS & PARALLAX SCROLL ---
     let lastScroll = 0;
