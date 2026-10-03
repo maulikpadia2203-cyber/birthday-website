@@ -408,6 +408,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelectorAll('.journey-item').forEach(el => journeyObserver.observe(el));
 
+    const letterObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                const textEl = entry.target.querySelector('#letter-text');
+                if (textEl && !textEl.dataset.typed) {
+                    textEl.dataset.typed = "true";
+                    setTimeout(() => { typeWriter(textEl, textEl.dataset.text, 60); }, 500);
+                }
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.3 });
+    
+    const letterSec = document.getElementById('letter-section');
+    if (letterSec) letterObserver.observe(letterSec);
+
     const questionObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
