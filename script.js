@@ -88,7 +88,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             </div>
             <div class="note-wrapper">
-                <div class="note-date">${item.date}</div>
                 <div class="note-text" data-text="${item.note}"></div>
             </div>
         `;
@@ -358,6 +357,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     draw();
 });
+
 
 
 
