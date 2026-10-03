@@ -235,6 +235,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (isCorrect) {
+                const thisQ = currentQ;
                 createShootingStar();
                 createShootingStar();
                 
@@ -257,7 +258,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         let angle = (i * 30) * (Math.PI / 180);
                         let x = Math.cos(angle) * radius;
                         let y = Math.sin(angle) * radius;
-                        ringHtml += `<div class="orbit-item" id="orbit-item-${currentQ}-${i}" 
+                        ringHtml += `<div class="orbit-item" id="orbit-item-${thisQ}-${i}" 
                                           style="width:${itemSize}px; height:${itemSize}px; margin-top:-${itemSize/2}px; margin-left:-${itemSize/2}px; transform: translate(${x}px, ${y}px) rotate(0deg);">
                                         <img src="${img}">
                                      </div>`;
@@ -284,11 +285,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     block.innerHTML = `
                         <div class="orbit-gallery" style="width:${gallerySize}px; height:${gallerySize}px;">
-                            <div class="orbit-ring" id="orbit-ring-${currentQ}">
+                            <div class="orbit-ring" id="orbit-ring-${thisQ}">
                                 ${ringHtml}
                             </div>
                             <div class="orbit-center" style="width:${centerSize}px; height:${centerSize}px;">
-                                <img src="${images[gIndex]}" id="orbit-main-${currentQ}">
+                                <img src="${images[gIndex]}" id="orbit-main-${thisQ}">
                             </div>
                             <button class="carousel-btn prev-photo">&#10094;</button>
                             <button class="carousel-btn next-photo">&#10095;</button>
@@ -296,15 +297,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         
                     `;
                     
-                    let ringEl = block.querySelector(`#orbit-ring-${currentQ}`);
-                    let mainEl = block.querySelector(`#orbit-main-${currentQ}`);
+                    let ringEl = block.querySelector(`#orbit-ring-${thisQ}`);
+                    let mainEl = block.querySelector(`#orbit-main-${thisQ}`);
                     
                     function updateOrbit() {
                         let rotation = -(gIndex * 30);
                         ringEl.style.transform = `rotate(${rotation}deg)`;
                         
                         images.forEach((img, i) => {
-                            let itemEl = block.querySelector(`#orbit-item-${currentQ}-${i}`);
+                            let itemEl = block.querySelector(`#orbit-item-${thisQ}-${i}`);
                             let angle = (i * 30) * (Math.PI / 180);
                             let x = Math.cos(angle) * radius;
                             let y = Math.sin(angle) * radius;
@@ -549,6 +550,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     draw();
 });
+
 
 
 
