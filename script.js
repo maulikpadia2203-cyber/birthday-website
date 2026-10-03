@@ -107,13 +107,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderQuestion() {
         if (currentQ >= CONFIG.quiz.length) {
-            quizContainer.innerHTML = `
+            const finalBlock = document.createElement('div');
+            finalBlock.className = "question-block mt-5";
+            finalBlock.style.textAlign = "center";
+            finalBlock.innerHTML = `
                 <h2 class="glow-text">Happy Birthday, ${CONFIG.naam}! 🎉</h2>
                 <p class="story-text mt-3" style="font-size: 1.5rem;">Sare tare jag gaye hain, aasmaan roshan hai.</p>
                 <p class="feedback-msg success">I love you! ❤️</p>
             `;
-            // Trigger final starburst or fireworks here if needed
+            quizContainer.appendChild(finalBlock);
             for(let i=0; i<30; i++) setTimeout(createShootingStar, i*100);
+            setTimeout(() => finalBlock.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
             return;
         }
 
@@ -123,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (qData.type === 'multiple-choice') {
             uiHtml = `<div class="options-container">`;
             qData.options.forEach(opt => {
-                uiHtml += `<label class="option-label"><input type="checkbox" value="${opt.id}"> ${opt.text}</label>`;
+                uiHtml += `<label class="option-label"><input type="checkbox" value="${opt.id}" class="q-checkbox"> ${opt.text}</label>`;
             });
             uiHtml += `</div>`;
         } else if (qData.type === 'image-choice') {
@@ -133,83 +137,88 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             uiHtml += `</div>`;
         } else {
-            // Text input
-            uiHtml = `
-            <div class="input-group">
-                <input type="text" id="quiz-input" placeholder="Yahan jawab likho..." autocomplete="off">
+            uiHtml = `<div class="input-group">
+                <input type="text" class="quiz-input" placeholder="Yahan jawab likho..." autocomplete="off">
             </div>`;
         }
 
-        quizContainer.innerHTML = `
+        const block = document.createElement('div');
+        block.className = "question-block mt-5";
+        block.innerHTML = `
             <div class="quiz-progress">Sawalon Ka Safar: ${currentQ + 1} / ${CONFIG.quiz.length}</div>
             <h2>${qData.question}</h2>
             ${uiHtml}
-            <button id="quiz-submit" class="btn-primary mt-3">Submit</button>
-            <p id="quiz-feedback" class="feedback-msg"></p>
-            <div id="success-gallery" class="success-gallery" style="display: none;"></div>
-            <button id="next-btn" class="btn-primary mt-4" style="display: none; background: var(--rose);">Aage Badho ➡️</button>
+            <button class="btn-primary mt-3 submit-btn">Submit</button>
+            <p class="feedback-msg"></p>
+            <div class="success-gallery" style="display: none;"></div>
+            <button class="btn-primary mt-4 next-btn" style="display: none; background: var(--rose);">Aage Badho ➡️</button>
         `;
 
-        // Add event listeners
-        const submitBtn = document.getElementById('quiz-submit');
-        submitBtn.addEventListener('click', checkQuizAnswer);
-        
-        document.getElementById('next-btn').addEventListener('click', () => {
+        // Only clear container if it's the first question
+        if (currentQ === 0) {
+            quizContainer.innerHTML = '';
+        }
+        quizContainer.appendChild(block);
+
+        setTimeout(() => block.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+
+        const submitBtn = block.querySelector('.submit-btn');
+        const feedback = block.querySelector('.feedback-msg');
+        const gallery = block.querySelector('.success-gallery');
+        const nextBtn = block.querySelector('.next-btn');
+
+        if (qData.type === 'image-choice') {
+            const imgs = block.querySelectorAll('.img-option');
+            imgs.forEach(img => {
+                img.addEventListener('click', () => {
+                    imgs.forEach(i => i.classList.remove('selected'));
+                    img.classList.add('selected');
+                });
+            });
+        }
+
+        submitBtn.addEventListener('click', () => {
+            let isCorrect = false;
+            if (qData.type === 'multiple-choice') {
+                const checked = Array.from(block.querySelectorAll('.q-checkbox:checked')).map(cb => cb.value);
+                const correct = qData.correctAnswers;
+                if (checked.length === correct.length && checked.every(v => correct.includes(v))) {
+                    isCorrect = true;
+                }
+            } else if (qData.type === 'image-choice') {
+                const selected = block.querySelector('.img-option.selected');
+                if (selected && qData.correctAnswers.includes(selected.dataset.id)) {
+                    isCorrect = true;
+                }
+            } else {
+                const val = block.querySelector('.quiz-input').value.toLowerCase().trim();
+                if (qData.correctAnswers.some(ans => val.includes(ans.toLowerCase()))) {
+                    isCorrect = true;
+                }
+            }
+
+            if (isCorrect) {
+                feedback.textContent = qData.successMsg;
+                feedback.classList.add('success');
+                submitBtn.style.display = 'none';
+                createShootingStar();
+                createShootingStar();
+                
+                if (qData.successImages && qData.successImages.length > 0) {
+                    gallery.innerHTML = qData.successImages.map(img => `<img src="${img}">`).join('');
+                    gallery.style.display = 'grid';
+                }
+                nextBtn.style.display = 'inline-block';
+            } else {
+                feedback.textContent = qData.hint;
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            nextBtn.style.display = 'none';
             currentQ++;
             renderQuestion();
         });
-
-        if (qData.type === 'image-choice') {
-            const imgs = document.querySelectorAll('.img-option');
-            imgs.forEach(img => img.addEventListener('click', (e) => {
-                // Single selection for images
-                imgs.forEach(i => i.classList.remove('selected'));
-                e.target.classList.add('selected');
-            }));
-        } else if (qData.type === 'text') {
-            document.getElementById('quiz-input').addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') checkQuizAnswer();
-            });
-        }
-    }
-
-    function checkQuizAnswer() {
-        const qData = CONFIG.quiz[currentQ];
-        const feedback = document.getElementById('quiz-feedback');
-        let isCorrect = false;
-
-        if (qData.type === 'multiple-choice') {
-            const checked = Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value);
-            // Check if arrays contain same elements
-            isCorrect = checked.length === qData.correctAnswers.length && 
-                        qData.correctAnswers.every(val => checked.includes(val));
-        } else if (qData.type === 'image-choice') {
-            const selected = document.querySelector('.img-option.selected');
-            isCorrect = selected && qData.correctAnswers.includes(selected.dataset.id);
-        } else {
-            const inputVal = document.getElementById('quiz-input').value.trim().toLowerCase().replace(/\s+/g, ' ');
-            isCorrect = qData.correctAnswers.some(ans => ans.toLowerCase() === inputVal || ans.toLowerCase().replace(/\s+/g, '') === inputVal.replace(/\s+/g, ''));
-        }
-
-        feedback.classList.remove('success');
-        if (isCorrect) {
-            feedback.textContent = qData.successMsg;
-            feedback.classList.add('success');
-            document.getElementById('quiz-submit').style.display = 'none';
-            createShootingStar();
-            createShootingStar();
-            
-            if (qData.successImages && qData.successImages.length > 0) {
-                const gallery = document.getElementById('success-gallery');
-                gallery.innerHTML = qData.successImages.map(img => `<img src="${img}">`).join('');
-                gallery.style.display = 'grid';
-            }
-            
-            document.getElementById('next-btn').style.display = 'inline-block';
-            
-        } else {
-            feedback.textContent = qData.hint;
-        }
     }
 
     renderQuestion();
