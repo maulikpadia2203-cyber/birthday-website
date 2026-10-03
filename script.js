@@ -71,6 +71,28 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { passive: false });
     }
 
+    // --- BUILD SECTION 3: YAADON KA SAFAR (5 PHOTOS) ---
+    const journeyContainer = document.getElementById('journey-container');
+    if (journeyContainer) {
+        CONFIG.photos.forEach((item, index) => {
+            const div = document.createElement('div');
+            div.className = `journey-item ${index % 2 !== 0 ? 'reverse' : ''}`;
+            const tilt = (Math.random() * 8) - 4;
+
+            div.innerHTML = `
+                <div class="photo-wrapper">
+                    <div class="polaroid" data-rotation="${tilt}deg" style="transform: rotate(${tilt}deg);">
+                        <img src="${item.src}" alt="Memory ${index+1}" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNjY2MiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzY2NiIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+UGhvdG8gTmFoaSBNaWxpPC90ZXh0Pjwvc3ZnPg=='">
+                    </div>
+                </div>
+                <div class="note-wrapper">
+                    <div class="note-text" data-text="${item.note}"></div>
+                </div>
+            `;
+            journeyContainer.appendChild(div);
+        });
+    }
+
     // --- SETUP QUIZ ENGINE (FIRST SECTION) ---
     const quizSection = document.getElementById('quiz-section');
     const quizContainer = document.getElementById('quiz-container');
@@ -354,6 +376,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const heroEl = document.getElementById('hero');
     if (heroEl) heroObserver.observe(heroEl);
+
+    // --- OBSERVER FOR SECTION 3: YAADON KA SAFAR (5 PHOTOS) ---
+    const journeyObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                const noteEl = entry.target.querySelector('.note-text');
+                if (noteEl && !noteEl.dataset.typed) {
+                    noteEl.dataset.typed = "true";
+                    setTimeout(() => { typeWriter(noteEl, noteEl.dataset.text, 40); }, 500);
+                }
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { rootMargin: "0px 0px -100px 0px", threshold: 0.1 });
+
+    document.querySelectorAll('.journey-item').forEach(el => journeyObserver.observe(el));
 
     // --- FALLING STARS & PARALLAX SCROLL ---
     let lastScroll = 0;
