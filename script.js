@@ -27,19 +27,6 @@ const CONFIG = {
             successImages: ['images/q1_photos/1.jpg','images/q1_photos/2.jpg','images/q1_photos/3.jpg','images/q1_photos/4.jpg','images/q1_photos/5.jpg','images/q1_photos/6.jpg','images/q1_photos/7.jpg','images/q1_photos/8.jpg','images/q1_photos/9.jpg','images/q1_photos/10.jpg','images/q1_photos/11.jpg','images/q1_photos/12.jpg']
         },
         {
-            type: "image-choice",
-            question: "Maro aapda jode no sauuthi favorite photo kato che ??",
-            images: [
-                { src: "images/q2_opt1.jpg", id: "1" },
-                { src: "images/q2_opt2.jpg", id: "2" },
-                { src: "images/q2_opt3.jpg", id: "3" },
-                { src: "images/q2_opt4.jpg", id: "4" }
-            ],
-            correctAnswers: ["1"],
-            hint: "Nahi, ye wala nahi! Phir se try karo.",
-            successMsg: "Sahi pehchana! Ye mera favorite hai <3"
-        },
-        {
             type: "text",
             question: "Aapdi sauthi fevorite movement thi password set karyo che yad kar ne aagad nu joo kaik serprise che tara mate",
             correctAnswers: ["1112161"],
