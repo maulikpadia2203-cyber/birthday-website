@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <button class="btn-primary mt-3 submit-btn">Submit</button>
             <p class="feedback-msg"></p>
             <div class="success-gallery" style="display: none;"></div>
-            <button class="btn-primary mt-4 next-btn" style="display: none; background: var(--rose);">Aage Badho ➡️</button>
+            <button class="btn-primary mt-4 next-btn" style="display: none; background: var(--rose);">Next ➡️</button>
         `;
 
         // Only clear container if it's the first question
@@ -253,12 +253,10 @@ document.addEventListener('DOMContentLoaded', () => {
                             <div class="orbit-center" style="width:${centerSize}px; height:${centerSize}px;">
                                 <img src="${images[gIndex]}" id="orbit-main-${currentQ}">
                             </div>
+                            <button class="carousel-btn prev-photo">&#10094;</button>
+                            <button class="carousel-btn next-photo">&#10095;</button>
                         </div>
-                        <div class="carousel-controls mt-5" style="gap:30px;">
-                            <button class="carousel-btn prev-photo" style="font-size:1.5rem; padding: 10px 30px;">⬅️</button>
-                            <button class="carousel-btn next-photo" style="font-size:1.5rem; padding: 10px 30px;">➡️</button>
-                        </div>
-                        <button class="btn-primary mt-5 new-next-btn" style="background: var(--rose); font-size: 1.2rem;">Aage Badho ➡️</button>
+                        <button class="btn-primary mt-5 new-next-btn" style="background: var(--rose); font-size: 1.2rem;">Next ➡️</button>
                     `;
                     
                     let ringEl = block.querySelector(`#orbit-ring-${currentQ}`);
