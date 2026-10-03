@@ -71,20 +71,24 @@ document.addEventListener('DOMContentLoaded', () => {
     if (giftScreen && giftContainer) {
         // Block scroll initially
         document.body.style.overflow = 'hidden';
-        
-        giftContainer.addEventListener('click', () => {
+        let giftOpened = false;
+
+        const openGift = () => {
+            if (giftOpened) return;
+            giftOpened = true;
+
             giftContainer.classList.add('opened');
             setTimeout(() => {
                 giftScreen.style.opacity = '0';
                 giftScreen.style.visibility = 'hidden';
                 document.body.style.overflow = ''; // allow scrolling again
                 
-                // Start Hero animations
+                // Start Hero animations (Happy Birthday screen)
                 heroBg.classList.add('revealed');
                 document.getElementById('hero-title').classList.add('visible');
                 document.getElementById('hero-subtitle').classList.add('visible');
                 
-                // Start Typewriter
+                // Start Typewriter for birthday note
                 setTimeout(() => {
                     const msgEl = document.getElementById('hero-message');
                     if(msgEl) typeWriter(msgEl, msgEl.dataset.text, 50);
@@ -98,7 +102,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Cleanup
                 setTimeout(() => { giftScreen.remove(); }, 1000);
             }, 600); // Wait for box opening animation
-        });
+        };
+
+        giftContainer.addEventListener('click', openGift);
+        giftContainer.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            openGift();
+        }, { passive: false });
     } else {
         setTimeout(() => {
             heroBg.classList.add('revealed');
