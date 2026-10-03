@@ -208,12 +208,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Calculate massive size for pure page takeover
                     let vw = window.innerWidth;
                     let vh = window.innerHeight;
-                    let gallerySize = Math.min(vw, vh) * 0.85; // 85% of screen
-                    if (gallerySize > 700) gallerySize = 700; // Cap at 700px
+                    let gallerySize = Math.min(vw * 0.95, vh * 0.95); 
+                    if (gallerySize > 1000) gallerySize = 1000; // Let it be huge on desktop
                     
                     let radius = gallerySize * 0.45;
-                    let itemSize = Math.max(40, gallerySize * 0.12);
-                    let centerSize = gallerySize * 0.45;
+                    let itemSize = Math.max(60, gallerySize * 0.15); // Bigger small photos
+                    let centerSize = gallerySize * 0.45; // Bigger center photo
                     
                     let ringHtml = '';
                     images.forEach((img, i) => {
@@ -236,7 +236,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     block.style.display = "flex";
                     block.style.flexDirection = "column";
                     block.style.alignItems = "center";
-                    block.style.background = "radial-gradient(circle, rgba(10, 15, 36, 0.8) 0%, transparent 80%)";
+                    block.style.background = "transparent"; block.style.boxShadow = "none";
 
                     block.innerHTML = `
                         <h2 class="glow-text mb-5 text-center" style="font-size: 2.5rem;">${qData.successMsg}</h2>
