@@ -201,13 +201,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 feedback.textContent = qData.successMsg;
                 feedback.classList.add('success');
                 submitBtn.style.display = 'none';
+                
+                // Hide the question and options so gallery takes full focus
+                let qTitle = block.querySelector('h2');
+                if (qTitle) qTitle.style.display = 'none';
+                
+                let qProgress = block.querySelector('.quiz-progress');
+                if (qProgress) qProgress.style.display = 'none';
+                
+                let optionsDiv = block.querySelector('.options-container') || block.querySelector('.image-options') || block.querySelector('.input-group');
+                if (optionsDiv) optionsDiv.style.display = 'none';
+
                 createShootingStar();
                 createShootingStar();
                 
                 if (qData.successImages && qData.successImages.length > 0) {
                     let images = qData.successImages;
                     let gIndex = 0;
-                    let radius = 135; // orbit radius
+                    let radius = 150; // orbit radius
                     
                     let ringHtml = '';
                     images.forEach((img, i) => {
@@ -459,6 +470,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     draw();
 });
+
 
 
 
