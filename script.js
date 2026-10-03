@@ -237,9 +237,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     block.style.flexDirection = "column";
                     block.style.alignItems = "center";
                     block.style.background = "transparent"; block.style.boxShadow = "none";
+                    
+                    let qc = document.getElementById('quiz-container');
+                    if(qc) {
+                        qc.style.background = 'transparent';
+                        qc.style.boxShadow = 'none';
+                        qc.style.border = 'none';
+                    }
 
                     block.innerHTML = `
-                        <h2 class="glow-text mb-5 text-center" style="font-size: 2.5rem;">${qData.successMsg}</h2>
                         <div class="orbit-gallery" style="width:${gallerySize}px; height:${gallerySize}px;">
                             <div class="orbit-ring" id="orbit-ring-${currentQ}">
                                 ${ringHtml}
