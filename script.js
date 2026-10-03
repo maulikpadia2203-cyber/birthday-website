@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const block = document.createElement('div');
         block.className = "question-block mt-5";
-        if (currentQ > 0) block.style.marginTop = "150vh";
+        if (currentQ > 0) { block.style.marginTop = "150vh"; } else { block.style.marginTop = "80vh"; }
         block.innerHTML = `
             <div class="quiz-progress">Sawalon Ka Safar: ${currentQ + 1} / ${CONFIG.quiz.length}</div>
             <h2>${qData.question}</h2>
@@ -532,6 +532,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     draw();
 });
+
 
 
 

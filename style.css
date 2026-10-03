@@ -181,9 +181,7 @@ body {
     gap: 40px;
     
     /* Book Page Flip Initial State */
-    opacity: 0;
-    transform-origin: right center;
-    transform: perspective(1500px) rotateY(-90deg) translateX(100px);
+    opacity: 1; transform: none;
     transition: transform 2s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 1.5s ease-out;
 }
 
@@ -194,8 +192,7 @@ body {
 
 .journey-item.reverse {
     flex-direction: row-reverse;
-    transform-origin: left center;
-    transform: perspective(1500px) rotateY(90deg) translateX(-100px);
+    transform: none;
 }
 .journey-item.reverse.visible {
     transform: perspective(1500px) rotateY(0deg) translateX(0);
@@ -213,8 +210,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    opacity: 0;
-    transition: opacity 1.5s ease 1s; /* Fade in AFTER the page flips */
+    opacity: 1;
 }
 .journey-item.visible .note-wrapper {
     opacity: 1;
@@ -397,8 +393,7 @@ body {
         justify-content: center;
         text-align: center;
         gap: 30px;
-        transform-origin: bottom center;
-        transform: perspective(1500px) rotateX(-90deg) translateY(100px);
+        transform: none;
     }
     .journey-item.visible, .journey-item.reverse.visible {
         transform: perspective(1500px) rotateX(0deg) translateY(0);
@@ -652,3 +647,5 @@ body {
     opacity: 0;
     transition: opacity 0.3s;
 }
+
+
