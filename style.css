@@ -563,6 +563,7 @@ body {
 
 .carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); background: transparent; border: none; color: rgba(255, 255, 255, 0.4); font-size: 3rem; font-weight: 300; cursor: pointer; transition: color 0.3s; z-index: 20; padding: 10px; }
 .carousel-btn:hover { background: transparent; color: white; }
-.prev-photo { left: 0px; }
-.next-photo { right: 0px; }
+.prev-photo { left: -45px; }
+.next-photo { right: -45px; }
+
 

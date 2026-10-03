@@ -208,7 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Calculate massive size for pure page takeover
                     let vw = window.innerWidth;
                     let vh = window.innerHeight;
-                    let gallerySize = Math.min(vw * 0.95, vh * 0.95); 
+                    let gallerySize = Math.min(vw * 0.85, vh * 0.90); 
                     if (gallerySize > 1000) gallerySize = 1000; // Let it be huge on desktop
                     
                     let radius = gallerySize * 0.43;
@@ -492,6 +492,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     draw();
 });
+
 
 
 
