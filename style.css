@@ -572,7 +572,7 @@ body {
 /* Orbit Gallery (Solar System style) */
 .orbit-gallery { position: relative; margin: 0 auto; border-radius: 50%; }
 
-.orbit-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border-radius: 20px; overflow: hidden; border: 3px solid var(--starlight); box-shadow: 0 0 25px rgba(245, 230, 184, 0.4); z-index: 10; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); }
+.orbit-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border-radius: 50%; overflow: hidden; border: 4px solid var(--starlight); box-shadow: 0 0 25px rgba(245, 230, 184, 0.4); z-index: 10; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); }
 
 .orbit-center img { width: 100%; height: 100%; object-fit: contain; transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.4s ease; }
 
@@ -587,6 +587,7 @@ body {
 .orbit-item { position: absolute; top: 50%; left: 50%; border-radius: 50%; border: 2px solid #fff; overflow: hidden; transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
 
 .orbit-item img { width: 100%; height: 100%; object-fit: cover; object-position: center 15%; }
+
 
 
 
