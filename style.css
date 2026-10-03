@@ -164,16 +164,7 @@ body {
     max-width: 1200px;
     margin: 0 auto;
 }
-.timeline-line {
-    position: absolute;
-    top: 0; left: 50%;
-    transform: translateX(-50%);
-    width: 2px;
-    height: 100%;
-    background: linear-gradient(to bottom, transparent, var(--starlight), transparent);
-    opacity: 0.3;
-    z-index: 0;
-}
+
 .journey-container {
     position: relative;
     z-index: 1;
@@ -437,6 +428,7 @@ body {
         scroll-behavior: auto !important;
     }
 }
+
 
 
 
