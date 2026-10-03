@@ -140,13 +140,13 @@ document.addEventListener('DOMContentLoaded', () => {
         block.className = "question-block mt-5";
         if (currentQ > 0) { block.style.marginTop = "150vh"; } else { block.style.marginTop = "0"; }
         block.innerHTML = `
-            <div class="quiz-progress">Sawalon Ka Safar: ${currentQ + 1} / ${CONFIG.quiz.length}</div>
+            
             <h2>${qData.question}</h2>
             ${uiHtml}
             <button class="btn-primary mt-3 submit-btn">Submit</button>
             <p class="feedback-msg"></p>
             <div class="success-gallery" style="display: none;"></div>
-            <button class="btn-primary mt-4 next-btn" style="display: none; background: var(--rose);">Next ➡️</button>
+            
         `;
 
         // Only clear container if it's the first question
@@ -301,7 +301,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
 
                     // Section 1 complete, 12 photos orbit ready!
-                    // User can explore photos and scroll to Section 2 (Happy Birthday)
+                    // Unlock Section 2 (Happy Birthday) and Section 3 (5 Photos)
+                    const heroSec = document.getElementById('hero');
+                    const journeySec = document.getElementById('journey');
+                    if (heroSec) heroSec.style.display = 'flex';
+                    if (journeySec) journeySec.style.display = 'block';
+
+                    const scrollHint = document.createElement('div');
+                    scrollHint.className = 'scroll-hint mt-5 text-center';
+                    scrollHint.innerHTML = '<p class="story-text" style="font-size: 1.4rem; color: var(--starlight); margin-top: 30px; animation: pulse 1.5s infinite;">Niche scroll karo ek aur surprise hai ✨👇</p>';
+                    block.appendChild(scrollHint);
                     
                 } else {
                     // Fallback if no images
