@@ -225,9 +225,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const noteEl = entry.target.querySelector('.note-text');
                 if (noteEl && !noteEl.dataset.typed) {
                     noteEl.dataset.typed = "true";
-                    setTimeout(() => {
-                        typeWriter(noteEl, noteEl.dataset.text);
-                    }, 800); // Wait for page flip
+                    setTimeout(() => { typeWriter(noteEl, noteEl.dataset.text); }, 500);
                 }
                 observer.unobserve(entry.target);
             }
@@ -360,6 +358,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     draw();
 });
+
 
 
 
