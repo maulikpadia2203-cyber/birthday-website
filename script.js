@@ -109,6 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentQ >= CONFIG.quiz.length) {
             const finalBlock = document.createElement('div');
             finalBlock.className = "question-block mt-5";
+            if (currentQ > 0) finalBlock.style.marginTop = "150vh";
             finalBlock.style.textAlign = "center";
             finalBlock.innerHTML = `
                 <h2 class="glow-text">Happy Birthday, ${CONFIG.naam}! 🎉</h2>
@@ -144,6 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const block = document.createElement('div');
         block.className = "question-block mt-5";
+        if (currentQ > 0) block.style.marginTop = "150vh";
         block.innerHTML = `
             <div class="quiz-progress">Sawalon Ka Safar: ${currentQ + 1} / ${CONFIG.quiz.length}</div>
             <h2>${qData.question}</h2>
@@ -256,7 +258,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <button class="carousel-btn prev-photo">&#10094;</button>
                             <button class="carousel-btn next-photo">&#10095;</button>
                         </div>
-                        <button class="btn-primary mt-5 new-next-btn" style="background: var(--rose); font-size: 1.2rem;">Next ➡️</button>
+                        
                     `;
                     
                     let ringEl = block.querySelector(`#orbit-ring-${currentQ}`);
@@ -304,19 +306,22 @@ document.addEventListener('DOMContentLoaded', () => {
                         updateOrbit();
                     });
 
-                    // Re-bind the next question button
-                    block.querySelector('.new-next-btn').addEventListener('click', () => {
-                        block.querySelector('.new-next-btn').style.display = 'none';
+                    // Automatically load next question after a short delay
+                    setTimeout(() => {
                         currentQ++;
                         renderQuestion();
-                    });
+                    }, 500);
                     
                 } else {
                     // Fallback if no images
                     feedback.textContent = qData.successMsg;
                     feedback.classList.add('success');
                     submitBtn.style.display = 'none';
-                    nextBtn.style.display = 'inline-block';
+                    
+                    setTimeout(() => {
+                        currentQ++;
+                        renderQuestion();
+                    }, 500);
                 }
             } else {
                 feedback.textContent = qData.hint;
@@ -492,6 +497,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     draw();
 });
+
+
 
 
 
