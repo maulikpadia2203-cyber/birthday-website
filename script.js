@@ -45,18 +45,11 @@ const CONFIG = {
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- SETUP HERO ---
-    document.getElementById('hero-name').textContent = CONFIG.naam;
-    const heroBg = document.getElementById('hero-bg');
-    // Using inline style to apply config image
-    heroBg.style.backgroundImage = `url('${CONFIG.heroImage}')`;
-    
-    // Gift Overlay & Hero Animation
+    // Gift Overlay
     const giftScreen = document.getElementById('gift-screen');
     const giftContainer = document.getElementById('gift-container');
     
     if (giftScreen && giftContainer) {
-        // Block scroll initially
         document.body.style.overflow = 'hidden';
         let giftOpened = false;
 
@@ -68,27 +61,15 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 giftScreen.style.opacity = '0';
                 giftScreen.style.visibility = 'hidden';
-                document.body.style.overflow = ''; // allow scrolling again
-                
-                // Start Hero animations (Happy Birthday screen)
-                heroBg.classList.add('revealed');
-                document.getElementById('hero-title').classList.add('visible');
-                document.getElementById('hero-subtitle').classList.add('visible');
-                
-                // Start Typewriter for birthday note
-                setTimeout(() => {
-                    const msgEl = document.getElementById('hero-message');
-                    if(msgEl) typeWriter(msgEl, msgEl.dataset.text, 50);
-                }, 800);
-                
+                document.body.style.overflow = '';
+
                 // Magical shooting stars on open!
                 for(let i=0; i<8; i++) {
                     setTimeout(createShootingStar, i * 150);
                 }
                 
-                // Cleanup
                 setTimeout(() => { giftScreen.remove(); }, 1000);
-            }, 600); // Wait for box opening animation
+            }, 600);
         };
 
         giftContainer.addEventListener('click', openGift);
@@ -96,43 +77,9 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             openGift();
         }, { passive: false });
-    } else {
-        setTimeout(() => {
-            heroBg.classList.add('revealed');
-            document.getElementById('hero-title').classList.add('visible');
-            document.getElementById('hero-subtitle').classList.add('visible');
-            setTimeout(() => {
-                const msgEl = document.getElementById('hero-message');
-                if(msgEl) typeWriter(msgEl, msgEl.dataset.text, 50);
-            }, 1500);
-        }, 500);
     }
 
-
-    // --- BUILD JOURNEY SECTION ---
-    const journeyContainer = document.getElementById('journey-container');
-    CONFIG.photos.forEach((item, index) => {
-        // Create Item Container
-        const div = document.createElement('div');
-        div.className = `journey-item ${index % 2 !== 0 ? 'reverse' : ''}`;
-        
-        // Random tilt for polaroid between -4 and 4 degrees
-        const tilt = (Math.random() * 8) - 4;
-
-        div.innerHTML = `
-            <div class="photo-wrapper">
-                <div class="polaroid" data-rotation="${tilt}deg" style="transform: rotate(${tilt}deg);">
-                    <img src="${item.src}" alt="Memory ${index+1}" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNjY2MiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzY2NiIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+UGhvdG8gTmFoaSBNaWxpPC90ZXh0Pjwvc3ZnPg=='">
-                </div>
-            </div>
-            <div class="note-wrapper">
-                <div class="note-text" data-text="${item.note}"></div>
-            </div>
-        `;
-        journeyContainer.appendChild(div);
-    });
-
-    // --- SETUP QUIZ ENGINE (SLIDE 2) ---
+    // --- SETUP QUIZ ENGINE (FIRST SECTION) ---
     const quizSection = document.getElementById('quiz-section');
     const quizContainer = document.getElementById('quiz-container');
     let currentQ = 0;
@@ -177,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const block = document.createElement('div');
         block.className = "question-block mt-5";
-        if (currentQ > 0) { block.style.marginTop = "150vh"; } else { block.style.marginTop = "80vh"; }
+        if (currentQ > 0) { block.style.marginTop = "150vh"; } else { block.style.marginTop = "0"; }
         block.innerHTML = `
             <div class="quiz-progress">Sawalon Ka Safar: ${currentQ + 1} / ${CONFIG.quiz.length}</div>
             <h2>${qData.question}</h2>
@@ -384,41 +331,8 @@ document.addEventListener('DOMContentLoaded', () => {
         type();
     }
 
-    // --- INTERSECTION OBSERVERS ---
-    const observerOptions = {
-        rootMargin: "0px 0px -150px 0px",
-        threshold: 0.1
-    };
-    
-    const journeyObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-                
-                const noteEl = entry.target.querySelector('.note-text');
-                if (noteEl && !noteEl.dataset.typed) {
-                    noteEl.dataset.typed = "true";
-                    setTimeout(() => { typeWriter(noteEl, noteEl.dataset.text); }, 1200);
-                }
-                observer.unobserve(entry.target);
-            }
-        });
-    }, observerOptions);
-
-    document.querySelectorAll('.journey-item').forEach(el => journeyObserver.observe(el));
-
-    const questionObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                document.getElementById('star-canvas').classList.add('deep-sky');
-                entry.target.querySelector('.question-container').classList.add('visible');
-            } else {
-                document.getElementById('star-canvas').classList.remove('deep-sky');
-            }
-        });
-    }, { threshold: 0.5 });
-    
-    questionObserver.observe(document.getElementById('quiz-section'));
+    // --- CANVAS BACKGROUND & QUESTION VISIBILITY ---
+    document.getElementById('star-canvas').classList.add('deep-sky');
 
     // --- FALLING STARS & PARALLAX SCROLL ---
     let lastScroll = 0;
