@@ -24,7 +24,7 @@ const CONFIG = {
             correctAnswers: ["a", "b"],
             hint: "Dhyan se socho, dono baatein hui thi! ;-)",
             successMsg: "Bilkul Sahi! ?",
-            successImages: ['images/q1_ans1.jpg','images/q1_ans2.jpg','images/q1_ans3.jpg','images/q1_ans4.jpg','images/q1_ans5.jpg','images/q1_ans6.jpg','images/q1_ans7.jpg','images/q1_ans8.jpg','images/q1_ans9.jpg','images/q1_ans10.jpg','images/q1_ans11.jpg','images/q1_ans12.jpg']
+            successImages: ['images/q1_photos/1.jpg','images/q1_photos/2.jpg','images/q1_photos/3.jpg','images/q1_photos/4.jpg','images/q1_photos/5.jpg','images/q1_photos/6.jpg','images/q1_photos/7.jpg','images/q1_photos/8.jpg','images/q1_photos/9.jpg','images/q1_photos/10.jpg','images/q1_photos/11.jpg','images/q1_photos/12.jpg']
         },
         {
             type: "image-choice",
