@@ -23,7 +23,8 @@ const CONFIG = {
             ],
             correctAnswers: ["a", "b"],
             hint: "Dhyan se socho, dono baatein hui thi! ;-)",
-            successMsg: "Bilkul Sahi! ?"
+            successMsg: "Bilkul Sahi! ?",
+            successImages: ['images/q1_ans1.jpg','images/q1_ans2.jpg','images/q1_ans3.jpg','images/q1_ans4.jpg','images/q1_ans5.jpg','images/q1_ans6.jpg','images/q1_ans7.jpg','images/q1_ans8.jpg','images/q1_ans9.jpg','images/q1_ans10.jpg','images/q1_ans11.jpg','images/q1_ans12.jpg']
         },
         {
             type: "image-choice",
@@ -145,11 +146,18 @@ document.addEventListener('DOMContentLoaded', () => {
             ${uiHtml}
             <button id="quiz-submit" class="btn-primary mt-3">Submit</button>
             <p id="quiz-feedback" class="feedback-msg"></p>
+            <div id="success-gallery" class="success-gallery" style="display: none;"></div>
+            <button id="next-btn" class="btn-primary mt-4" style="display: none; background: var(--rose);">Aage Badho ➡️</button>
         `;
 
         // Add event listeners
         const submitBtn = document.getElementById('quiz-submit');
         submitBtn.addEventListener('click', checkQuizAnswer);
+        
+        document.getElementById('next-btn').addEventListener('click', () => {
+            currentQ++;
+            renderQuestion();
+        });
 
         if (qData.type === 'image-choice') {
             const imgs = document.querySelectorAll('.img-option');
@@ -187,14 +195,18 @@ document.addEventListener('DOMContentLoaded', () => {
         if (isCorrect) {
             feedback.textContent = qData.successMsg;
             feedback.classList.add('success');
-            document.getElementById('quiz-submit').disabled = true;
+            document.getElementById('quiz-submit').style.display = 'none';
             createShootingStar();
             createShootingStar();
             
-            setTimeout(() => {
-                currentQ++;
-                renderQuestion();
-            }, 2000);
+            if (qData.successImages && qData.successImages.length > 0) {
+                const gallery = document.getElementById('success-gallery');
+                gallery.innerHTML = qData.successImages.map(img => `<img src="${img}">`).join('');
+                gallery.style.display = 'grid';
+            }
+            
+            document.getElementById('next-btn').style.display = 'inline-block';
+            
         } else {
             feedback.textContent = qData.hint;
         }
@@ -362,6 +374,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     draw();
 });
+
 
 
 

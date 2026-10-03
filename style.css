@@ -440,3 +440,41 @@ body {
 
 
 
+
+/* Quiz Success Gallery */
+.success-gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 20px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: slideUpFade 1s forwards 0.5s;
+}
+
+.success-gallery img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 2px solid #fff;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    transition: transform 0.3s;
+}
+
+.success-gallery img:hover {
+    transform: scale(1.05);
+}
+
+@keyframes slideUpFade {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .success-gallery {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
