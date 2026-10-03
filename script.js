@@ -6,11 +6,11 @@ const CONFIG = {
     naam: "Betuu",
     heroImage: "hamari_photo.jpeg",
     photos: [
-        { src: "images/p1.jpg", date: "12 Dec 2023", note: "Hamari pehli mulakat, wo hasi aur wo baatein..." },
-        { src: "images/p2.jpg", date: "25 Jan 2024", note: "Jab tumne pehli baar mere liye wo gaana gaya tha." },
-        { src: "images/p3.jpg", date: "14 Feb 2024", note: "Ek khoobsurat din, jo hamesha yaad rahega." },
-        { src: "images/p4.jpg", date: "10 Mar 2024", note: "Wo bina baat ka jhagda aur fir jaldi se maan jana." },
-        { src: "images/p5.jpg", date: "05 Apr 2024", note: "Dher saari yaadein aur tumhari pyari si smile." }
+        { src: "images/p1.jpg", date: "12 Dec 2023", note: "Mari cuteeeee sache bauu cute lage cheeee bachaaa aama bhale me aane chidava game te kidhu hoyyy butt dhinglu che marruuuuu 🥹😘😘☺️" },
+        { src: "images/p2.jpg", date: "25 Jan 2024", note: "Bacha tane tara 22 year pura thaya pan tu sache j haji bi aavi j cute lage che ☺️😊 sachu kauu to kyare k to mane am thay che ke tu sache j mari bachuu 🐥(i love you bachaaaa🥹)" },
+        { src: "images/p3.jpg", date: "14 Feb 2024", note: "Aama to mari radha etli pyari pyari lage che ne sache jo tari smile ayyyyyyy hyyyyyyy 😌 joi ne khushi thay che mane to joii ne aavu j feel thayu jane mari j rah naii joti m j lage che hmana maro kano aavse 🤣" },
+        { src: "images/p4.jpg", date: "10 Mar 2024", note: "i feel ki tu nan pan thi j mane joii gaii haiis ne tane khabar padi gaii che ke aane mare  sidho karvo padse atle jo kevuu kamre hath rakhi ne ready che ke mane to su naii sidho dor kari daiss sache mane bauuj game ki hun maru dhyan naii rakhu netyare mane khijaii ne bolee bauu cuteeeee lage che bachaaaa😎😊" },
+        { src: "images/p5.jpg", date: "05 Apr 2024", note: "Namaste namaste pele thi j election ma javu che ke su taree mane keje mara ma bhi raj yog bane che to bane jode rajniti ma aavsuuu 🤭🤭🤭🤭🤭🤭" }
     ],
     quiz: [
         {
@@ -225,7 +225,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const noteEl = entry.target.querySelector('.note-text');
                 if (noteEl && !noteEl.dataset.typed) {
                     noteEl.dataset.typed = "true";
-                    setTimeout(() => { typeWriter(noteEl, noteEl.dataset.text); }, 500);
+                    setTimeout(() => { typeWriter(noteEl, noteEl.dataset.text); }, 1200);
                 }
                 observer.unobserve(entry.target);
             }
@@ -258,7 +258,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (heroBgEl) {
             const maxScroll = document.body.scrollHeight - window.innerHeight;
             const scrollProgress = maxScroll > 0 ? Math.max(0, Math.min(1, currentScroll / maxScroll)) : 0;
-            heroBgEl.style.transform = `translateY(-${scrollProgress * 20}vh)`;
+            heroBgEl.style.transform = `translateY(-${scrollProgress * 10}vh)`;
         }
 
         // Make stars fall when scrolling down
@@ -358,6 +358,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     draw();
 });
+
+
 
 
 
