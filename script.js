@@ -64,17 +64,52 @@ document.addEventListener('DOMContentLoaded', () => {
     // Using inline style to apply config image
     heroBg.style.backgroundImage = `url('${CONFIG.heroImage}')`;
     
-    // Animate Hero after load
-    setTimeout(() => {
-        heroBg.classList.add('revealed');
-        document.getElementById('hero-title').classList.add('visible');
-        document.getElementById('hero-subtitle').classList.add('visible');
+    // Gift Overlay & Hero Animation
+    const giftScreen = document.getElementById('gift-screen');
+    const giftContainer = document.getElementById('gift-container');
+    
+    if (giftScreen && giftContainer) {
+        // Block scroll initially
+        document.body.style.overflow = 'hidden';
         
+        giftContainer.addEventListener('click', () => {
+            giftContainer.classList.add('opened');
+            setTimeout(() => {
+                giftScreen.style.opacity = '0';
+                giftScreen.style.visibility = 'hidden';
+                document.body.style.overflow = ''; // allow scrolling again
+                
+                // Start Hero animations
+                heroBg.classList.add('revealed');
+                document.getElementById('hero-title').classList.add('visible');
+                document.getElementById('hero-subtitle').classList.add('visible');
+                
+                // Start Typewriter
+                setTimeout(() => {
+                    const msgEl = document.getElementById('hero-message');
+                    if(msgEl) typeWriter(msgEl, msgEl.dataset.text, 50);
+                }, 800);
+                
+                // Magical shooting stars on open!
+                for(let i=0; i<8; i++) {
+                    setTimeout(createShootingStar, i * 150);
+                }
+                
+                // Cleanup
+                setTimeout(() => { giftScreen.remove(); }, 1000);
+            }, 600); // Wait for box opening animation
+        });
+    } else {
         setTimeout(() => {
-            const msgEl = document.getElementById('hero-message');
-            if(msgEl) typeWriter(msgEl, msgEl.dataset.text, 50);
-        }, 1500);
-    }, 500);
+            heroBg.classList.add('revealed');
+            document.getElementById('hero-title').classList.add('visible');
+            document.getElementById('hero-subtitle').classList.add('visible');
+            setTimeout(() => {
+                const msgEl = document.getElementById('hero-message');
+                if(msgEl) typeWriter(msgEl, msgEl.dataset.text, 50);
+            }, 1500);
+        }, 500);
+    }
 
 
     // --- BUILD JOURNEY SECTION ---
