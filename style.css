@@ -522,6 +522,27 @@ body {
 
 
 
+/* Orbit Section (Last Section) */
+.orbit-section {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 20px 120px 20px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+#orbit-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin-top: 20px;
+}
+
 /* Orbit Gallery (Solar System style) */
 .orbit-gallery { position: relative; margin: 0 auto; border-radius: 50%; }
 

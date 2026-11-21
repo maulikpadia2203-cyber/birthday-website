@@ -196,148 +196,122 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (isCorrect) {
-                const thisQ = currentQ;
                 createShootingStar();
                 createShootingStar();
                 
+                feedback.textContent = qData.successMsg;
+                feedback.classList.add('success');
+                submitBtn.style.display = 'none';
+
+                // Unlock all subsequent sections (Section 2: Hero, Section 3: Journey 5 photos, Section 4: Orbit Gallery)
+                const heroSec = document.getElementById('hero');
+                const journeySec = document.getElementById('journey');
+                const orbitSec = document.getElementById('orbit-section');
+
+                if (heroSec) heroSec.style.display = 'flex';
+                if (journeySec) journeySec.style.display = 'block';
+                if (orbitSec) orbitSec.style.display = 'flex';
+
+                // Render 12 Photos Orbit Gallery at the very end
                 if (qData.successImages && qData.successImages.length > 0) {
-                    let images = qData.successImages;
-                    let gIndex = 0;
-                    
-                    // Calculate massive size for pure page takeover
-                    let vw = window.innerWidth;
-                    let vh = window.innerHeight;
-                    let gallerySize = Math.min(vw * 0.78, vh * 0.90); 
-                    if (gallerySize > 1000) gallerySize = 1000; // Let it be huge on desktop
-                    
-                    let radius = gallerySize * 0.43;
-                    let itemSize = Math.max(85, gallerySize * 0.18); // Much bigger outer photos
-                    let centerSize = gallerySize * 0.55; // Much bigger center photo
-                    
-                    let ringHtml = '';
-                    images.forEach((img, i) => {
-                        let angle = (i * 30) * (Math.PI / 180);
-                        let x = Math.cos(angle) * radius;
-                        let y = Math.sin(angle) * radius;
-                        ringHtml += `<div class="orbit-item" id="orbit-item-${thisQ}-${i}" 
-                                          style="width:${itemSize}px; height:${itemSize}px; margin-top:-${itemSize/2}px; margin-left:-${itemSize/2}px; transform: translate(${x}px, ${y}px) rotate(0deg);">
-                                        <img src="${img}">
-                                     </div>`;
-                    });
-                    
-                    // Completely replace the block to remove the dark box!
-                    block.className = ""; // Remove .question-block
-                    block.style.width = "100vw";
-                    block.style.position = "relative";
-                    block.style.left = "50%";
-                    block.style.transform = "translateX(-50%)";
-                    block.style.padding = "50px 0";
-                    block.style.display = "flex";
-                    block.style.flexDirection = "column";
-                    block.style.alignItems = "center";
-                    block.style.background = "transparent"; block.style.boxShadow = "none";
-                    
-                    let qc = document.getElementById('quiz-container');
-                    if(qc) {
-                        qc.style.background = 'transparent';
-                        qc.style.boxShadow = 'none';
-                        qc.style.border = 'none';
-                    }
-
-                    block.innerHTML = `
-                        <div class="orbit-gallery" style="width:${gallerySize}px; height:${gallerySize}px;">
-                            <div class="orbit-ring" id="orbit-ring-${thisQ}">
-                                ${ringHtml}
-                            </div>
-                            <div class="orbit-center" style="width:${centerSize}px; height:${centerSize}px;">
-                                <img src="${images[gIndex]}" id="orbit-main-${thisQ}">
-                            </div>
-                            <button class="carousel-btn prev-photo">&#10094;</button>
-                            <button class="carousel-btn next-photo">&#10095;</button>
-                        </div>
-                        
-                    `;
-                    
-                    let ringEl = block.querySelector(`#orbit-ring-${thisQ}`);
-                    let mainEl = block.querySelector(`#orbit-main-${thisQ}`);
-                    
-                    function updateOrbit() {
-                        let rotation = -(gIndex * 30);
-                        ringEl.style.transform = `rotate(${rotation}deg)`;
-                        
-                        images.forEach((img, i) => {
-                            let itemEl = block.querySelector(`#orbit-item-${thisQ}-${i}`);
-                            let angle = (i * 30) * (Math.PI / 180);
-                            let x = Math.cos(angle) * radius;
-                            let y = Math.sin(angle) * radius;
-                            itemEl.style.transform = `translate(${x}px, ${y}px) rotate(${-rotation}deg)`;
-                            
-                            if (i === gIndex) {
-                                itemEl.style.borderColor = 'var(--rose)';
-                                itemEl.style.boxShadow = '0 0 15px var(--rose)';
-                                itemEl.style.transform += ' scale(1.2)';
-                            } else {
-                                itemEl.style.borderColor = '#fff';
-                                itemEl.style.boxShadow = '0 4px 10px rgba(0,0,0,0.5)';
-                            }
-                        });
-                        
-                        mainEl.style.opacity = 0;
-                        mainEl.style.transform = 'scale(0.5)';
-                        setTimeout(() => {
-                            mainEl.src = images[gIndex];
-                            mainEl.style.opacity = 1;
-                            mainEl.style.transform = 'scale(1)';
-                        }, 300);
-                    }
-                    
-                    updateOrbit();
-
-                    block.querySelector('.prev-photo').addEventListener('click', () => {
-                        gIndex = (gIndex - 1 + images.length) % images.length;
-                        updateOrbit();
-                    });
-                    
-                    block.querySelector('.next-photo').addEventListener('click', () => {
-                        gIndex = (gIndex + 1) % images.length;
-                        updateOrbit();
-                    });
-
-                    // Section 1 complete, 12 photos orbit ready!
-                    // Unlock Section 2 (Happy Birthday) and Section 3 (5 Photos)
-                    const heroSec = document.getElementById('hero');
-                    const journeySec = document.getElementById('journey');
-                    if (heroSec) heroSec.style.display = 'flex';
-                    if (journeySec) journeySec.style.display = 'block';
-
-                    const scrollHint = document.createElement('div');
-                    scrollHint.className = 'scroll-hint mt-5 text-center';
-                    scrollHint.innerHTML = '<p class="story-text" style="font-size: 1.4rem; color: var(--starlight); margin-top: 30px; animation: pulse 1.5s infinite;">Niche scroll karo ek aur surprise hai ✨👇</p>';
-                    block.appendChild(scrollHint);
-                    
-                } else {
-                    // Fallback if no images
-                    feedback.textContent = qData.successMsg;
-                    feedback.classList.add('success');
-                    submitBtn.style.display = 'none';
-                    
-                    setTimeout(() => {
-                        currentQ++;
-                        renderQuestion();
-                    }, 500);
+                    renderOrbitGallery(qData.successImages);
                 }
+
+                const scrollHint = document.createElement('div');
+                scrollHint.className = 'scroll-hint mt-4 text-center';
+                scrollHint.innerHTML = '<p class="story-text" style="font-size: 1.3rem; color: var(--starlight); margin-top: 25px; animation: pulse 1.5s infinite;">Niche scroll karo aapke liye aur bhi surprises hain ✨👇</p>';
+                block.appendChild(scrollHint);
             } else {
                 feedback.textContent = qData.hint;
             }
         });
 
-        if (nextBtn) {
-            nextBtn.addEventListener('click', () => {
-                nextBtn.style.display = 'none';
-                currentQ++;
-                renderQuestion();
+    }
+
+    // --- RENDER 12-PHOTO ORBIT GALLERY (SECTION 4 - LAST) ---
+    function renderOrbitGallery(images) {
+        const orbitContainer = document.getElementById('orbit-container');
+        if (!orbitContainer) return;
+
+        let gIndex = 0;
+        let vw = window.innerWidth;
+        let vh = window.innerHeight;
+        let gallerySize = Math.min(vw * 0.78, vh * 0.85); 
+        if (gallerySize > 850) gallerySize = 850;
+
+        let radius = gallerySize * 0.43;
+        let itemSize = Math.max(75, gallerySize * 0.18);
+        let centerSize = gallerySize * 0.52;
+
+        let ringHtml = '';
+        images.forEach((img, i) => {
+            let angle = (i * 30) * (Math.PI / 180);
+            let x = Math.cos(angle) * radius;
+            let y = Math.sin(angle) * radius;
+            ringHtml += `<div class="orbit-item" id="orbit-item-${i}" 
+                              style="width:${itemSize}px; height:${itemSize}px; margin-top:-${itemSize/2}px; margin-left:-${itemSize/2}px; transform: translate(${x}px, ${y}px) rotate(0deg);">
+                            <img src="${img}">
+                         </div>`;
+        });
+
+        orbitContainer.innerHTML = `
+            <div class="orbit-gallery" style="width:${gallerySize}px; height:${gallerySize}px;">
+                <div class="orbit-ring" id="orbit-ring">
+                    ${ringHtml}
+                </div>
+                <div class="orbit-center" style="width:${centerSize}px; height:${centerSize}px;">
+                    <img src="${images[gIndex]}" id="orbit-main">
+                </div>
+                <button class="carousel-btn prev-photo">&#10094;</button>
+                <button class="carousel-btn next-photo">&#10095;</button>
+            </div>
+        `;
+
+        let ringEl = orbitContainer.querySelector('#orbit-ring');
+        let mainEl = orbitContainer.querySelector('#orbit-main');
+
+        function updateOrbit() {
+            let rotation = -(gIndex * 30);
+            ringEl.style.transform = `rotate(${rotation}deg)`;
+
+            images.forEach((img, i) => {
+                let itemEl = orbitContainer.querySelector(`#orbit-item-${i}`);
+                if (!itemEl) return;
+                let angle = (i * 30) * (Math.PI / 180);
+                let x = Math.cos(angle) * radius;
+                let y = Math.sin(angle) * radius;
+                itemEl.style.transform = `translate(${x}px, ${y}px) rotate(${-rotation}deg)`;
+
+                if (i === gIndex) {
+                    itemEl.style.borderColor = 'var(--rose)';
+                    itemEl.style.boxShadow = '0 0 15px var(--rose)';
+                    itemEl.style.transform += ' scale(1.2)';
+                } else {
+                    itemEl.style.borderColor = '#fff';
+                    itemEl.style.boxShadow = '0 4px 10px rgba(0,0,0,0.5)';
+                }
             });
+
+            mainEl.style.opacity = 0;
+            mainEl.style.transform = 'scale(0.5)';
+            setTimeout(() => {
+                mainEl.src = images[gIndex];
+                mainEl.style.opacity = 1;
+                mainEl.style.transform = 'scale(1)';
+            }, 300);
         }
+
+        updateOrbit();
+
+        orbitContainer.querySelector('.prev-photo').addEventListener('click', () => {
+            gIndex = (gIndex - 1 + images.length) % images.length;
+            updateOrbit();
+        });
+
+        orbitContainer.querySelector('.next-photo').addEventListener('click', () => {
+            gIndex = (gIndex + 1) % images.length;
+            updateOrbit();
+        });
     }
 
     renderQuestion();
