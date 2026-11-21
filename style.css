@@ -53,40 +53,40 @@ body {
    ========================================= */
 .hero-section {
     position: relative;
-    height: 100vh;
+    min-height: 100vh;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
 }
 .hero-bg {
-    position: fixed;
+    position: absolute;
     top: 0; left: 0;
-    width: 100vw; height: 120vh; /* Extra 20vh for parallax scrolling */
-    background-image: url('images/hero.jpg'); /* config will update this if needed */
+    width: 100%; height: 100%;
     background-size: cover;
-    background-position: center 25%; /* Bring photo down so face is visible */
-    opacity: 0; /* Starts dark */
+    background-position: center 25%;
+    opacity: 0;
     filter: blur(10px);
-    z-index: -4;
-    transition: opacity 3s ease 1s, filter 3s ease 1s;
-    will-change: transform;
+    z-index: 1;
+    transition: opacity 2s ease, filter 2s ease;
 }
 .hero-bg.revealed {
-    opacity: 1; /* Keep bright */
+    opacity: 1;
     filter: blur(0px);
 }
 .hero-overlay {
-    position: fixed;
+    position: absolute;
     top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    background: rgba(0, 0, 0, 0.65); /* Dark overlay */
-    z-index: -3;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.65);
+    z-index: 2;
 }
 .hero-content {
     position: relative;
-    z-index: 1;
+    z-index: 3;
     text-align: center;
+    padding: 20px;
 }
 .hero-content h1 {
     font-size: 4rem;

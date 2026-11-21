@@ -176,9 +176,12 @@ document.addEventListener('DOMContentLoaded', () => {
             let isCorrect = false;
             if (qData.type === 'multiple-choice') {
                 const checked = Array.from(block.querySelectorAll('.q-checkbox:checked')).map(cb => cb.value);
-                const correct = qData.correctAnswers;
-                if (checked.length === correct.length && checked.every(v => correct.includes(v))) {
+                // Correct if user selected 'a' or 'b' or both!
+                if (checked.length > 0 && checked.some(v => ['a', 'b'].includes(v))) {
                     isCorrect = true;
+                } else if (checked.length === 0) {
+                    feedback.textContent = "Ek option select karo!";
+                    return;
                 }
             } else if (qData.type === 'image-choice') {
                 const selected = block.querySelector('.img-option.selected');
@@ -328,11 +331,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        nextBtn.addEventListener('click', () => {
-            nextBtn.style.display = 'none';
-            currentQ++;
-            renderQuestion();
-        });
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => {
+                nextBtn.style.display = 'none';
+                currentQ++;
+                renderQuestion();
+            });
+        }
     }
 
     renderQuestion();
